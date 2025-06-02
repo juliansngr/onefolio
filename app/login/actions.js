@@ -15,7 +15,11 @@ export async function login(formData) {
     password: formData.get("password"),
   };
 
+  console.log(data);
+
   const { error } = await supabase.auth.signInWithPassword(data);
+
+  console.log(error);
 
   if (error) {
     redirect("/error");
@@ -43,4 +47,17 @@ export async function signup(formData) {
 
   revalidatePath("/", "layout");
   redirect("/");
+}
+
+export async function logout() {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    redirect("/error");
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/login");
 }
