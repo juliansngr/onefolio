@@ -1,0 +1,98 @@
+{
+  "name": "Julian",
+  "description": "I'm a 24 years old Full Stack Developer with additional expertise in Graphic Design, SEO and Marketing.",
+  "avatar": "/images/pb.webp",
+
+  "sections": [
+    {
+      "id": "719e1bc6-58e0-4d16-b5ae-c60bf48c3527",
+      "indexValue": 0,
+      "type": "textAndIcons",
+      "name": "Projects",
+      "description": "I'm currently working on",
+      "iconData": [
+        {
+          "alt": "Reactify",
+          "description": "reactify | music streaming app",
+          "link": "https://spotify.juliansngr.dev/",
+          "image": "/images/reactify-icon.webp"
+        },
+        {
+          "alt": "Mon-ey",
+          "description": "mon-ey | intelligent finance tracker",
+          "link": "https://app.mon-ey.com",
+          "image": "/images/mon-ey-icon.webp"
+        },
+        {
+          "alt": "Leihweise",
+          "description": "leihweise | rentable equipment marketplace",
+          "link": "https://leihweise.juliansngr.dev/",
+          "image": "/images/leihweise-icon.webp"
+        }
+      ]
+    },
+    {
+      "id": "349ec6b3-8130-489e-8d14-0c1c4dd1c1d2",
+      "indexValue": 1,
+      "type": "textAndIcons",
+      "name": "Other Projects",
+      "description": "Aside from coding, I've also worked on",
+      "iconData": [
+        {
+          "alt": "TekkMekk",
+          "description": "tekkmekk | music festival",
+          "link": "https://www.instagram.com/tekkmekk.festival/",
+          "image": "/images/tekkmekk-icon.webp"
+        },
+        {
+          "alt": "Producer Academy",
+          "description": "producer academy | music production school",
+          "link": "https://produceracademy.net/",
+          "image": "/images/producer-academy-icon.webp"
+        },
+        {
+          "alt": "Streamwear",
+          "description": "streamwear | merchandise store",
+          "link": "https://streamwear.shop/",
+          "image": "/images/streamwear-icon.webp"
+        }
+      ]
+    },
+    {
+      "id": "9af9c738-c5fd-4884-bcc9-dab6dab10007",
+      "indexValue": 2,
+      "type": "textAndIcons",
+      "name": "Projects",
+      "description": "Feel free to contact me via",
+      "iconData": [
+        {
+          "alt": "LinkedIn",
+          "description": "@julian-dürr",
+          "link": "https://www.linkedin.com/in/julian-d%C3%BCrr/",
+          "image": "/images/linkedin-icon.webp"
+        },
+
+        {
+          "alt": "Mail",
+          "description": "@julian.andreduerr@web.de",
+          "link": "mailto:julian.andreduerr@web.de",
+          "image": "/images/mail-icon.webp"
+        },
+        {
+          "alt": "Instagram",
+          "description": "@julian.sngr",
+          "link": "https://www.instagram.com/julian.sngr/",
+          "image": "/images/instagram-icon.webp"
+        }
+      ]
+    }
+  ],
+  "skills": [
+    "React",
+    "Next.js",
+    "Tailwind CSS",
+    "Graphic Design",
+    "SEO",
+    "Marketing"
+  ]
+}
