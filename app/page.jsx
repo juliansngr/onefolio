@@ -2,7 +2,7 @@ import DefaultPortfolio from "@/components/templates/DefaultPortfolio/DefaultPor
 import defaultData from "@/data/defaultData.json";
 
 import { Button } from "@/components/ui/button";
-import { logout } from "@/app/login/actions";
+import { logout } from "@/app/auth/actions";
 
 export default function Home() {
   return (

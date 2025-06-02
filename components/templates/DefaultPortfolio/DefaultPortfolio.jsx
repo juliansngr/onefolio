@@ -10,7 +10,6 @@ const geistMono = Plus_Jakarta_Sans({
 
 export default function DefaultPortfolio({ data }) {
   const sections = data.sections;
-  console.log(sections);
 
   return (
     <div
