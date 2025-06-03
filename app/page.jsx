@@ -10,7 +10,10 @@ export default function Home() {
       <DefaultPortfolio data={defaultData} />
 
       <Link href="/auth/login">
-        <Button className="cursor-pointer">Login </Button>
+        <Button className="cursor-pointer">Login</Button>
+      </Link>
+      <Link href="/auth/signup">
+        <Button className="cursor-pointer">Signup</Button>
       </Link>
     </>
   );
