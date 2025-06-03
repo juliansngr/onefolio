@@ -1,3 +1,7 @@
-export default function PortfolioPage() {
-  return <div>PortfolioPage</div>;
+import { createClient } from "@/lib/supabase/serverClient";
+
+export default async function PortfolioPage() {
+  const supabase = await createClient();
+
+  return <div>PortfolioPage </div>;
 }
