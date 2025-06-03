@@ -12,7 +12,7 @@ export default function Home() {
       <Link href="/auth/login">
         <Button className="cursor-pointer">Login</Button>
       </Link>
-      <Link href="/auth/signup">
+      <Link href="/auth/sign-up">
         <Button className="cursor-pointer">Signup</Button>
       </Link>
     </>
