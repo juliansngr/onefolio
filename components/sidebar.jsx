@@ -7,7 +7,7 @@ export default function Sidebar({ children, user }) {
   return (
     <SidebarProvider>
       <AppSidebar user={user} />
-      <main>
+      <main className="flex-1">
         {/* <SidebarTrigger /> */}
         {children}
       </main>
