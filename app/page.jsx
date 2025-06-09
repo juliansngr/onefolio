@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 export default function Home() {
   return (
     <>
-      <DefaultPortfolio data={defaultData} />
+      {/* <DefaultPortfolio data={defaultData} /> */}
 
       <Link href="/auth/login">
         <Button className="cursor-pointer">Login</Button>
