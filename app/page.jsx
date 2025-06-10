@@ -35,8 +35,13 @@ export default function Home() {
       <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between max-w-7xl">
           <div className="flex items-center gap-2">
-            <Folder className="h-6 w-6 text-rose-400" />
-            <span className="text-xl font-bold">onefolio.</span>
+            <Image
+              src="/images/onefolio-main-icon.webp"
+              alt="onefolio logo"
+              width={32}
+              height={32}
+            />
+            <span className="text-2xl font-semibold">onefolio.</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
             <Link
@@ -466,8 +471,13 @@ export default function Home() {
         <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0">
-              <Folder className="h-6 w-6 text-rose-400" />
-              <span className="text-xl font-bold">onefolio.</span>
+              <Image
+                src="/images/onefolio-main-icon.webp"
+                alt="onefolio logo"
+                width={32}
+                height={32}
+              />
+              <span className="text-2xl font-semibold">onefolio.</span>
             </div>
             <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4 md:mb-0">
               <Link
