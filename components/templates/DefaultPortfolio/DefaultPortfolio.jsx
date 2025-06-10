@@ -1,7 +1,5 @@
-import Image from "next/image";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import AppIcon from "@/components/ui/AppIcon";
-import TextAndIcons from "@/components/templates/DefaultPortfolio/components/TextAndIcons";
+
 import WidgetRenderer from "@/components/WidgetRenderer";
 
 const geistMono = Plus_Jakarta_Sans({

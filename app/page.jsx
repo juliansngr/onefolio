@@ -91,10 +91,18 @@ export default function Home() {
           <div className="mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-5xl">
             <div className="flex flex-col items-center text-center space-y-8">
               <div className="flex items-center gap-2">
-                <Folder className="h-10 w-10 text-white" />
-                <span className="text-4xl font-bold text-white">onefolio.</span>
+                <Image
+                  src="/images/onefolio-main-icon-white.webp"
+                  alt="onefolio logo"
+                  width={48}
+                  height={48}
+                />
+
+                <span className="text-4xl font-semibold text-white">
+                  onefolio.
+                </span>
               </div>
-              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl text-white">
+              <h1 className="text-4xl font-semibold tracking-tighter sm:text-5xl md:text-6xl text-white">
                 Your portfolios. One place.
               </h1>
               <p className="max-w-[600px] text-lg text-white/90">
