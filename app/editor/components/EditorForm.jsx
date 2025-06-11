@@ -27,6 +27,17 @@ export default function EditorForm({ widgets, user }) {
     console.log(widgetData);
   };
 
+  const deleteWidget = async (id) => {
+    setWidgetData((prev) => prev.filter((widget) => widget.id !== id));
+    const { data, error } = await supabase
+      .from("widgets")
+      .delete()
+      .eq("id", id);
+    if (data) {
+      toast.success("Widget deleted successfully");
+    }
+  };
+
   const updateWidgetContent = (index, content) => {
     setWidgetData((prev) =>
       prev.map((widget, i) => (i === index ? { ...widget, content } : widget))
@@ -71,31 +82,35 @@ export default function EditorForm({ widgets, user }) {
     for (const widget of widgetData) {
       let paths = [];
 
-      if (widget.content.files) {
-        for (const file of widget.content.files) {
+      if (widget.content.fileData) {
+        for (const file of widget.content.fileData) {
           const path = await uploadFile(file);
           if (path) {
             paths.push(path);
           }
         }
       }
-      console.log("widget: ", widget);
-      const { data, error } = await supabase.from("widgets").upsert({
+
+      const cleanContent = structuredClone(widget.content);
+      delete cleanContent.fileData;
+
+      const { error } = await supabase.from("widgets").upsert({
         id: widget.id,
         user_id: widget.user_id,
         type: widget.type,
         content: {
-          ...widget.content,
+          ...cleanContent,
           files: paths,
         },
         position: widget.position,
         created_at: widget.created_at,
       });
-    }
-    if (data) {
-      toast.success("Widgets saved successfully");
-    } else {
-      toast.error("Error saving widgets");
+
+      if (error) {
+        toast.error("Error saving widgets");
+      } else {
+        toast.success("Widgets saved successfully");
+      }
     }
   };
 
@@ -118,9 +133,11 @@ export default function EditorForm({ widgets, user }) {
                   return (
                     <ProfileHeaderInput
                       data={widget.content}
+                      key={widget.id}
                       onChange={(content) =>
                         updateWidgetContent(index, content)
                       }
+                      onDelete={() => deleteWidget(widget.id)}
                     />
                   );
               }
