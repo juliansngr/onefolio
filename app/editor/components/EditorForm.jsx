@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import ProfileHeaderInput from "./widgets/ProfileHeaderInput";
+import TextAndIconsInput from "./widgets/TextAndIconsInput";
 import SaveButton from "./SaveButton";
 import { createClient } from "@/lib/supabase/browserClient";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { getDataScheme } from "@/lib/editorFunctions";
 
 export default function EditorForm({ widgets, user }) {
   const [widgetData, setWidgetData] = useState(widgets);
@@ -20,22 +22,45 @@ export default function EditorForm({ widgets, user }) {
         createdAt: new Date().toISOString(),
         user_id: user.id,
         type,
-        content: {},
+        content: getDataScheme(type),
         position: prev.length + 1,
       },
     ]);
-    console.log(widgetData);
   };
 
   const deleteWidget = async (id) => {
-    setWidgetData((prev) => prev.filter((widget) => widget.id !== id));
-    const { data, error } = await supabase
+    const updatedWidgets = widgetData.filter((widget) => widget.id !== id);
+
+    const reOrdered = updatedWidgets.map((widget, index) => ({
+      ...widget,
+      position: index + 1,
+    }));
+
+    setWidgetData(reOrdered);
+
+    const { error: deleteError } = await supabase
       .from("widgets")
       .delete()
       .eq("id", id);
-    if (data) {
-      toast.success("Widget deleted successfully");
+
+    if (deleteError) {
+      toast.error("Error deleting widget");
+      return;
     }
+
+    for (const widget of reOrdered) {
+      const { error: updateError } = await supabase
+        .from("widgets")
+        .update({ position: widget.position })
+        .eq("id", widget.id);
+
+      if (updateError) {
+        toast.error("Error updating widget positions");
+        console.error("Position update error", updateError);
+      }
+    }
+
+    toast.success("Widget deleted and positions updated");
   };
 
   const updateWidgetContent = (index, content) => {
@@ -78,7 +103,6 @@ export default function EditorForm({ widgets, user }) {
   };
 
   const saveWidgets = async () => {
-    console.log(widgetData);
     for (const widget of widgetData) {
       let paths = [];
 
@@ -116,7 +140,7 @@ export default function EditorForm({ widgets, user }) {
 
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10 flex-1">
-      <div className="w-full max-w-sm md:max-w-3xl ">
+      <div className="w-full max-w-sm md:max-w-6xl ">
         <div className="grid grid-cols-[25%_75%] gap-4">
           <div className="flex flex-col gap-4">
             <Button
@@ -125,6 +149,12 @@ export default function EditorForm({ widgets, user }) {
             >
               Add Profile Header
             </Button>
+            <Button
+              variant="outline"
+              onClick={() => addWidget("text-and-icons")}
+            >
+              Add Text and Icons
+            </Button>
           </div>
           <div className="flex flex-col gap-4">
             {widgetData.map((widget, index) => {
@@ -132,6 +162,17 @@ export default function EditorForm({ widgets, user }) {
                 case "profile-header":
                   return (
                     <ProfileHeaderInput
+                      data={widget.content}
+                      key={widget.id}
+                      onChange={(content) =>
+                        updateWidgetContent(index, content)
+                      }
+                      onDelete={() => deleteWidget(widget.id)}
+                    />
+                  );
+                case "text-and-icons":
+                  return (
+                    <TextAndIconsInput
                       data={widget.content}
                       key={widget.id}
                       onChange={(content) =>
