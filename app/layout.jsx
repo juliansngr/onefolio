@@ -8,7 +8,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata = {
-  title: "onefolio",
+  title: "onefol.io | Create beautiful portfolios in minutes",
   description: "Your portfolios. One place.",
 };
 

@@ -32,6 +32,17 @@ export default function ProfileHeaderInput({ data, onChange }) {
             onChange={(e) => onChange({ ...data, description: e.target.value })}
           />
         </div>
+        <div className="grid gap-3">
+          <Label htmlFor="name">Profile picture</Label>
+          <Input
+            id="profilePicture"
+            type="file"
+            name="profilePicture"
+            accept="image/*"
+            required
+            onChange={(e) => onChange({ ...data, files: [e.target.files[0]] })}
+          />
+        </div>
       </div>
     </Card>
   );

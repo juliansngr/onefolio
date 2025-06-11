@@ -4,9 +4,13 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import ProfileHeaderInput from "./widgets/ProfileHeaderInput";
 import SaveButton from "./SaveButton";
+import { createClient } from "@/lib/supabase/browserClient";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function EditorForm({ widgets, user }) {
   const [widgetData, setWidgetData] = useState(widgets);
+  const supabase = createClient();
 
   const addWidget = (type) => {
     setWidgetData((prev) => [
@@ -29,8 +33,70 @@ export default function EditorForm({ widgets, user }) {
     );
   };
 
+  const convertImageToWebP = async (file) => {
+    const img = await createImageBitmap(file);
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    return new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        resolve(blob);
+      }, "image/webp");
+    });
+  };
+
+  const uploadFile = async (file) => {
+    const webpFile = await convertImageToWebP(file);
+
+    const { data, error } = await supabase.storage
+      .from("images")
+      .upload(user.id + "/" + crypto.randomUUID(), webpFile);
+
+    if (error) {
+      console.error("Upload error:", error);
+      return null;
+    }
+
+    const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/images/${data.path}`;
+
+    return publicUrl ?? null;
+  };
+
   const saveWidgets = async () => {
     console.log(widgetData);
+    for (const widget of widgetData) {
+      let paths = [];
+
+      if (widget.content.files) {
+        for (const file of widget.content.files) {
+          const path = await uploadFile(file);
+          if (path) {
+            paths.push(path);
+          }
+        }
+      }
+      console.log("widget: ", widget);
+      const { data, error } = await supabase.from("widgets").upsert({
+        id: widget.id,
+        user_id: widget.user_id,
+        type: widget.type,
+        content: {
+          ...widget.content,
+          files: paths,
+        },
+        position: widget.position,
+        created_at: widget.created_at,
+      });
+    }
+    if (data) {
+      toast.success("Widgets saved successfully");
+    } else {
+      toast.error("Error saving widgets");
+    }
   };
 
   return (
@@ -63,6 +129,7 @@ export default function EditorForm({ widgets, user }) {
           </div>
         </div>
       </div>
+      <Toaster position="top-center" richColors />
     </div>
   );
 }
