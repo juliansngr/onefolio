@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# onefol.io
 
-## Getting Started
+Onefolio is a modern and modular portfolio platform designed for developers, designers, and creatives who want to showcase their projects, skills, and online presence — all in one place.
 
-First, run the development server:
+Built with scalability and customization in mind, onefolio makes it easy to maintain a professional and elegant digital portfolio with minimal effort.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🌟 Overview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Whether you're applying for jobs, freelancing, or just want to make your work more visible — onefolio helps you stand out. It's fast, responsive, and powered by a developer-first stack that prioritizes performance and usability.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Visit our [example portfolio](https://onefol.io/u/julian)
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🔧 Current Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- ✨ Fully responsive and mobile-friendly landing-page
+- 📝 Portfolio editor with two basic widgets
+- 🔗 Social and contact links
+- ⚙️ Sign-up, Log-In and account setup
+- 🔍 SEO-friendly structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🧭 Roadmap / Upcoming Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 🧩 A ton more widgets
+- 📝 Dashboard with overview
+- 🌐 Portfolio themes
+- 📊 Analytics integration
+- 🌙 Dark mode support
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 💫 Current tech-stack
+
+Frontend:
+
+[![React](https://img.shields.io/badge/React-%2320232a.svg?logo=react&logoColor=%2361DAFB)](#)
+[![Next.js](https://img.shields.io/badge/Next.js-black?logo=next.js&logoColor=white)](#)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind%20CSS-%2338B2AC.svg?logo=tailwind-css&logoColor=white)](#)
+[![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000?logo=shadcnui&logoColor=fff)](#)
+
+Backend:
+
+[![Next.js](https://img.shields.io/badge/Next.js-black?logo=next.js&logoColor=white)](#)
+[![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=fff)](#)
