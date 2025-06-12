@@ -21,10 +21,28 @@ export async function setUsername(formData) {
     redirect("/auth/login");
   }
 
+  if (!data.username) {
+    redirect("/setup?error=no-username");
+  }
+
+  if (data.username.length < 5) {
+    redirect("/setup?error=username-too-short");
+  }
+
+  if (data.username.length > 20) {
+    redirect("/setup?error=username-too-long");
+  }
+
+  if (!/^[a-zA-Z0-9]+$/.test(data.username)) {
+    redirect("/setup?error=username-invalid");
+  }
+
+  const username = data.username.trim().toLowerCase();
+
   const { data: profile } = await supabase
     .from("profiles")
     .select("*")
-    .eq("username", data.username)
+    .eq("username", username)
     .single();
 
   if (profile) {
@@ -34,7 +52,7 @@ export async function setUsername(formData) {
   if (!profile) {
     const { error } = await supabase
       .from("profiles")
-      .insert({ username: data.username, user_id: user.id });
+      .insert({ username: username, user_id: user.id });
 
     if (error) {
       redirect("/setup?error=insert-error");

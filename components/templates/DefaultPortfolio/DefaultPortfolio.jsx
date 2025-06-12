@@ -14,9 +14,11 @@ export default function DefaultPortfolio({ data }) {
     >
       <main className="flex flex-col justify-center">
         {/* Sections */}
-        {data.map((widget) => {
-          return <WidgetRenderer widget={widget} key={widget.id} />;
-        })}
+        {data
+          .sort((a, b) => a.position - b.position)
+          .map((widget) => {
+            return <WidgetRenderer widget={widget} key={widget.id} />;
+          })}
         {/* {sections.map((section) => {
           return (
             <TextAndIcons

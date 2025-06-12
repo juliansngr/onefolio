@@ -3,7 +3,6 @@ import Sidebar from "@/components/sidebar";
 import { createClient } from "@/lib/supabase/serverClient";
 
 import EditorForm from "./components/EditorForm";
-import { Toaster } from "@/components/ui/sonner";
 
 export default async function Page() {
   const supabase = await createClient();

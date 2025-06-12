@@ -63,7 +63,8 @@ export default function TextAndIconsInput({ data, onChange, onDelete }) {
                   onChange={(e) => {
                     handleImageChange(i, e);
                     const newFileData = [...(data.fileData || [])];
-                    newFileData[i] = e.target.files[0];
+                    newFileData[i] = { index: i, file: e.target.files[0] };
+
                     onChange({ ...data, fileData: newFileData });
                   }}
                 />
@@ -87,7 +88,6 @@ export default function TextAndIconsInput({ data, onChange, onDelete }) {
                   onChange={(e) => {
                     const newIconData = [...(data.iconData || [])];
 
-                    console.log("newIconData link", data.iconData);
                     newIconData[i] = {
                       ...newIconData[i],
                       link: e.target.value,
@@ -109,7 +109,6 @@ export default function TextAndIconsInput({ data, onChange, onDelete }) {
                   required
                   onChange={(e) => {
                     const newIconData = [...(data.iconData || [])];
-                    console.log("newIconData tooltip", data.iconData);
 
                     newIconData[i] = {
                       ...newIconData[i],

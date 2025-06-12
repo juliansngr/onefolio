@@ -18,7 +18,7 @@ export default function ProfileHeader({ data }) {
       </span>
       {/* Description */}
       <span className="text-md sm:text-lg font-light">
-        <p className="mb-8">{data.description}</p>
+        <p className="mb-8 whitespace-pre-line">{data.description}</p>
       </span>
     </>
   );

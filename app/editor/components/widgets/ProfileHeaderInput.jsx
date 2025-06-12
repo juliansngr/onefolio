@@ -46,7 +46,10 @@ export default function ProfileHeaderInput({ data, onChange, onDelete }) {
             accept="image/*"
             required
             onChange={(e) =>
-              onChange({ ...data, fileData: [e.target.files[0]] })
+              onChange({
+                ...data,
+                fileData: [{ index: 0, file: e.target.files[0] }],
+              })
             }
           />
         </div>

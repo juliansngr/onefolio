@@ -56,7 +56,6 @@ export default function EditorForm({ widgets, user }) {
 
       if (updateError) {
         toast.error("Error updating widget positions");
-        console.error("Position update error", updateError);
       }
     }
 
@@ -104,13 +103,15 @@ export default function EditorForm({ widgets, user }) {
 
   const saveWidgets = async () => {
     for (const widget of widgetData) {
-      let paths = [];
+      let paths = widget.content.files ?? [];
 
-      if (widget.content.fileData) {
+      if (widget.content.fileData?.length > 0) {
         for (const file of widget.content.fileData) {
-          const path = await uploadFile(file);
+          if (!file) continue;
+          const index = file.index;
+          const path = await uploadFile(file.file);
           if (path) {
-            paths.push(path);
+            paths[index] = path;
           }
         }
       }
