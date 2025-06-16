@@ -3,11 +3,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, GripVertical } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 
-export default function TextAndIconsInput({ data, onChange, onDelete }) {
+export default function TextAndIconsInput({
+  data,
+  onChange,
+  onDelete,
+  dragHandle,
+}) {
   const [previewUrls, setPreviewUrls] = useState([
     data.files[0],
     data.files[1],
@@ -32,9 +37,14 @@ export default function TextAndIconsInput({ data, onChange, onDelete }) {
       <div className="flex flex-col gap-6 p-6 md:p-8">
         <div className="flex flex-row items-center justify-between text-center">
           <h1 className="text-2xl font-bold">Text and Icons</h1>
-          <Button variant="outline" onClick={onDelete}>
-            <Trash2 className="w-4 h-4" />
-          </Button>
+          <div className="flex flex-row items-center gap-2">
+            <Button variant="outline" onClick={onDelete}>
+              <Trash2 className="w-4 h-4" />
+            </Button>
+            <button {...dragHandle} className="cursor-grab">
+              <GripVertical className="w-4 h-4" />
+            </button>
+          </div>
         </div>
         <div className="grid gap-3">
           <Label htmlFor="description">Line of text</Label>

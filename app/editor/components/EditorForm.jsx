@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+
 import ProfileHeaderInput from "./widgets/ProfileHeaderInput";
 import TextAndIconsInput from "./widgets/TextAndIconsInput";
 import SaveButton from "./SaveButton";
@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { getDataScheme, widgetList } from "@/lib/editorFunctions";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus } from "lucide-react";
+import { Plus, GripVertical } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 export default function EditorForm({ widgets, user }) {
@@ -227,7 +227,6 @@ export default function EditorForm({ widgets, user }) {
                                   <div
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
                                   >
                                     <ProfileHeaderInput
                                       data={widget.content}
@@ -236,6 +235,7 @@ export default function EditorForm({ widgets, user }) {
                                         updateWidgetContent(index, content)
                                       }
                                       onDelete={() => deleteWidget(widget.id)}
+                                      dragHandle={provided.dragHandleProps}
                                     />
                                   </div>
                                 )}
@@ -260,6 +260,7 @@ export default function EditorForm({ widgets, user }) {
                                         updateWidgetContent(index, content)
                                       }
                                       onDelete={() => deleteWidget(widget.id)}
+                                      dragHandle={provided.dragHandleProps}
                                     />
                                   </div>
                                 )}
