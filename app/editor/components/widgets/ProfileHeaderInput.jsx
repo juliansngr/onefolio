@@ -17,7 +17,7 @@ export default function ProfileHeaderInput({
     <Card
       className={cn(
         "overflow-hidden p-0",
-        isDragging && "opacity-80 scale-98 transition-all duration-100"
+        isDragging && "opacity-90 scale-98 transition-all duration-100"
       )}
     >
       <div className="flex flex-col gap-6 p-6 md:p-8">
