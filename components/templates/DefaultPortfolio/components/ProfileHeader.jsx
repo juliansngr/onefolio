@@ -2,8 +2,7 @@ import Image from "next/image";
 
 export default function ProfileHeader({ data }) {
   return (
-    <>
-      {/* Me Section */}
+    <div className="flex flex-col">
       <span className="flex items-center gap-4">
         <h2 className="text-2xl sm:text-4xl font-light">
           Hi, my name is <span className="font-bold">{data.name}</span>
@@ -16,10 +15,10 @@ export default function ProfileHeader({ data }) {
           className="rounded-full object-cover object-center w-[80px] h-[80px]"
         />
       </span>
-      {/* Description */}
+
       <span className="text-md sm:text-lg font-light">
-        <p className="mb-8 whitespace-pre-line">{data.description}</p>
+        <p className="whitespace-pre-line">{data.description}</p>
       </span>
-    </>
+    </div>
   );
 }

@@ -30,7 +30,7 @@ export default function TextAndIcons({ data, indexValue }) {
     />
   ));
   return (
-    <span className="flex flex-col sm:items-center sm:flex-row gap-2 mb-8">
+    <span className="flex flex-col sm:items-center sm:flex-row gap-2">
       <h2 className="text-xl sm:text-2xl font-light">
         {data.description && data.description}
       </h2>

@@ -10,9 +10,9 @@ const geistMono = Plus_Jakarta_Sans({
 export default function DefaultPortfolio({ data }) {
   return (
     <div
-      className={`${geistMono.className} flex flex-col bg-white pt-10 p-8 w-full items-center mt-0 sm:mt-20  font-[family-name:var(--font-geist-sans)]`}
+      className={`${geistMono.className} flex flex-col bg-muted pt-30 p-8 w-full min-h-svh items-center   font-[family-name:var(--font-geist-sans)]`}
     >
-      <main className="flex flex-col justify-center">
+      <main className="flex flex-col justify-center gap-4">
         {/* Sections */}
         {data
           .sort((a, b) => a.position - b.position)

@@ -4,13 +4,15 @@ import { useState } from "react";
 
 import ProfileHeaderInput from "./widgets/ProfileHeaderInput";
 import TextAndIconsInput from "./widgets/TextAndIconsInput";
+import JobExperienceInput from "./widgets/JobExperienceInput";
+import SpacerInput from "./widgets/SpacerInput";
 import SaveButton from "./SaveButton";
 import { createClient } from "@/lib/supabase/browserClient";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { getDataScheme, widgetList } from "@/lib/editorFunctions";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, GripVertical } from "lucide-react";
+import { Plus } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 export default function EditorForm({ widgets, user }) {
@@ -107,6 +109,7 @@ export default function EditorForm({ widgets, user }) {
 
   const saveWidgets = async () => {
     setIsSaving(true);
+
     for (const widget of widgetData) {
       let paths = widget.content.files ?? [];
 
@@ -309,7 +312,33 @@ export default function EditorForm({ widgets, user }) {
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                   >
-                                    <TextAndIconsInput
+                                    <JobExperienceInput
+                                      data={widget.content}
+                                      onChange={(content) =>
+                                        updateWidgetContent(index, content)
+                                      }
+                                      onDelete={() => deleteWidget(widget.id)}
+                                      dragHandle={provided.dragHandleProps}
+                                      isDragging={snapshot.isDragging}
+                                    />
+                                  </div>
+                                )}
+                              </Draggable>
+                            );
+                          case "spacer":
+                            return (
+                              <Draggable
+                                draggableId={widget.id}
+                                index={index}
+                                key={widget.id}
+                              >
+                                {(provided, snapshot) => (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                  >
+                                    <SpacerInput
                                       data={widget.content}
                                       onChange={(content) =>
                                         updateWidgetContent(index, content)
