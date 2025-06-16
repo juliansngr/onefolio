@@ -146,7 +146,35 @@ export default function EditorForm({ widgets, user }) {
   };
 
   const handleDragEnd = (result) => {
-    console.log(result);
+    const { source, destination, draggableId } = result;
+
+    const draggedWidget = widgetData.find(
+      (widget) => widget.id === draggableId
+    );
+
+    if (!destination) {
+      return;
+    }
+
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    ) {
+      return;
+    }
+
+    const updatedWidgets = widgetData.filter(
+      (widget) => widget.id !== draggedWidget.id
+    );
+
+    updatedWidgets.splice(destination.index, 0, draggedWidget);
+
+    const reOrdered = updatedWidgets.map((widget, index) => ({
+      ...widget,
+      position: index + 1,
+    }));
+
+    setWidgetData(reOrdered);
   };
 
   return (
