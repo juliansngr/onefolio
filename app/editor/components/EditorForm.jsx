@@ -12,6 +12,7 @@ import { getDataScheme } from "@/lib/editorFunctions";
 
 export default function EditorForm({ widgets, user }) {
   const [widgetData, setWidgetData] = useState(widgets);
+  const [isSaving, setIsSaving] = useState(false);
   const supabase = createClient();
 
   const addWidget = (type) => {
@@ -102,6 +103,7 @@ export default function EditorForm({ widgets, user }) {
   };
 
   const saveWidgets = async () => {
+    setIsSaving(true);
     for (const widget of widgetData) {
       let paths = widget.content.files ?? [];
 
@@ -137,6 +139,7 @@ export default function EditorForm({ widgets, user }) {
         toast.success("Widgets saved successfully");
       }
     }
+    setIsSaving(false);
   };
 
   return (
@@ -184,7 +187,7 @@ export default function EditorForm({ widgets, user }) {
                   );
               }
             })}
-            <SaveButton onClick={saveWidgets} />
+            <SaveButton onClick={saveWidgets} isSaving={isSaving} />
           </div>
         </div>
       </div>
