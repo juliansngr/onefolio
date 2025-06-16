@@ -31,8 +31,8 @@ import { Badge } from "@/components/ui/badge";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
+    <div className="flex min-h-screen flex-col bg-slate-50">
+      <header className="sticky top-0 z-40 w-full bg-white border-b shadow-sm">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between max-w-7xl">
           <div className="flex items-center gap-2">
             <Image
@@ -41,183 +41,568 @@ export default function Home() {
               width={32}
               height={32}
             />
-            <span className="text-2xl font-semibold">onefolio.</span>
+            <span className="text-2xl font-bold text-slate-900">onefolio</span>
           </div>
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-8">
             <Link
               href="#features"
-              className="text-sm font-medium hover:text-rose-400"
+              className="text-sm font-medium text-slate-600 hover:text-slate-900"
             >
               Features
             </Link>
             <Link
-              href="#how-it-works"
-              className="text-sm font-medium hover:text-rose-400"
+              href="#showcase"
+              className="text-sm font-medium text-slate-600 hover:text-slate-900"
             >
-              How it works
+              Showcase
             </Link>
             <Link
               href="#pricing"
-              className="text-sm font-medium hover:text-rose-400"
+              className="text-sm font-medium text-slate-600 hover:text-slate-900"
             >
               Pricing
             </Link>
             <Link
-              href="#faq"
-              className="text-sm font-medium hover:text-rose-400"
+              href="#blog"
+              className="text-sm font-medium text-slate-600 hover:text-slate-900"
             >
-              FAQ
+              Blog
             </Link>
           </nav>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <Link
               href="/auth/login"
-              className="text-sm font-medium hover:text-rose-400 hidden md:block"
+              className="text-sm font-medium text-slate-600 hover:text-slate-900 hidden md:block"
             >
               Sign in
             </Link>
-            <Button asChild>
-              <Link href="/auth/sign-up">Get started</Link>
+            <Button
+              asChild
+              className="bg-slate-900 hover:bg-slate-800 text-white px-6"
+            >
+              <Link href="/auth/sign-up">Create Portfolio →</Link>
             </Button>
           </div>
         </div>
       </header>
       <main className="flex-1">
-        <section className="relative overflow-hidden py-24 md:py-32">
-          <div
-            className="absolute inset-0 bg-gradient-to-br from-orange-300 via-rose-300 via-purple-300 to-blue-300"
-            aria-hidden="true"
-          />
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-5xl">
-            <div className="flex flex-col items-center text-center space-y-8">
-              <div className="flex items-center gap-2">
-                <Image
-                  src="/images/onefolio-main-icon-white.webp"
-                  alt="onefolio logo"
-                  width={48}
-                  height={48}
-                />
-
-                <span className="text-4xl font-semibold text-white">
-                  onefolio.
-                </span>
+        <section className="py-20 md:py-32 bg-white">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <div className="text-center space-y-8">
+              <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium">
+                🏆 #1 Portfolio Builder | 200+ Portfolios Created
               </div>
-              <h1 className="text-4xl font-semibold tracking-tighter sm:text-5xl md:text-6xl text-white">
-                Your portfolios. One place.
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900">
+                Build <span className="text-blue-600">Exceptional</span>
+                <br />
+                Portfolios, <span className="text-blue-600">Faster</span>
               </h1>
-              <p className="max-w-[600px] text-lg text-white/90">
-                Create, manage, and share your portfolios with the world in
-                minutes. Absolutely no code required.
+              <p className="max-w-[700px] mx-auto text-xl text-slate-600 leading-relaxed">
+                Create stunning portfolios with our{" "}
+                <strong>modular builder</strong>
+                <br />
+                using themes, widgets and{" "}
+                <strong>intuitive drag & drop.</strong>
               </p>
-              <Link href="/auth/sign-up">
-                <Button size="lg" className="rounded-full px-8 cursor-pointer">
-                  Get started for free
-                  <ArrowRight className="ml-2 h-4 w-4" />
+              <div className="flex justify-center">
+                <Button
+                  size="lg"
+                  className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 text-lg"
+                >
+                  Start Building →
                 </Button>
-              </Link>
-              <div className="mt-12 w-full max-w-3xl overflow-hidden rounded-xl bg-white/90 shadow-xl backdrop-blur">
-                <Image
-                  src="/images/placeholder-800-600.webp"
-                  width={800}
-                  height={600}
-                  alt="onefolio dashboard preview"
-                  className="w-full object-cover"
-                />
+              </div>
+            </div>
+
+            {/* Portfolio Showcase Cards */}
+            <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {/* Sarah Designer Card */}
+              <Card className="p-6 bg-white shadow-lg hover:shadow-xl transition-shadow">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full flex items-center justify-center text-white font-semibold">
+                      SJ
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-500">🇺🇸 United States</p>
+                      <p className="text-sm text-slate-500">
+                        ⏰ Usually rate on request
+                      </p>
+                    </div>
+                  </div>
+                  <Badge className="bg-green-100 text-green-700 border-green-200">
+                    100% Match
+                  </Badge>
+                </div>
+
+                <h3 className="text-xl font-bold text-slate-900 mb-2">
+                  Sarah Johnson
+                </h3>
+                <p className="text-slate-600 mb-4">
+                  Product Designer from San Francisco
+                </p>
+
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm font-medium text-slate-700 mb-2">
+                      Portfolio Features
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <Badge
+                        variant="secondary"
+                        className="bg-blue-50 text-blue-700"
+                      >
+                        🎨 Creative Theme
+                      </Badge>
+                      <Badge
+                        variant="secondary"
+                        className="bg-purple-50 text-purple-700"
+                      >
+                        ✨ Gallery Widget
+                      </Badge>
+                      <Badge
+                        variant="secondary"
+                        className="bg-green-50 text-green-700"
+                      >
+                        🚀 Modern Layout
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 mt-6">
+                  <Button size="sm" variant="outline" className="flex-1">
+                    👁️ View Portfolio
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="bg-slate-900 hover:bg-slate-800 text-white"
+                  >
+                    🎨 Use Template
+                  </Button>
+                </div>
+              </Card>
+
+              {/* Chad Developer Card */}
+              <Card className="p-6 bg-white shadow-lg hover:shadow-xl transition-shadow">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white font-semibold">
+                      CM
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-500">
+                        💼 Tech Portfolio
+                      </p>
+                      <p className="text-sm text-slate-500">
+                        ⚡ Built in 2 hours
+                      </p>
+                    </div>
+                  </div>
+                  <Badge className="bg-green-100 text-green-700 border-green-200">
+                    Popular
+                  </Badge>
+                </div>
+
+                <h3 className="text-xl font-bold text-slate-900 mb-2">
+                  Chad Manker
+                </h3>
+                <p className="text-slate-600 mb-4">
+                  Fullstack Developer from Johannesburg
+                </p>
+
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm font-medium text-slate-700 mb-2">
+                      Portfolio Widgets
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <Badge
+                        variant="secondary"
+                        className="bg-green-50 text-green-700"
+                      >
+                        📊 Skills Chart
+                      </Badge>
+                      <Badge
+                        variant="secondary"
+                        className="bg-yellow-50 text-yellow-700"
+                      >
+                        💼 Projects Grid
+                      </Badge>
+                      <Badge
+                        variant="secondary"
+                        className="bg-blue-50 text-blue-700"
+                      >
+                        📧 Contact Widget
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 mt-6">
+                  <Button size="sm" variant="outline" className="flex-1">
+                    👁️ View Portfolio
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="bg-slate-900 hover:bg-slate-800 text-white"
+                  >
+                    🎨 Use Template
+                  </Button>
+                </div>
+              </Card>
+
+              {/* Hannah Developer Card */}
+              <Card className="p-6 bg-white shadow-lg hover:shadow-xl transition-shadow">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold">
+                      HS
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-500">
+                        🎨 Minimal Design
+                      </p>
+                      <p className="text-sm text-slate-500">
+                        ⚡ Built in 1 hour
+                      </p>
+                    </div>
+                  </div>
+                  <Badge className="bg-yellow-100 text-yellow-700 border-yellow-200">
+                    Trending
+                  </Badge>
+                </div>
+
+                <h3 className="text-xl font-bold text-slate-900 mb-2">
+                  Hannah Smith
+                </h3>
+                <p className="text-slate-600 mb-4">
+                  Frontend Developer from New York
+                </p>
+
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm font-medium text-slate-700 mb-2">
+                      Portfolio Components
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <Badge
+                        variant="secondary"
+                        className="bg-red-50 text-red-700"
+                      >
+                        📝 About Widget
+                      </Badge>
+                      <Badge
+                        variant="secondary"
+                        className="bg-red-50 text-red-700"
+                      >
+                        🖼️ Image Gallery
+                      </Badge>
+                      <Badge
+                        variant="secondary"
+                        className="bg-blue-50 text-blue-700"
+                      >
+                        🔗 Social Links
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 mt-6">
+                  <Button size="sm" variant="outline" className="flex-1">
+                    👁️ View Portfolio
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="bg-slate-900 hover:bg-slate-800 text-white"
+                  >
+                    🎨 Use Template
+                  </Button>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-20 bg-slate-50">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <div className="text-center mb-16">
+              <h2 className="text-sm font-semibold text-blue-600 tracking-wide uppercase mb-4">
+                Smart Building
+              </h2>
+              <h3 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+                <em>Modular</em> portfolio building
+              </h3>
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                Smart portfolio creation with our{" "}
+                <strong>drag & drop builder</strong> - choose from{" "}
+                <strong>themes, widgets and layouts</strong> to create your
+                perfect professional portfolio.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
+              <div className="text-center">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Shield className="h-6 w-6 text-blue-600" />
+                </div>
+                <h4 className="font-semibold text-slate-900 mb-2">
+                  Precision matching
+                </h4>
+              </div>
+              <div className="text-center">
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <DragDropIcon className="h-6 w-6 text-green-600" />
+                </div>
+                <h4 className="font-semibold text-slate-900 mb-2">
+                  Drag & Drop
+                </h4>
+              </div>
+              <div className="text-center">
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Share2 className="h-6 w-6 text-purple-600" />
+                </div>
+                <h4 className="font-semibold text-slate-900 mb-2">
+                  Easy Sharing
+                </h4>
+              </div>
+              <div className="text-center">
+                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Folder className="h-6 w-6 text-orange-600" />
+                </div>
+                <h4 className="font-semibold text-slate-900 mb-2">
+                  Theme Collection
+                </h4>
+              </div>
+            </div>
+
+            <div className="text-center">
+              <p className="text-lg font-medium text-slate-900 mb-8">
+                <em>
+                  Build stunning portfolios with themes, widgets &
+                  customization.
+                </em>
+              </p>
+            </div>
+
+            {/* Dashboard Preview */}
+            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden max-w-5xl mx-auto">
+              <div className="bg-slate-900 px-6 py-4 flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <Image
+                    src="/images/onefolio-main-icon-white.webp"
+                    alt="onefolio logo"
+                    width={24}
+                    height={24}
+                  />
+                  <span className="text-white font-semibold">onefolio</span>
+                </div>
+                <div className="flex items-center gap-4 ml-auto">
+                  <span className="text-slate-300 text-sm">📄 Posts</span>
+                  <span className="text-slate-300 text-sm">💬 Messages</span>
+                  <span className="text-slate-300 text-sm">🔧 Tools</span>
+                </div>
+              </div>
+              <div className="p-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {/* Left Side - Profile */}
+                  <div>
+                    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl p-6">
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                          MS
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-slate-900">
+                            Max Schulz
+                          </h4>
+                          <p className="text-slate-600">
+                            Fullstack Developer from Berlin
+                          </p>
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        <div>
+                          <p className="text-sm font-medium text-slate-700 mb-2">
+                            Programming Skills
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge className="bg-yellow-100 text-yellow-800">
+                              ⚫ Next.js
+                            </Badge>
+                            <Badge className="bg-blue-100 text-blue-800">
+                              🔷 TypeScript
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Side - Features */}
+                  <div className="space-y-4">
+                    <div className="bg-green-50 rounded-lg p-4 flex items-center gap-3">
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        ✓
+                      </div>
+                      <div>
+                        <p className="font-medium text-green-800">
+                          Your profile is hosted
+                        </p>
+                        <p className="text-sm text-green-600">
+                          Available at onefolio.dev/max-schulz
+                        </p>
+                      </div>
+                    </div>
+                    <div className="bg-blue-50 rounded-lg p-4 flex items-center gap-3">
+                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        📊
+                      </div>
+                      <div>
+                        <p className="font-medium text-blue-800">
+                          Add your latest tech skills
+                        </p>
+                        <p className="text-sm text-blue-600">
+                          Keep your portfolio updated
+                        </p>
+                      </div>
+                    </div>
+                    <div className="bg-purple-50 rounded-lg p-4 flex items-center gap-3">
+                      <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        🚀
+                      </div>
+                      <div>
+                        <p className="font-medium text-purple-800">
+                          Access to all portfolio jobs and projects
+                        </p>
+                        <p className="text-sm text-purple-600">
+                          Browse thousands of opportunities
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="features" className="py-20 bg-white">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+        <section id="showcase" className="py-20 bg-white">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                Everything you need to showcase your work
+              <h2 className="text-sm font-semibold text-blue-600 tracking-wide uppercase mb-4">
+                Portfolio Builder
               </h2>
-              <p className="mt-4 text-lg text-muted-foreground max-w-[700px] mx-auto">
-                onefolio gives you all the tools to create stunning portfolios
-                without any design skills.
+              <h3 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+                Build your perfect portfolio in minutes
+              </h3>
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                Our intuitive builder lets you create professional portfolios
+                using pre-built themes, customizable widgets, and drag-and-drop
+                functionality.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card>
-                <CardHeader>
-                  <DragDropIcon className="h-10 w-10 text-rose-400 mb-2" />
-                  <CardTitle>Easy to use editor</CardTitle>
-                  <CardDescription>
-                    Build beautiful portfolios with our intuitive easy to use
-                    interface. No coding required.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <Folder className="h-10 w-10 text-rose-400 mb-2" />
-                  <CardTitle>Multiple portfolios</CardTitle>
-                  <CardDescription>
-                    Create and manage multiple portfolios for different
-                    purposes, projects, or clients.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <Share2 className="h-10 w-10 text-rose-400 mb-2" />
-                  <CardTitle>Easy sharing</CardTitle>
-                  <CardDescription>
-                    Share your work via public portfolio links or easily
-                    integrate your custom domain.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <Shield className="h-10 w-10 text-rose-400 mb-2" />
-                  <CardTitle>Work in progress</CardTitle>
-                  <CardDescription>XXX</CardDescription>
-                </CardHeader>
-              </Card>
-            </div>
-          </div>
-        </section>
 
-        <section id="how-it-works" className="py-20 bg-slate-50">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                How it works
-              </h2>
-              <p className="mt-4 text-lg text-muted-foreground max-w-[700px] mx-auto">
-                Get started in minutes with these three simple steps
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="flex flex-col items-center text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-rose-500/10 mb-4">
-                  <UserPlus className="h-8 w-8 text-rose-400" />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Left side - Steps */}
+              <div className="space-y-8">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <UserPlus className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-slate-900 mb-2">
+                      1. Choose Theme
+                    </h4>
+                    <p className="text-slate-600">
+                      Start with one of our professional themes designed for
+                      different industries and styles.
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold">1. Sign up</h3>
-                <p className="mt-2 text-muted-foreground">
-                  Create your free account in seconds.
-                </p>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                    <PenTool className="h-5 w-5 text-green-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-slate-900 mb-2">
+                      2. Add Widgets
+                    </h4>
+                    <p className="text-slate-600">
+                      Use our drag-and-drop builder to add widgets like
+                      galleries, contact forms, skills charts, and more.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <Send className="h-5 w-5 text-purple-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-slate-900 mb-2">
+                      3. Publish & Share
+                    </h4>
+                    <p className="text-slate-600">
+                      Publish your portfolio with a custom domain or subdomain
+                      and share it with the world.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col items-center text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-rose-500/10 mb-4">
-                  <PenTool className="h-8 w-8 text-rose-400" />
+
+              {/* Right side - Builder visualization */}
+              <div className="bg-slate-50 rounded-2xl p-8">
+                <div className="space-y-4">
+                  <div className="p-4 bg-white rounded-lg border border-dashed border-blue-300">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <DragDropIcon className="w-4 h-4 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-slate-900">
+                          About Me Widget
+                        </p>
+                        <p className="text-sm text-slate-500">
+                          Drag to add personal info
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-white rounded-lg border border-dashed border-green-300">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                        <Folder className="w-4 h-4 text-green-600" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-slate-900">
+                          Project Gallery
+                        </p>
+                        <p className="text-sm text-slate-500">
+                          Showcase your work
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-white rounded-lg border border-dashed border-purple-300">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <Share2 className="w-4 h-4 text-purple-600" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-slate-900">
+                          Contact Form
+                        </p>
+                        <p className="text-sm text-slate-500">
+                          Let clients reach you
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold">2. Build</h3>
-                <p className="mt-2 text-muted-foreground">
-                  Build your portfolio.
-                </p>
-              </div>
-              <div className="flex flex-col items-center text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-rose-500/10 mb-4">
-                  <Send className="h-8 w-8 text-rose-400" />
-                </div>
-                <h3 className="text-xl font-bold">3. Share</h3>
-                <p className="mt-2 text-muted-foreground">
-                  Share your portfolio with the world.
-                </p>
               </div>
             </div>
           </div>
@@ -288,98 +673,141 @@ export default function Home() {
         </section>
 
         <section id="pricing" className="py-20 bg-slate-50">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                Simple, transparent pricing
+              <h2 className="text-sm font-semibold text-blue-600 tracking-wide uppercase mb-4">
+                Pricing
               </h2>
-              <p className="mt-4 text-lg text-muted-foreground max-w-[700px] mx-auto">
-                Choose the plan that's right for you
+              <h3 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+                Simple, transparent pricing
+              </h3>
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                Choose the plan that works best for your portfolio needs
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Free</CardTitle>
-                  <div className="mt-4 flex items-baseline text-5xl font-bold">
-                    $0
-                    <span className="ml-1 text-lg font-medium text-muted-foreground">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow border-2 border-transparent">
+                <CardHeader className="pb-8">
+                  <CardTitle className="text-2xl font-bold text-slate-900">
+                    Starter
+                  </CardTitle>
+                  <div className="mt-4 flex items-baseline">
+                    <span className="text-5xl font-bold text-slate-900">
+                      $0
+                    </span>
+                    <span className="ml-2 text-lg font-medium text-slate-500">
                       /month
                     </span>
                   </div>
+                  <p className="text-slate-600 mt-2">
+                    Perfect for getting started
+                  </p>
                 </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    <li className="flex items-center">
-                      <Check className="mr-2 h-4 w-4 text-rose-400" />
-                      <span>1 portfolio</span>
-                    </li>
-                    {/* <li className="flex items-center">
-                      <Check className="mr-2 h-4 w-4 text-rose-400" />
-                      <span>Basic templates</span>
-                    </li> */}
-                    <li className="flex items-center">
-                      <Check className="mr-2 h-4 w-4 text-rose-400" />
-                      <span>Limited customization</span>
-                    </li>
-                    <li className="flex items-center">
-                      <Check className="mr-2 h-4 w-4 text-rose-400" />
-                      <span>onefolio branding & subdomain</span>
-                    </li>
-                  </ul>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="w-3 h-3 text-green-600" />
+                    </div>
+                    <span className="text-slate-700">
+                      1 professional portfolio
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="w-3 h-3 text-green-600" />
+                    </div>
+                    <span className="text-slate-700">Basic customization</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="w-3 h-3 text-green-600" />
+                    </div>
+                    <span className="text-slate-700">onefolio subdomain</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="w-3 h-3 text-green-600" />
+                    </div>
+                    <span className="text-slate-700">Community support</span>
+                  </div>
                 </CardContent>
-                <CardFooter>
-                  <Link href="/auth/sign-up" className="w-full">
-                    <Button className="w-full cursor-pointer">
-                      Get started
-                    </Button>
-                  </Link>
+                <CardFooter className="pt-8">
+                  <Button
+                    asChild
+                    className="w-full bg-slate-100 text-slate-900 hover:bg-slate-200"
+                  >
+                    <Link href="/auth/sign-up">Get Started</Link>
+                  </Button>
                 </CardFooter>
               </Card>
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle>Pro</CardTitle>
-                    <Badge>Popular</Badge>
-                  </div>
-                  <div className="mt-4 flex items-baseline text-5xl font-bold">
-                    $4.99
-                    <span className="ml-1 text-lg font-medium text-muted-foreground">
+
+              <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow border-2 border-blue-200 relative">
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                  <Badge className="bg-blue-600 text-white px-4 py-1">
+                    Most Popular
+                  </Badge>
+                </div>
+                <CardHeader className="pb-8">
+                  <CardTitle className="text-2xl font-bold text-slate-900">
+                    Professional
+                  </CardTitle>
+                  <div className="mt-4 flex items-baseline">
+                    <span className="text-5xl font-bold text-slate-900">
+                      $9
+                    </span>
+                    <span className="ml-2 text-lg font-medium text-slate-500">
                       /month
                     </span>
                   </div>
+                  <p className="text-slate-600 mt-2">
+                    For serious professionals
+                  </p>
                 </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    <li className="flex items-center">
-                      <Check className="mr-2 h-4 w-4 text-rose-400" />
-                      <span>Unlimited portfolios</span>
-                    </li>
-                    {/* <li className="flex items-center">
-                      <Check className="mr-2 h-4 w-4 text-rose-400" />
-                      <span>Premium templates</span>
-                    </li> */}
-                    <li className="flex items-center">
-                      <Check className="mr-2 h-4 w-4 text-rose-400" />
-                      <span>Custom domain</span>
-                    </li>
-                    <li className="flex items-center">
-                      <Check className="mr-2 h-4 w-4 text-rose-400" />
-                      <span>Analytics</span>
-                    </li>
-                    <li className="flex items-center">
-                      <Check className="mr-2 h-4 w-4 text-rose-400" />
-                      <span>Fully customizable</span>
-                    </li>
-                    <li className="flex items-center">
-                      <Check className="mr-2 h-4 w-4 text-rose-400" />
-                      <span>Remove onefolio branding</span>
-                    </li>
-                  </ul>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="w-3 h-3 text-green-600" />
+                    </div>
+                    <span className="text-slate-700">Unlimited portfolios</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="w-3 h-3 text-green-600" />
+                    </div>
+                    <span className="text-slate-700">
+                      Custom domain support
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="w-3 h-3 text-green-600" />
+                    </div>
+                    <span className="text-slate-700">Advanced analytics</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="w-3 h-3 text-green-600" />
+                    </div>
+                    <span className="text-slate-700">
+                      AI-powered optimization
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="w-3 h-3 text-green-600" />
+                    </div>
+                    <span className="text-slate-700">Priority support</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="w-3 h-3 text-green-600" />
+                    </div>
+                    <span className="text-slate-700">Remove branding</span>
+                  </div>
                 </CardContent>
-                <CardFooter>
-                  <Button variant="default" className="w-full">
-                    Upgrade to Pro
+                <CardFooter className="pt-8">
+                  <Button className="w-full bg-slate-900 hover:bg-slate-800 text-white">
+                    Start Free Trial
                   </Button>
                 </CardFooter>
               </Card>

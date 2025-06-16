@@ -1,5 +1,6 @@
 import ProfileHeader from "@/components/templates/DefaultPortfolio/components/ProfileHeader";
 import TextAndIcons from "@/components/templates/DefaultPortfolio/components/TextAndIcons";
+import JobExperience from "@/components/templates/DefaultPortfolio/components/JobExperience";
 
 export default function WidgetRenderer({ widget }) {
   switch (widget.type) {
@@ -8,6 +9,10 @@ export default function WidgetRenderer({ widget }) {
     case "text-and-icons":
       return (
         <TextAndIcons data={widget.content} indexValue={widget.position} />
+      );
+    case "job-experience":
+      return (
+        <JobExperience data={widget.content} indexValue={widget.position} />
       );
   }
 }

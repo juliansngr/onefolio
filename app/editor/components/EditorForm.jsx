@@ -296,6 +296,32 @@ export default function EditorForm({ widgets, user }) {
                                 )}
                               </Draggable>
                             );
+                          case "job-experience":
+                            return (
+                              <Draggable
+                                draggableId={widget.id}
+                                index={index}
+                                key={widget.id}
+                              >
+                                {(provided, snapshot) => (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                  >
+                                    <TextAndIconsInput
+                                      data={widget.content}
+                                      onChange={(content) =>
+                                        updateWidgetContent(index, content)
+                                      }
+                                      onDelete={() => deleteWidget(widget.id)}
+                                      dragHandle={provided.dragHandleProps}
+                                      isDragging={snapshot.isDragging}
+                                    />
+                                  </div>
+                                )}
+                              </Draggable>
+                            );
                         }
                       })}
                     </>
