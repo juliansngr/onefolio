@@ -4,15 +4,22 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Trash2, GripVertical } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function ProfileHeaderInput({
   data,
   onChange,
   onDelete,
   dragHandle,
+  isDragging,
 }) {
   return (
-    <Card className="overflow-hidden p-0">
+    <Card
+      className={cn(
+        "overflow-hidden p-0",
+        isDragging && "opacity-80 scale-98 transition-all duration-100"
+      )}
+    >
       <div className="flex flex-col gap-6 p-6 md:p-8">
         <div className="flex flex-row items-center justify-between text-center">
           <h1 className="text-2xl font-bold">About Me</h1>

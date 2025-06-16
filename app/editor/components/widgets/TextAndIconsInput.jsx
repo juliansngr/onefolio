@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Trash2, GripVertical } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 export default function TextAndIconsInput({
   data,
   onChange,
   onDelete,
   dragHandle,
+  isDragging,
 }) {
   const [previewUrls, setPreviewUrls] = useState([
     data.files[0],
@@ -33,7 +35,12 @@ export default function TextAndIconsInput({
   };
 
   return (
-    <Card className="overflow-hidden p-0">
+    <Card
+      className={cn(
+        "overflow-hidden p-0",
+        isDragging && "opacity-80 scale-98 transition-all duration-100"
+      )}
+    >
       <div className="flex flex-col gap-6 p-6 md:p-8">
         <div className="flex flex-row items-center justify-between text-center">
           <h1 className="text-2xl font-bold">Text and Icons</h1>

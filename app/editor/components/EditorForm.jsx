@@ -251,7 +251,7 @@ export default function EditorForm({ widgets, user }) {
                                 index={index}
                                 key={widget.id}
                               >
-                                {(provided) => (
+                                {(provided, snapshot) => (
                                   <div
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
@@ -264,6 +264,7 @@ export default function EditorForm({ widgets, user }) {
                                       }
                                       onDelete={() => deleteWidget(widget.id)}
                                       dragHandle={provided.dragHandleProps}
+                                      isDragging={snapshot.isDragging}
                                     />
                                   </div>
                                 )}
@@ -276,7 +277,7 @@ export default function EditorForm({ widgets, user }) {
                                 index={index}
                                 key={widget.id}
                               >
-                                {(provided) => (
+                                {(provided, snapshot) => (
                                   <div
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
@@ -289,6 +290,7 @@ export default function EditorForm({ widgets, user }) {
                                       }
                                       onDelete={() => deleteWidget(widget.id)}
                                       dragHandle={provided.dragHandleProps}
+                                      isDragging={snapshot.isDragging}
                                     />
                                   </div>
                                 )}
