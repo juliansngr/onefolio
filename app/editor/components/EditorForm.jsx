@@ -11,6 +11,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { getDataScheme, widgetList } from "@/lib/editorFunctions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus } from "lucide-react";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 export default function EditorForm({ widgets, user }) {
   const [widgetData, setWidgetData] = useState(widgets);
@@ -144,93 +145,138 @@ export default function EditorForm({ widgets, user }) {
     setIsSaving(false);
   };
 
+  const handleDragEnd = (result) => {
+    console.log(result);
+  };
+
   return (
-    <div className="bg-muted min-h-svh p-6 md:p-10">
-      <div className="w-full max-w-sm md:max-w-6xl mx-auto">
-        <div className="grid grid-cols-[30%_70%] gap-4 items-start">
-          <div className="flex flex-col gap-4 sticky top-6">
-            <div className="p-6 border-b border-gray-200">
-              <h1 className="text-xl font-semibold text-gray-900">
-                Portfolio Editor
-              </h1>
-              <p className="text-sm text-gray-600 mt-1">
-                Add widgets to build your portfolio
-              </p>
-            </div>
-            {widgetList.map((template) => (
-              <Card
-                className="cursor-pointer hover:shadow-md transition-shadow p-0"
-                key={template.type}
-                onClick={() => addWidget(template.type)}
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-blue-50 rounded-lg">
-                      {template.icon}
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-medium text-sm">{template.name}</h4>
-                      <p className="text-xs text-gray-600 mt-1">
-                        {template.description}
-                      </p>
-                    </div>
-                    <Plus className="w-4 h-4 text-gray-400" />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-            <SaveButton onClick={saveWidgets} isSaving={isSaving} />
-          </div>
-          <div className="flex flex-col gap-4">
-            {widgetData.length === 0 ? (
-              <div className="flex items-center justify-center h-full">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Plus className="w-8 h-8 text-gray-400" />
-                  </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    Start building your portfolio
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    Add widgets from the sidebar to create your professional
-                    portfolio
-                  </p>
-                </div>
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div className="bg-muted min-h-svh p-6 md:p-10">
+        <div className="w-full max-w-sm md:max-w-6xl mx-auto">
+          <div className="grid grid-cols-[30%_70%] gap-4 items-start">
+            <div className="flex flex-col gap-4 sticky top-6">
+              <div className="p-6 border-b border-gray-200">
+                <h1 className="text-xl font-semibold text-gray-900">
+                  Portfolio Editor
+                </h1>
+                <p className="text-sm text-gray-600 mt-1">
+                  Add widgets to build your portfolio
+                </p>
               </div>
-            ) : (
-              <>
-                {widgetData.map((widget, index) => {
-                  switch (widget.type) {
-                    case "about-me":
-                      return (
-                        <ProfileHeaderInput
-                          data={widget.content}
-                          key={widget.id}
-                          onChange={(content) =>
-                            updateWidgetContent(index, content)
-                          }
-                          onDelete={() => deleteWidget(widget.id)}
-                        />
-                      );
-                    case "text-and-icons":
-                      return (
-                        <TextAndIconsInput
-                          data={widget.content}
-                          key={widget.id}
-                          onChange={(content) =>
-                            updateWidgetContent(index, content)
-                          }
-                          onDelete={() => deleteWidget(widget.id)}
-                        />
-                      );
-                  }
-                })}
-              </>
-            )}
+              {widgetList.map((template) => (
+                <Card
+                  className="cursor-pointer hover:shadow-md transition-shadow p-0"
+                  key={template.type}
+                  onClick={() => addWidget(template.type)}
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 bg-blue-50 rounded-lg">
+                        {template.icon}
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-medium text-sm">{template.name}</h4>
+                        <p className="text-xs text-gray-600 mt-1">
+                          {template.description}
+                        </p>
+                      </div>
+                      <Plus className="w-4 h-4 text-gray-400" />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+              <SaveButton onClick={saveWidgets} isSaving={isSaving} />
+            </div>
+
+            {/* Editor Area */}
+
+            <Droppable droppableId="widget-drop-area">
+              {(provided) => (
+                <div
+                  className="flex flex-col gap-4"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {widgetData.length === 0 ? (
+                    <div className="flex items-center justify-center h-full">
+                      <div className="text-center">
+                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <Plus className="w-8 h-8 text-gray-400" />
+                        </div>
+                        <h3 className="text-lg font-medium text-gray-900 mb-2">
+                          Start building your portfolio
+                        </h3>
+                        <p className="text-gray-600 mb-4">
+                          Add widgets from the sidebar to create your
+                          professional portfolio
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      {widgetData.map((widget, index) => {
+                        switch (widget.type) {
+                          case "about-me":
+                            return (
+                              <Draggable
+                                draggableId={widget.id}
+                                index={index}
+                                key={widget.id}
+                              >
+                                {(provided) => (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                  >
+                                    <ProfileHeaderInput
+                                      data={widget.content}
+                                      key={widget.id}
+                                      onChange={(content) =>
+                                        updateWidgetContent(index, content)
+                                      }
+                                      onDelete={() => deleteWidget(widget.id)}
+                                    />
+                                  </div>
+                                )}
+                              </Draggable>
+                            );
+                          case "text-and-icons":
+                            return (
+                              <Draggable
+                                draggableId={widget.id}
+                                index={index}
+                                key={widget.id}
+                              >
+                                {(provided) => (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                  >
+                                    <TextAndIconsInput
+                                      data={widget.content}
+                                      onChange={(content) =>
+                                        updateWidgetContent(index, content)
+                                      }
+                                      onDelete={() => deleteWidget(widget.id)}
+                                    />
+                                  </div>
+                                )}
+                              </Draggable>
+                            );
+                        }
+                      })}
+                    </>
+                  )}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
           </div>
         </div>
+        <Toaster position="top-center" richColors />
       </div>
-      <Toaster position="top-center" richColors />
-    </div>
+    </DragDropContext>
   );
 }
