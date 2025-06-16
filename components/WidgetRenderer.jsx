@@ -3,7 +3,7 @@ import TextAndIcons from "@/components/templates/DefaultPortfolio/components/Tex
 
 export default function WidgetRenderer({ widget }) {
   switch (widget.type) {
-    case "profile-header":
+    case "about-me":
       return <ProfileHeader data={widget.content} />;
     case "text-and-icons":
       return (

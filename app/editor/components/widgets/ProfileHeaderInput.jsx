@@ -10,7 +10,7 @@ export default function ProfileHeaderInput({ data, onChange, onDelete }) {
     <Card className="overflow-hidden p-0">
       <div className="flex flex-col gap-6 p-6 md:p-8">
         <div className="flex flex-row items-center justify-between text-center">
-          <h1 className="text-2xl font-bold">Profile Header</h1>
+          <h1 className="text-2xl font-bold">About Me</h1>
           <Button variant="outline" onClick={onDelete}>
             <Trash2 className="w-4 h-4" />
           </Button>
