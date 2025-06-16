@@ -154,7 +154,7 @@ export default function EditorForm({ widgets, user }) {
                 Portfolio Editor
               </h1>
               <p className="text-sm text-gray-600 mt-1">
-                Drag widgets to build your portfolio
+                Add widgets to build your portfolio
               </p>
             </div>
             {widgetList.map((template) => (
