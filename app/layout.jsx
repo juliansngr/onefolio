@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import ToasterProvider from "@/lib/ToasterProvider";
+import PlausibleProvider from "next-plausible";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -15,9 +16,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={plusJakartaSans.className}>
-      <ToasterProvider />
-      <body>{children}</body>
-    </html>
+    <PlausibleProvider domain="onefol.io">
+      <html lang="en" className={plusJakartaSans.className}>
+        <ToasterProvider />
+        <body>{children}</body>
+      </html>
+    </PlausibleProvider>
   );
 }
