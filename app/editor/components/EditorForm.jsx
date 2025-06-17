@@ -12,8 +12,10 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { getDataScheme, widgetList } from "@/lib/editorFunctions";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus } from "lucide-react";
+import { ArrowLeft, Plus } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation";
 
 export default function EditorForm({ widgets, user }) {
   const [widgetData, setWidgetData] = useState(widgets);
@@ -216,7 +218,16 @@ export default function EditorForm({ widgets, user }) {
                   </CardContent>
                 </Card>
               ))}
-              <SaveButton onClick={saveWidgets} isSaving={isSaving} />
+              <div className="flex flex-col gap-2">
+                <SaveButton onClick={saveWidgets} isSaving={isSaving} />
+                <Button
+                  variant="outline"
+                  className="w-full py-6 cursor-pointer"
+                  onClick={() => redirect("/editor")}
+                >
+                  <ArrowLeft className="w-4 h-4" /> Back to Overview
+                </Button>
+              </div>
             </div>
 
             {/* Editor Area */}

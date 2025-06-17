@@ -2,7 +2,7 @@ import Sidebar from "@/components/sidebar";
 
 import { createClient } from "@/lib/supabase/serverClient";
 
-import EditorForm from "./components/EditorForm";
+import PortfolioSelector from "./components/PortfolioSelector";
 
 export default async function Page() {
   const supabase = await createClient();
@@ -10,15 +10,9 @@ export default async function Page() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: widgets } = await supabase
-    .from("widgets")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("position", { ascending: true });
-
   return (
     <Sidebar user={user}>
-      <EditorForm widgets={widgets} user={user} />
+      <PortfolioSelector />
     </Sidebar>
   );
 }
