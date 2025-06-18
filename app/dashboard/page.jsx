@@ -86,7 +86,7 @@ export default async function Page() {
                   Welcome back, {profile.username}! 👋
                 </h1>
                 <p className="text-md">
-                  Here's how your portfolio is performing. Your site is live at
+                  Here's how your portfolio is performing. Your site is live at{" "}
                   <Link
                     href={`https://onefol.io/u/${profile.username}`}
                     className="text-blue-500 hover:underline"
