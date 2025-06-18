@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -7,6 +7,11 @@ import { Trash2, GripVertical } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function TextAndIconsInput({
   data,
@@ -45,9 +50,20 @@ export default function TextAndIconsInput({
         <div className="flex flex-row items-center justify-between text-center">
           <h1 className="text-2xl font-bold">Text and Icons</h1>
           <div className="flex flex-row items-center gap-2">
-            <Button variant="outline" onClick={onDelete}>
-              <Trash2 className="w-4 h-4" />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  variant="outline"
+                  className="cursor-pointer"
+                  onClick={onDelete}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Can't be undone</p>
+              </TooltipContent>
+            </Tooltip>
             <button {...dragHandle} className="cursor-grab">
               <GripVertical className="w-4 h-4" />
             </button>

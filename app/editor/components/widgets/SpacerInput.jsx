@@ -1,12 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Trash2, GripVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function SpacerInput({
   data,
@@ -36,9 +40,20 @@ export default function SpacerInput({
         <div className="flex flex-row items-center justify-between text-center">
           <h1 className="text-2xl font-bold">Spacer</h1>
           <div className="flex flex-row items-center gap-2">
-            <Button variant="outline" onClick={onDelete}>
-              <Trash2 className="w-4 h-4" />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  variant="outline"
+                  className="cursor-pointer"
+                  onClick={onDelete}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Can't be undone</p>
+              </TooltipContent>
+            </Tooltip>
             <button {...dragHandle} className="cursor-grab">
               <GripVertical className="w-4 h-4" />
             </button>
