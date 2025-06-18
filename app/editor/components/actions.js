@@ -17,6 +17,16 @@ export async function createPortfolio(formData) {
     return;
   }
 
+  // check if user already has a main portfolio
+
+  const { data: mainPortfolio } = await supabase
+    .from("portfolios")
+    .select("*")
+    .eq("user_id", user.id)
+    .eq("is_main", true);
+
+  const hasMain = mainPortfolio && mainPortfolio.length > 0;
+
   const portfolioId = crypto.randomUUID();
 
   const tailwindColors = [
@@ -41,6 +51,7 @@ export async function createPortfolio(formData) {
     user_id: user.id,
     id: portfolioId,
     color: randomColor,
+    is_main: !hasMain,
   });
 
   if (error) {
