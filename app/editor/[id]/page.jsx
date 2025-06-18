@@ -35,7 +35,7 @@ export default async function Page({ params }) {
 
   return (
     <Sidebar user={user}>
-      <EditorForm widgets={widgets} user={user} />
+      <EditorForm widgets={widgets} user={user} portfolioId={id} />
     </Sidebar>
   );
 }

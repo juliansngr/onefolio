@@ -17,7 +17,7 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
 
-export default function EditorForm({ widgets, user }) {
+export default function EditorForm({ widgets, user, portfolioId }) {
   const [widgetData, setWidgetData] = useState(widgets);
   const [isSaving, setIsSaving] = useState(false);
   const supabase = createClient();
@@ -32,6 +32,7 @@ export default function EditorForm({ widgets, user }) {
         type,
         content: getDataScheme(type),
         position: prev.length + 1,
+        portfolio_id: portfolioId,
       },
     ]);
   };
@@ -139,7 +140,15 @@ export default function EditorForm({ widgets, user }) {
         },
         position: widget.position,
         created_at: widget.created_at,
+        portfolio_id: widget.portfolio_id,
       });
+
+      const { error: updateError } = await supabase
+        .from("portfolios")
+        .update({
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", widget.portfolio_id);
 
       if (error) {
         toast.error("Error saving widgets");
