@@ -21,7 +21,7 @@ export default function MetricCard({
     <Card className={`@container/card gap-2 ${disabled ? "opacity-50" : ""}`}>
       <CardHeader className="flex items-center justify-between">
         <div className="flex flex-col gap-2">
-          <CardDescription className="flex items-center gap-1">
+          <CardDescription className="flex items-center gap-1 font-bold">
             {title}
           </CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -29,16 +29,28 @@ export default function MetricCard({
           </CardTitle>
         </div>
         <div
-          className={`p-3 bg-${color}-50 rounded-full ${
-            disabled ? "opacity-50" : ""
-          }`}
+          className={`p-3 ${
+            disabled ? "bg-gray-100" : `bg-${color}-50`
+          } rounded-full `}
         >
           {type === "visitors" ? (
-            <Eye className={`w-6 h-6 text-${color}-600`} />
+            <Eye
+              className={`w-6 h-6 ${
+                disabled ? "text-gray-400" : `text-${color}-600`
+              }`}
+            />
           ) : type === "visit_duration" ? (
-            <ClockPlus className={`w-6 h-6 text-${color}-600`} />
+            <ClockPlus
+              className={`w-6 h-6 ${
+                disabled ? "text-gray-400" : `text-${color}-600`
+              }`}
+            />
           ) : (
-            <Eye className={`w-6 h-6 text-${color}-600`} />
+            <Eye
+              className={`w-6 h-6 ${
+                disabled ? "text-gray-400" : `text-${color}-600`
+              }`}
+            />
           )}
         </div>
       </CardHeader>

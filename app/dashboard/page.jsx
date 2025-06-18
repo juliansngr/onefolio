@@ -4,6 +4,7 @@ import { getPlausibleStats } from "@/lib/getPlausibleStats";
 import MetricCard from "./components/MetricCard";
 import Link from "next/link";
 import PortfolioStatus from "./components/PortfolioStatus";
+import GettingStarted from "./components/GettingStarted";
 
 export default async function Page() {
   const supabase = await createClient();
@@ -68,19 +69,34 @@ export default async function Page() {
       <div className="bg-muted min-h-svh p-6 md:p-10">
         <div className="flex flex-col w-full max-w-sm md:max-w-6xl mx-auto gap-8">
           <div className="flex flex-col gap-2 mb-6">
-            <h1 className="text-4xl font-semibold">
-              Welcome back, {profile.username}! 👋
-            </h1>
-            <p className="text-md">
-              Here's how your portfolio is performing. Your site is live at{" "}
-              <Link
-                href={`https://onefol.io/u/${profile.username}`}
-                className="text-blue-500 hover:underline"
-                target="_blank"
-              >
-                onefol.io/u/{profile.username}
-              </Link>
-            </p>
+            {!portfolio && (
+              <>
+                <h1 className="text-4xl font-semibold">
+                  Welcome on board, {profile.username}! 🎉
+                </h1>
+                <p className="text-md">
+                  You're just a few steps away from creating your professional
+                  portfolio. Let's get started!
+                </p>
+              </>
+            )}
+            {portfolio && (
+              <>
+                <h1 className="text-4xl font-semibold">
+                  Welcome back, {profile.username}! 👋
+                </h1>
+                <p className="text-md">
+                  Here's how your portfolio is performing. Your site is live at
+                  <Link
+                    href={`https://onefol.io/u/${profile.username}`}
+                    className="text-blue-500 hover:underline"
+                    target="_blank"
+                  >
+                    onefol.io/u/{profile.username}
+                  </Link>
+                </p>
+              </>
+            )}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <MetricCard
@@ -119,7 +135,7 @@ export default async function Page() {
                   username={profile.username}
                 />
               ) : (
-                <NoPortfolioYet />
+                <GettingStarted />
               )}
             </div>
           </div>
