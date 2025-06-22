@@ -1,5 +1,6 @@
 import Sidebar from "@/components/sidebar";
 import { createClient } from "@/lib/supabase/serverClient";
+import StatisticsPage from "./components/StatisticsPage";
 
 export default async function Page() {
   const supabase = await createClient();
@@ -9,7 +10,7 @@ export default async function Page() {
 
   return (
     <Sidebar user={user}>
-      <h1>Statistics</h1>
+      <StatisticsPage />
     </Sidebar>
   );
 }
