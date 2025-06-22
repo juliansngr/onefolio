@@ -5,6 +5,7 @@ import MetricCard from "./components/MetricCard";
 import Link from "next/link";
 import PortfolioStatus from "./components/PortfolioStatus";
 import GettingStarted from "./components/GettingStarted";
+import GetPremium from "./components/GetPremium";
 
 export default async function Page() {
   const supabase = await createClient();
@@ -138,6 +139,7 @@ export default async function Page() {
                 <GettingStarted />
               )}
             </div>
+            <GetPremium />
           </div>
         </div>
       </div>
