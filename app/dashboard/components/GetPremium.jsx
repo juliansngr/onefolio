@@ -68,7 +68,7 @@ export default function GetPremium({
               50% OFF
             </Badge>
           </div>
-          <Button className="w-full bg-purple-600 hover:bg-purple-700">
+          <Button className="w-full bg-purple-600 hover:bg-purple-700" disabled>
             Upgrade Now
           </Button>
           <p className="text-xs text-purple-600 text-center mt-2">

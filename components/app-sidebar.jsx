@@ -13,6 +13,7 @@ import {
   SidebarHeader,
 } from "@/components/ui/sidebar";
 import { NavUser } from "@/components/nav-user";
+import { usePathname } from "next/navigation";
 
 const user = {
   name: "John Doe",
@@ -40,6 +41,7 @@ const items = [
 ];
 
 export function AppSidebar({ user }) {
+  const pathname = usePathname();
   return (
     <Sidebar>
       <SidebarHeader>
@@ -65,7 +67,7 @@ export function AppSidebar({ user }) {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild isActive={item.url === pathname}>
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
