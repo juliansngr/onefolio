@@ -86,10 +86,48 @@ export default function Home() {
         </div>
       </header>
       <main className="flex-1">
-        <section className="py-20 md:py-32 bg-white">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <section className="relative py-20 md:py-32 bg-gradient-to-br from-rose-50 via-orange-50 to-purple-50 overflow-hidden">
+          {/* Grain Overlay */}
+          <div
+            className="absolute inset-0 opacity-[0.03] z-0"
+            style={{
+              backgroundImage: `radial-gradient(circle at 25% 25%, #000 2px, transparent 0),
+                                  radial-gradient(circle at 75% 75%, #000 1px, transparent 0),
+                                  radial-gradient(circle at 85% 15%, #000 1px, transparent 0),
+                                  radial-gradient(circle at 15% 85%, #000 2px, transparent 0)`,
+              backgroundSize: "50px 50px, 30px 30px, 40px 40px, 35px 35px",
+              backgroundPosition: "0 0, 20px 20px, 15px 5px, 30px 35px",
+            }}
+          ></div>
+
+          {/* Animated Blob Backgrounds */}
+          <div className="absolute inset-0 z-0">
+            <div
+              className="absolute inset-0 opacity-40 blur-[40px]"
+              style={{
+                background: `radial-gradient(circle at 20% 80%, rgba(255, 154, 158, 0.4) 0%, transparent 50%),
+                               radial-gradient(circle at 80% 20%, rgba(255, 206, 84, 0.4) 0%, transparent 50%),
+                               radial-gradient(circle at 40% 40%, rgba(255, 183, 77, 0.3) 0%, transparent 50%),
+                               radial-gradient(circle at 90% 90%, rgba(162, 155, 254, 0.4) 0%, transparent 50%),
+                               radial-gradient(circle at 10% 10%, rgba(255, 118, 117, 0.3) 0%, transparent 50%),
+                               radial-gradient(circle at 70% 70%, rgba(199, 125, 255, 0.3) 0%, transparent 50%)`,
+                animation: "float 20s ease-in-out infinite",
+              }}
+            ></div>
+            <div
+              className="absolute inset-0 opacity-25 blur-[60px]"
+              style={{
+                background: `radial-gradient(circle at 60% 30%, rgba(255, 107, 107, 0.2) 0%, transparent 40%),
+                               radial-gradient(circle at 30% 70%, rgba(255, 204, 92, 0.2) 0%, transparent 40%),
+                               radial-gradient(circle at 85% 60%, rgba(168, 85, 247, 0.25) 0%, transparent 40%)`,
+                animation: "float-reverse 15s ease-in-out infinite",
+              }}
+            ></div>
+          </div>
+
+          <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="text-center space-y-8">
-              <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium">
+              <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm text-slate-700 px-4 py-2 rounded-full text-sm font-medium shadow-lg border border-white/20">
                 🏆 #1 Portfolio Builder | 200+ Portfolios Created
               </div>
               <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900">
