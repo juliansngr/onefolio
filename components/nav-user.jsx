@@ -26,9 +26,14 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { logout } from "@/app/auth/actions";
+import { useRouter } from "next/navigation";
 
 export function NavUser({ user }) {
   const { isMobile } = useSidebar();
+  const router = useRouter();
+
+  const customerPortalLink =
+    "https://billing.stripe.com/p/login/test_14A00k0CO2QD7Uj7sa5kk00";
 
   return (
     <SidebarMenu>
@@ -85,9 +90,15 @@ export function NavUser({ user }) {
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <a
+                  href={customerPortalLink + "?prefilled_email=" + user.email}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <CreditCard />
+                  Billing
+                </a>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

@@ -139,7 +139,7 @@ export default async function Page() {
                 <GettingStarted />
               )}
             </div>
-            <GetPremium />
+            {!profile.is_pro && <GetPremium />}
           </div>
         </div>
       </div>
