@@ -9,6 +9,7 @@ import { Star, CheckCircle } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import SubscribeButton from "@/components/SubscribeButton";
+import { cn } from "@/lib/utils";
 
 export default function GetPremium({
   disabled,
@@ -17,9 +18,15 @@ export default function GetPremium({
   description,
   color,
   type,
+  className,
 }) {
   return (
-    <Card className="bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
+    <Card
+      className={cn(
+        "bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200",
+        className
+      )}
+    >
       <CardHeader>
         <div className="flex items-center gap-2">
           <div className="p-2 bg-purple-100 rounded-lg">

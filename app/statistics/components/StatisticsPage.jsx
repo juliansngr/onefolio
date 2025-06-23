@@ -51,6 +51,7 @@ import {
   MousePointer,
   Share2,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 // Mock data for comprehensive analytics
 const timeRangeData = {
@@ -137,7 +138,7 @@ const contactAnalytics = [
   { date: "Dec 17", submissions: 6, opens: 21, clicks: 16 },
 ];
 
-export default function StatisticsPage() {
+export default function StatisticsPage({ className }) {
   const [timeRange, setTimeRange] = useState("7d");
   const currentData = timeRangeData[timeRange];
 
@@ -150,7 +151,7 @@ export default function StatisticsPage() {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className={cn("space-y-6", className)}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
