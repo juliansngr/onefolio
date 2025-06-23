@@ -34,8 +34,8 @@ const items = [
     icon: Pencil,
   },
   {
-    title: "Statistics",
-    url: "/statistics",
+    title: "Analytics",
+    url: "/analytics",
     icon: ChartNoAxesColumn,
   },
 ];

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -52,45 +52,9 @@ import {
   Share2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { formatChartData, formatDeviceData } from "./statisticsFunctions";
 
 // Mock data for comprehensive analytics
-const timeRangeData = {
-  "7d": {
-    views: [
-      { date: "Dec 11", views: 245, visitors: 189, contacts: 3 },
-      { date: "Dec 12", views: 312, visitors: 234, contacts: 5 },
-      { date: "Dec 13", views: 189, visitors: 145, contacts: 2 },
-      { date: "Dec 14", views: 423, visitors: 298, contacts: 7 },
-      { date: "Dec 15", views: 378, visitors: 267, contacts: 4 },
-      { date: "Dec 16", views: 456, visitors: 334, contacts: 8 },
-      { date: "Dec 17", views: 389, visitors: 289, contacts: 6 },
-    ],
-    totalViews: 2392,
-    totalVisitors: 1756,
-    totalContacts: 35,
-    avgSessionDuration: "2m 34s",
-    bounceRate: 34.2,
-  },
-  "30d": {
-    views: [
-      { date: "Week 1", views: 1245, visitors: 889, contacts: 15 },
-      { date: "Week 2", views: 1567, visitors: 1123, contacts: 23 },
-      { date: "Week 3", views: 1389, visitors: 967, contacts: 18 },
-      { date: "Week 4", views: 1823, visitors: 1234, contacts: 29 },
-    ],
-    totalViews: 6024,
-    totalVisitors: 4213,
-    totalContacts: 85,
-    avgSessionDuration: "2m 18s",
-    bounceRate: 31.8,
-  },
-};
-
-const deviceData = [
-  { name: "Desktop", value: 45, color: "#3B82F6" },
-  { name: "Mobile", value: 38, color: "#10B981" },
-  { name: "Tablet", value: 17, color: "#F59E0B" },
-];
 
 const browserData = [
   { name: "Chrome", value: 52, visitors: 1247 },
@@ -140,7 +104,40 @@ const contactAnalytics = [
 
 export default function StatisticsPage({ className }) {
   const [timeRange, setTimeRange] = useState("7d");
-  const currentData = timeRangeData[timeRange];
+  const [data, setData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const currentData = [];
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetch(`/api/plausible?range=${timeRange}`)
+      .then((res) => res.json())
+      .then((json) => {
+        setData(json);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setIsLoading(false);
+      });
+  }, [timeRange]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  function formatTime(seconds) {
+    const min = Math.floor(seconds / 60);
+    const sec = seconds % 60;
+
+    return `${min}m ${sec.toString().padStart(2, "0")}`;
+  }
+
+  const averageVisitDuration = formatTime(data.avgVisitDuration);
+
+  const chartData = formatChartData(data.stats.data);
+
+  const deviceData = formatDeviceData(data.stats.secondaryData);
 
   const formatNumber = (num) => {
     return new Intl.NumberFormat().format(num);
@@ -166,9 +163,10 @@ export default function StatisticsPage({ className }) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="1d">Last 24 hours</SelectItem>
               <SelectItem value="7d">Last 7 days</SelectItem>
               <SelectItem value="30d">Last 30 days</SelectItem>
-              <SelectItem value="90d">Last 90 days</SelectItem>
+              <SelectItem value="91d">Last 90 days</SelectItem>
             </SelectContent>
           </Select>
           <Button variant="outline" size="sm">
@@ -186,7 +184,7 @@ export default function StatisticsPage({ className }) {
               <div>
                 <p className="text-sm font-medium text-gray-600">Total Views</p>
                 <p className="text-2xl font-bold">
-                  {formatNumber(currentData.totalViews)}
+                  {formatNumber(data.pageViews)}
                 </p>
               </div>
               <div className="p-3 bg-blue-50 rounded-full">
@@ -211,7 +209,7 @@ export default function StatisticsPage({ className }) {
                   Unique Visitors
                 </p>
                 <p className="text-2xl font-bold">
-                  {formatNumber(currentData.totalVisitors)}
+                  {formatNumber(data.visitors)}
                 </p>
               </div>
               <div className="p-3 bg-green-50 rounded-full">
@@ -228,7 +226,7 @@ export default function StatisticsPage({ className }) {
           </CardContent>
         </Card>
 
-        <Card>
+        {/* <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -251,7 +249,7 @@ export default function StatisticsPage({ className }) {
               </span>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
         <Card>
           <CardContent className="p-6">
@@ -260,9 +258,7 @@ export default function StatisticsPage({ className }) {
                 <p className="text-sm font-medium text-gray-600">
                   Avg. Session Duration
                 </p>
-                <p className="text-2xl font-bold">
-                  {currentData.avgSessionDuration}
-                </p>
+                <p className="text-2xl font-bold">{averageVisitDuration}</p>
               </div>
               <div className="p-3 bg-orange-50 rounded-full">
                 <Clock className="w-5 h-5 text-orange-600" />
@@ -301,7 +297,7 @@ export default function StatisticsPage({ className }) {
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <AreaChart data={currentData.views}>
+                  <AreaChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" />
                     <YAxis />

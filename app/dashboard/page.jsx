@@ -30,16 +30,16 @@ export default async function Page() {
     return `${min}m ${sec.toString().padStart(2, "0")}`;
   }
 
-  const stats = await getPlausibleStats({
+  const { data: stats } = await getPlausibleStats({
     userSlug: profile.username,
-    metrics: ["visitors", "visit_duration", "pageviews"],
+    metrics: ["pageviews", "visitors", "visit_duration"],
     dateRange: "day",
   });
 
-  const count = stats?.results[0]?.metrics[0] || 0;
-  const visitDurationSeconds = stats?.results[0]?.metrics[1] || 0;
+  const pageviews = stats[0]?.metrics[0] || 0;
+  const count = stats[0]?.metrics[1] || 0;
+  const visitDurationSeconds = stats[0]?.metrics[2] || 0;
   const visitDuration = formatTime(visitDurationSeconds);
-  const pageviews = stats?.results[0]?.metrics[2] || 0;
 
   // get the number of widgets in the portfolio
   const { data: portfolio } = await supabase

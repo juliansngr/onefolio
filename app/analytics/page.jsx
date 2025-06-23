@@ -15,8 +15,6 @@ export default async function Page() {
     .eq("user_id", user.id)
     .single();
 
-  const data = {};
-
   return (
     <Sidebar user={user}>
       <div className="bg-muted min-h-svh p-6 md:p-10">
@@ -26,10 +24,7 @@ export default async function Page() {
               <GetPremium className="" />
             </div>
           )}
-          <StatisticsPage
-            className={profile.is_pro ? "" : "blur-sm"}
-            data={data}
-          />
+          <StatisticsPage className={profile.is_pro ? "" : "blur-sm"} />
         </div>
       </div>
     </Sidebar>
