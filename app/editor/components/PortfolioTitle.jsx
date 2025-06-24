@@ -15,9 +15,6 @@ export default function PortfolioTitle({ title: initialTitle, id }) {
     e.preventDefault();
     const supabase = await createClient();
 
-    console.log(title);
-    console.log(id);
-
     const { data, error } = await supabase
       .from("portfolios")
       .update({ title })

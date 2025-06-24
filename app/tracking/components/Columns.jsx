@@ -53,6 +53,24 @@ export const columns = [
     },
   },
   {
+    accessorKey: "created_at",
+    header: "Created At",
+    cell: ({ row }) => {
+      const createdAt = row.getValue("created_at");
+      return (
+        <div>
+          {new Date(createdAt).toLocaleString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "was_clicked",
     header: ({ column }) => {
       return (
@@ -64,10 +82,32 @@ export const columns = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const wasClicked = row.getValue("was_clicked");
+      return (
+        <div className="flex justify-center">{wasClicked ? "✅" : "❌"}</div>
+      );
+    },
   },
   {
-    accessorKey: "created_at",
-    header: "Created At",
+    accessorKey: "was_clicked_at",
+    header: "Clicked At",
+    cell: ({ row }) => {
+      const wasClickedAt = row.getValue("was_clicked_at");
+      return (
+        <div>
+          {wasClickedAt
+            ? new Date(wasClickedAt).toLocaleString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            : "N/A"}
+        </div>
+      );
+    },
   },
   {
     id: "actions",

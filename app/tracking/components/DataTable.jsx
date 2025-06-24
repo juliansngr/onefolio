@@ -62,21 +62,19 @@ export function DataTable({ columns, data }) {
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex justify-between items-center py-4 w-full">
         <Input
-          placeholder="Filter emails..."
-          value={table.getColumn("email")?.getFilterValue() ?? ""}
+          placeholder="Filter recipients..."
+          value={table.getColumn("recipient")?.getFilterValue() ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("recipient")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
         <CreateTrackingLink />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns
-            </Button>
+            <Button variant="outline">Columns</Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {table

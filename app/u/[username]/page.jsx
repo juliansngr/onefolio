@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/serverClient";
 import DefaultPortfolio from "@/components/templates/DefaultPortfolio/DefaultPortfolio";
-export default async function PortfolioPage({ params }) {
+
+export default async function PortfolioPage({ params, searchParams }) {
   const supabase = await createClient();
 
   const { username } = await params;
@@ -13,6 +14,59 @@ export default async function PortfolioPage({ params }) {
 
   if (!profile) {
     return <div>Profile not found</div>;
+  }
+
+  const { tr: linkId } = await searchParams;
+
+  if (linkId) {
+    // 1. Link aus tracking_links holen
+    const { data: trackingLink, error: trackingLinkError } = await supabase
+      .from("tracking_links")
+      .select("*")
+      .eq("link_id", linkId)
+      .single();
+
+    console.log(trackingLink);
+
+    if (trackingLinkError || !trackingLink) {
+      console.error("Link nicht gefunden oder Fehler:", trackingLinkError);
+    } else {
+      // 2. Zugehöriges Profil prüfen
+      const { data: profileData, error: profileDataError } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("user_id", trackingLink.user_id)
+        .single();
+
+      console.log(profileData);
+
+      if (profileDataError || !profileData) {
+        console.error("Profile nicht gefunden oder Fehler:", profileDataError);
+      } else {
+        // 3. request.tr setzen via RPC
+        await supabase.rpc("set_config", {
+          key: "request.tr",
+          value: linkId,
+          is_local: true,
+        });
+
+        // 4. was_clicked setzen
+        const { error: updateError } = await supabase
+          .from("tracking_links")
+          .update({
+            was_clicked: true,
+            was_clicked_at: new Date().toISOString(),
+          })
+          .eq("link_id", linkId);
+
+        if (updateError) {
+          console.error(
+            "Fehler beim Aktualisieren des Tracking Links:",
+            updateError
+          );
+        }
+      }
+    }
   }
 
   const { data: widgets } = await supabase

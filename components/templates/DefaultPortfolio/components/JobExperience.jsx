@@ -1,7 +1,6 @@
 import JobCard from "@/components/ui/JobCard";
 
 export default function JobExperience({ data, indexValue }) {
-  console.log(data);
   const jobCards = data.jobData.map((job, i) => {
     return <JobCard key={i} job={job} />;
   });

@@ -14,8 +14,6 @@ export default async function Page() {
     .select("*")
     .eq("user_id", user.id);
 
-  console.log(links);
-
   return (
     <Sidebar user={user}>
       <div className="bg-muted min-h-svh p-6 md:p-10">
