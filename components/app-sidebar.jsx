@@ -1,4 +1,4 @@
-import { ChartNoAxesColumn, Home, Pencil, Folder } from "lucide-react";
+import { ChartNoAxesColumn, Home, Pencil, Folder, Link } from "lucide-react";
 
 import {
   Sidebar,
@@ -37,6 +37,11 @@ const items = [
     title: "Analytics",
     url: "/analytics",
     icon: ChartNoAxesColumn,
+  },
+  {
+    title: "Tracking",
+    url: "/tracking",
+    icon: Link,
   },
 ];
 
