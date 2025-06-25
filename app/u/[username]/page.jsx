@@ -26,11 +26,9 @@ export default async function PortfolioPage({ params, searchParams }) {
       .eq("link_id", linkId)
       .single();
 
-    console.log(trackingLink);
-
-    if (trackingLinkError || !trackingLink) {
-      console.error("Link nicht gefunden oder Fehler:", trackingLinkError);
-    } else {
+    if (trackingLinkError) {
+      console.error("Error:", trackingLinkError);
+    } else if (trackingLink) {
       // 2. Zugehöriges Profil prüfen
       const { data: profileData, error: profileDataError } = await supabase
         .from("profiles")
@@ -38,19 +36,12 @@ export default async function PortfolioPage({ params, searchParams }) {
         .eq("user_id", trackingLink.user_id)
         .single();
 
-      console.log(profileData);
-
       if (profileDataError || !profileData) {
         console.error("Profile nicht gefunden oder Fehler:", profileDataError);
-      } else {
-        // 3. request.tr setzen via RPC
-        await supabase.rpc("set_config", {
-          key: "request.tr",
-          value: linkId,
-          is_local: true,
-        });
+        return;
+      }
 
-        // 4. was_clicked setzen
+      if (trackingLink.user_id == profile.user_id) {
         const { error: updateError } = await supabase
           .from("tracking_links")
           .update({
