@@ -60,10 +60,23 @@ export default async function PortfolioPage({ params, searchParams }) {
     }
   }
 
+  const { data: portfolio } = await supabase
+    .from("portfolios")
+    .select("*")
+    .eq("user_id", profile.user_id)
+    .eq("is_main", true)
+    .single();
+
   const { data: widgets } = await supabase
     .from("widgets")
     .select("*")
-    .eq("user_id", profile.user_id);
+    .eq("portfolio_id", portfolio.id);
 
-  return <DefaultPortfolio data={widgets} />;
+  return (
+    <DefaultPortfolio
+      data={widgets}
+      userId={profile.user_id}
+      portfolioId={portfolio.id}
+    />
+  );
 }

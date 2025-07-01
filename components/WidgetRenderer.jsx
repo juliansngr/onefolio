@@ -2,8 +2,9 @@ import ProfileHeader from "@/components/templates/DefaultPortfolio/components/Pr
 import TextAndIcons from "@/components/templates/DefaultPortfolio/components/TextAndIcons";
 import JobExperience from "@/components/templates/DefaultPortfolio/components/JobExperience";
 import Spacer from "@/components/templates/DefaultPortfolio/components/Spacer";
+import ContactForm from "@/components/templates/DefaultPortfolio/components/ContactForm";
 
-export default function WidgetRenderer({ widget }) {
+export default function WidgetRenderer({ widget, userId, portfolioId }) {
   switch (widget.type) {
     case "about-me":
       return <ProfileHeader data={widget.content} />;
@@ -17,5 +18,7 @@ export default function WidgetRenderer({ widget }) {
       );
     case "spacer":
       return <Spacer data={widget.content} indexValue={widget.position} />;
+    case "contact-form":
+      return <ContactForm userId={userId} portfolioId={portfolioId} />;
   }
 }

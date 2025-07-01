@@ -7,7 +7,7 @@ const geistMono = Plus_Jakarta_Sans({
   subsets: ["latin"],
 });
 
-export default function DefaultPortfolio({ data }) {
+export default function DefaultPortfolio({ data, userId, portfolioId }) {
   return (
     <div
       className={`${geistMono.className} flex flex-col bg-muted pt-30 p-8 w-full min-h-svh items-center   font-[family-name:var(--font-geist-sans)]`}
@@ -17,7 +17,14 @@ export default function DefaultPortfolio({ data }) {
         {data
           .sort((a, b) => a.position - b.position)
           .map((widget) => {
-            return <WidgetRenderer widget={widget} key={widget.id} />;
+            return (
+              <WidgetRenderer
+                widget={widget}
+                key={widget.id}
+                userId={userId}
+                portfolioId={portfolioId}
+              />
+            );
           })}
         {/* {sections.map((section) => {
           return (
