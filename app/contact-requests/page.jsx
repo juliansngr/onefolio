@@ -1,5 +1,6 @@
 import Sidebar from "@/components/sidebar";
 import { createClient } from "@/lib/supabase/serverClient";
+import ContactsStatistics from "./components/ContactsStatistics";
 
 export default async function Page() {
   const supabase = await createClient();
@@ -7,18 +8,10 @@ export default async function Page() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: profile } = await supabase
-    .from("profiles")
+  const { data: messages } = await supabase
+    .from("contact_form_requests")
     .select("*")
-    .eq("user_id", user.id)
-    .single();
-
-  const { data: portfolio } = await supabase
-    .from("portfolios")
-    .select("*")
-    .eq("user_id", user.id)
-    .eq("is_main", true)
-    .single();
+    .eq("user_id", user.id);
 
   return (
     <Sidebar user={user}>
@@ -27,6 +20,7 @@ export default async function Page() {
           <div className="flex flex-col gap-2 mb-6">
             <h1 className="text-2xl font-bold">Contact Requests</h1>
           </div>
+          <ContactsStatistics messages={messages} />
         </div>
       </div>
     </Sidebar>

@@ -18,6 +18,8 @@ export async function sendContactRequest(formData) {
     message,
     user_id: userId,
     portfolio_id: portfolioId,
+    status: "pending",
+    is_read: false,
   });
 
   if (error) {
