@@ -1,4 +1,11 @@
-import { ChartNoAxesColumn, Home, Pencil, Folder, Link } from "lucide-react";
+import {
+  ChartNoAxesColumn,
+  Home,
+  Pencil,
+  Folder,
+  Link,
+  Mail,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -15,13 +22,6 @@ import {
 import { NavUser } from "@/components/nav-user";
 import { usePathname } from "next/navigation";
 
-const user = {
-  name: "John Doe",
-  email: "john.doe@example.com",
-  avatar: "/images/default-avatar.webp",
-};
-
-// Menu items.
 const items = [
   {
     title: "Dashboard",
@@ -42,6 +42,11 @@ const items = [
     title: "Tracking",
     url: "/tracking",
     icon: Link,
+  },
+  {
+    title: "Contact Requests",
+    url: "/contact-requests",
+    icon: Mail,
   },
 ];
 

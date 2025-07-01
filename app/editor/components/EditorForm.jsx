@@ -6,6 +6,7 @@ import ProfileHeaderInput from "./widgets/ProfileHeaderInput";
 import TextAndIconsInput from "./widgets/TextAndIconsInput";
 import JobExperienceInput from "./widgets/JobExperienceInput";
 import SpacerInput from "./widgets/SpacerInput";
+import ContactFormInput from "./widgets/ContactFormInput";
 import SaveButton from "./SaveButton";
 import { createClient } from "@/lib/supabase/browserClient";
 import { toast } from "sonner";
@@ -359,6 +360,32 @@ export default function EditorForm({ widgets, user, portfolioId }) {
                                     {...provided.dragHandleProps}
                                   >
                                     <SpacerInput
+                                      data={widget.content}
+                                      onChange={(content) =>
+                                        updateWidgetContent(index, content)
+                                      }
+                                      onDelete={() => deleteWidget(widget.id)}
+                                      dragHandle={provided.dragHandleProps}
+                                      isDragging={snapshot.isDragging}
+                                    />
+                                  </div>
+                                )}
+                              </Draggable>
+                            );
+                          case "contact-form":
+                            return (
+                              <Draggable
+                                draggableId={widget.id}
+                                index={index}
+                                key={widget.id}
+                              >
+                                {(provided, snapshot) => (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                  >
+                                    <ContactFormInput
                                       data={widget.content}
                                       onChange={(content) =>
                                         updateWidgetContent(index, content)
