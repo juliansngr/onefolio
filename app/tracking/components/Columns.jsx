@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, ChevronsUpDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { deleteTrackingLink } from "@/lib/trackingFunctions";
 
 export const columns = [
   {
@@ -112,7 +113,7 @@ export const columns = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original;
+      const linkItem = row.original;
 
       return (
         <div className="flex justify-end">
@@ -126,13 +127,36 @@ export const columns = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment.id)}
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    "https://onefol.io/u/" +
+                      linkItem.username +
+                      "?tr=" +
+                      linkItem.link_id
+                  )
+                }
+                className="cursor-pointer"
               >
-                Copy payment ID
+                Copy tracking link
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={async () => {
+                  const confirmDelete = window.confirm(
+                    "Möchtest du diesen Tracking-Link wirklich löschen?"
+                  );
+                  if (!confirmDelete) return;
+
+                  try {
+                    await deleteTrackingLink(linkItem.id);
+                  } catch (err) {
+                    alert("Fehler beim Löschen: " + err.message);
+                  }
+                }}
+                className="cursor-pointer"
+              >
+                Delete
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

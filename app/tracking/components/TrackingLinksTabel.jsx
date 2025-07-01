@@ -1,4 +1,3 @@
-// components/TrackingLinksClientTable.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -9,11 +8,11 @@ import { columns } from "./Columns";
 export default function TrackingLinksClientTable({ userId }) {
   const [links, setLinks] = useState([]);
 
-  const supabase = createClient(); // clientseitiger Supabase Client
+  const supabase = createClient();
 
   const fetchLinks = async () => {
     const { data } = await supabase
-      .from("tracking_links")
+      .from("tracking_links_with_usernames")
       .select("*")
       .eq("user_id", userId);
     setLinks(data || []);
@@ -30,11 +29,11 @@ export default function TrackingLinksClientTable({ userId }) {
           event: "*",
           schema: "public",
           table: "tracking_links",
-          filter: `user_id=eq.${userId}`,
+          // filter: `user_id=eq.${userId}`,
         },
         (payload) => {
           console.log("Realtime change:", payload);
-          fetchLinks(); // refetch bei Insert/Update/Delete
+          fetchLinks();
         }
       )
       .subscribe();
