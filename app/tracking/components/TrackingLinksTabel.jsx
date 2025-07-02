@@ -29,7 +29,7 @@ export default function TrackingLinksClientTable({ userId }) {
           event: "*",
           schema: "public",
           table: "tracking_links",
-          // filter: `user_id=eq.${userId}`,
+          filter: `user_id=eq.${userId}`,
         },
         (payload) => {
           console.log("Realtime change:", payload);
