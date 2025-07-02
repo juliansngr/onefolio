@@ -5,41 +5,48 @@ import ContactsSearch from "./ContactsSearch";
 import ContactsFilter from "./ContactsFilter";
 import ContactsList from "./ContactsList";
 import MessageDisplay from "./MessageDisplay";
+import { LoaderCircle } from "lucide-react";
 
-export default function ContactsSection({ messages }) {
+export default function ContactsSection({ messages, isLoading }) {
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
 
-  const filteredMessages = messages
-    .filter((message) => {
-      const matchesSearch =
-        message.sender.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        message.sender_email
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
-        message.message.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredMessages = messages.filter((message) => {
+    const matchesSearch =
+      message.sender.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      message.sender_email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      message.message.toLowerCase().includes(searchQuery.toLowerCase());
 
-      const matchesFilter =
-        filterStatus === "all" ||
-        (filterStatus === "unread" && !message.is_read) ||
-        (filterStatus === "read" && message.is_read) ||
-        (filterStatus === "pending" && message.status === "pending") ||
-        (filterStatus === "replied" && message.status === "replied") ||
-        (filterStatus === "archived" && message.is_archived);
+    const matchesFilter =
+      filterStatus === "all" ||
+      (filterStatus === "unread" && !message.is_read && !message.is_archived) ||
+      (filterStatus === "read" && message.is_read && !message.is_archived) ||
+      (filterStatus === "pending" &&
+        message.status === "pending" &&
+        !message.is_archived) ||
+      (filterStatus === "replied" &&
+        message.status === "replied" &&
+        !message.is_archived) ||
+      (filterStatus === "archived" && message.is_archived);
 
-      return matchesSearch && matchesFilter;
-    })
-    .filter((message) => {
-      if (filterStatus === "archived") {
-        return message.is_archived;
-      }
-      return !message.is_archived;
-    });
+    return matchesSearch && matchesFilter;
+  });
 
   useEffect(() => {
     setSelectedMessage(null);
   }, [filterStatus]);
+
+  useEffect(() => {
+    if (selectedMessage) {
+      const updated = messages.find((m) => m.id === selectedMessage.id);
+      if (updated) {
+        setSelectedMessage(updated);
+      } else {
+        setSelectedMessage(null);
+      }
+    }
+  }, [messages]);
 
   const getFilterStatusText = () => {
     switch (filterStatus) {
@@ -76,6 +83,7 @@ export default function ContactsSection({ messages }) {
           displayedMessages={filteredMessages}
           selectedMessage={selectedMessage}
           setSelectedMessage={setSelectedMessage}
+          isLoading={isLoading}
         />
         <MessageDisplay selectedMessage={selectedMessage} />
       </div>

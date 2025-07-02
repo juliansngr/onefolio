@@ -53,12 +53,9 @@ export default function ContactsSectionClient({ user }) {
   return (
     <div className="flex flex-col gap-4">
       <ContactsStatistics messages={messages} />
-      {isLoading ? (
-        <div className="flex flex-col items-center justify-center h-full">
-          <LoaderCircle className="w-4 h-4 animate-spin" />
-        </div>
-      ) : messages.length > 0 ? (
-        <ContactsSection messages={messages} />
+
+      {isLoading || messages.length > 0 ? (
+        <ContactsSection messages={messages} isLoading={isLoading} />
       ) : (
         <div className="flex flex-col items-center justify-center h-full">
           <p className="text-gray-500">
