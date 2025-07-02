@@ -12,26 +12,32 @@ export default function ContactsSection({ messages, isLoading }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
 
-  const filteredMessages = messages.filter((message) => {
-    const matchesSearch =
-      message.sender.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      message.sender_email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      message.message.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredMessages = messages
+    .filter((message) => {
+      const matchesSearch =
+        message.sender.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        message.sender_email
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        message.message.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesFilter =
-      filterStatus === "all" ||
-      (filterStatus === "unread" && !message.is_read && !message.is_archived) ||
-      (filterStatus === "read" && message.is_read && !message.is_archived) ||
-      (filterStatus === "pending" &&
-        message.status === "pending" &&
-        !message.is_archived) ||
-      (filterStatus === "replied" &&
-        message.status === "replied" &&
-        !message.is_archived) ||
-      (filterStatus === "archived" && message.is_archived);
+      const matchesFilter =
+        filterStatus === "all" ||
+        (filterStatus === "unread" &&
+          !message.is_read &&
+          !message.is_archived) ||
+        (filterStatus === "read" && message.is_read && !message.is_archived) ||
+        (filterStatus === "pending" &&
+          message.status === "pending" &&
+          !message.is_archived) ||
+        (filterStatus === "replied" &&
+          message.status === "replied" &&
+          !message.is_archived) ||
+        (filterStatus === "archived" && message.is_archived);
 
-    return matchesSearch && matchesFilter;
-  });
+      return matchesSearch && matchesFilter;
+    })
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
   useEffect(() => {
     setSelectedMessage(null);
