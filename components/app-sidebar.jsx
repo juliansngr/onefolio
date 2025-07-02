@@ -5,6 +5,7 @@ import {
   Folder,
   Link,
   Mail,
+  Globe,
 } from "lucide-react";
 
 import {
@@ -22,7 +23,7 @@ import {
 import { NavUser } from "@/components/nav-user";
 import { usePathname } from "next/navigation";
 
-const items = [
+const workspaceItems = [
   {
     title: "Dashboard",
     url: "/dashboard",
@@ -38,15 +39,26 @@ const items = [
     url: "/analytics",
     icon: ChartNoAxesColumn,
   },
+];
+
+const toolsItems = [
+  {
+    title: "Contact Requests",
+    url: "/contact-requests",
+    icon: Mail,
+  },
   {
     title: "Tracking",
     url: "/tracking",
     icon: Link,
   },
+];
+
+const configurationItems = [
   {
-    title: "Contact Requests",
-    url: "/contact-requests",
-    icon: Mail,
+    title: "Domains",
+    url: "/domains",
+    icon: Globe,
   },
 ];
 
@@ -72,10 +84,44 @@ export function AppSidebar({ user }) {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Workspace</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {workspaceItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild isActive={item.url === pathname}>
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Tools</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {toolsItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild isActive={item.url === pathname}>
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Configuration</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {configurationItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={item.url === pathname}>
                     <a href={item.url}>
