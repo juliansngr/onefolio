@@ -85,6 +85,9 @@ export default function DomainsPage({ domainData }) {
 
     setIsLoading(true);
     const { insertedDomain, vercelResult } = await addDomain(newDomain);
+
+    console.log(vercelResult);
+
     setDomain(insertedDomain[0]);
     setNewDomain("");
     setIsLoading(false);

@@ -1,12 +1,14 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/serverClient";
+import { Vercel } from "@vercel/sdk";
 
 const VERCEL_TOKEN = process.env.VERCEL_TOKEN;
 const VERCEL_PROJECT_ID = process.env.VERCEL_PROJECT_ID;
 
 export async function addDomain(domain) {
   const supabase = await createClient();
+  const vercel = new Vercel({ bearerToken: VERCEL_TOKEN });
 
   const {
     data: { user },
@@ -28,7 +30,8 @@ export async function addDomain(domain) {
   const { data: insertedDomain, error: insertedDomainError } = await supabase
     .from("custom_domains")
     .insert({ domain, user_id: user.id, status: "pending" })
-    .select();
+    .select()
+    .single();
 
   if (insertedDomainError) {
     throw new Error(insertedDomainError.message);
@@ -65,14 +68,38 @@ export async function addDomain(domain) {
   await supabase
     .from("custom_domains")
     .update({
-      status: vercelResult?.verified ? "connected" : "vercel_checking",
-      vercel_verification: vercelResult?.verification,
+      status: vercelResult ? "connected" : "vercel_checking",
+      vercel_verification: vercelResult,
     })
     .eq("id", insertedDomain.id);
 
+  // check if domain is verified
+
+  const resp = await fetch(
+    `https://api.vercel.com/v9/projects/${VERCEL_PROJECT_ID}/domains`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${VERCEL_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const result = await resp.json();
+
+  if (!resp.ok) {
+    console.error("Fehler beim Abrufen:", result);
+    throw new Error(result.error?.message || "Unbekannter Fehler");
+  }
+
+  console.log("Aktueller Domain-Status:", result);
+
   return {
     insertedDomain,
-    vercelResult: vercelResult?.verification,
+    vercelResult,
+    result,
+    // vercelResult: vercelResult?.verification,
   };
 }
 
