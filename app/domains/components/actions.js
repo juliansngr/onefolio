@@ -214,3 +214,55 @@ export async function verifyDomain() {
     dnsData,
   };
 }
+
+export async function deleteDomain() {
+  const supabase = await createClient();
+  const vercel = new Vercel({ bearerToken: VERCEL_TOKEN });
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { data: domainData, error: domainError } = await supabase
+    .from("custom_domains")
+    .select("*")
+    .eq("user_id", user.id)
+    .single();
+
+  if (domainError)
+    return { error: { status: 500, message: domainError.message } };
+
+  try {
+    await vercel.projects.removeProjectDomain({
+      idOrName: VERCEL_PROJECT_ID,
+      domain: domainData.domain,
+      teamId: VERCEL_TEAM_ID,
+    });
+  } catch (e) {
+    console.error(e);
+    return {
+      error: {
+        status: 500,
+        message:
+          "Failed to remove domain from project. Please contact support. #5096",
+      },
+    };
+  }
+
+  const { error: deletedDomainError } = await supabase
+    .from("custom_domains")
+    .delete()
+    .eq("id", domainData.id);
+
+  if (deletedDomainError) {
+    return {
+      error: {
+        status: 500,
+        message:
+          "Failed to delete domain from database. Please contact support. #5097",
+      },
+    };
+  }
+
+  return { status: 200, message: "Domain deleted successfully." };
+}

@@ -39,7 +39,7 @@ import {
   Trash2,
   Plus,
 } from "lucide-react";
-import { addDomain, verifyDomain } from "./actions";
+import { addDomain, verifyDomain, deleteDomain } from "./actions";
 import { toast } from "sonner";
 
 const dnsRecords = [
@@ -118,8 +118,20 @@ export default function DomainsPage({ domainData }) {
     setIsLoading(false);
   };
 
-  const handleDeleteDomain = () => {
+  const handleDeleteDomain = async () => {
+    if (!domain) return;
+
+    setIsLoading(true);
+    const response = await deleteDomain();
+
+    if (response.error) {
+      toast.error(response.error.message);
+      setIsLoading(false);
+      return;
+    }
+
     setDomain(null);
+    setIsLoading(false);
   };
 
   const copyToClipboard = (text) => {
