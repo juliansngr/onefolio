@@ -2,9 +2,11 @@
 
 import { createClient } from "@/lib/supabase/serverClient";
 import { Vercel } from "@vercel/sdk";
+import { supabaseAdmin } from "@/lib/supabase/supabaseAdmin";
 
 const VERCEL_TOKEN = process.env.VERCEL_TOKEN;
 const VERCEL_PROJECT_ID = process.env.VERCEL_PROJECT_ID;
+const VERCEL_TEAM_ID = process.env.VERCEL_TEAM_ID;
 
 export async function addDomain(domain) {
   const supabase = await createClient();
@@ -14,18 +16,78 @@ export async function addDomain(domain) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) throw new Error("Not logged in.");
+  if (!user) return { error: { status: 401, message: "Not logged in." } };
 
-  if (!isValidDomain(domain)) throw new Error("Invalid domain.");
+  if (!isValidDomain(domain))
+    return { error: { status: 400, message: "Invalid domain format." } };
 
-  const { data: existingDomain, error: existingDomainError } = await supabase
+  const { data: userDomains, error: userDomainsError } = await supabase
     .from("custom_domains")
     .select("*")
-    .eq("domain", domain)
     .eq("user_id", user.id);
 
-  if (existingDomainError) throw new Error(existingDomainError.message);
-  if (existingDomain.length > 0) throw new Error("Domain already exists.");
+  if (userDomainsError)
+    return { error: { status: 500, message: userDomainsError.message } };
+  if (userDomains.length > 0)
+    return {
+      error: {
+        status: 400,
+        message:
+          "You already have a domain and shouldn't see this. Please contact support.",
+      },
+    };
+
+  const { data: existingDomain, error: existingDomainError } =
+    await supabaseAdmin.from("custom_domains").select("*").eq("domain", domain);
+
+  if (existingDomainError)
+    return {
+      error: {
+        status: 500,
+        message: "Domain already exists. #5091",
+      },
+    };
+  if (existingDomain.length > 0)
+    return {
+      error: {
+        status: 400,
+        message: "Domain already exists. #5092",
+      },
+    };
+
+  let addDomainToProject;
+
+  try {
+    addDomainToProject = await vercel.projects.addProjectDomain({
+      idOrName: VERCEL_PROJECT_ID,
+      requestBody: {
+        name: domain,
+        gitBranch: null,
+      },
+    });
+  } catch (e) {
+    const isAlreadyInUse =
+      e?.statusCode === 409 &&
+      typeof e?.body === "string" &&
+      e.body.includes("domain_already_in_use");
+
+    if (isAlreadyInUse) {
+      return {
+        error: {
+          status: 400,
+          message: "This domain is already in use. #5095",
+        },
+      };
+    }
+
+    return {
+      error: {
+        status: e?.statusCode || 500,
+        message:
+          "Failed to add domain to project. Please contact support. #5094",
+      },
+    };
+  }
 
   const { data: insertedDomain, error: insertedDomainError } = await supabase
     .from("custom_domains")
@@ -33,73 +95,55 @@ export async function addDomain(domain) {
     .select()
     .single();
 
-  if (insertedDomainError) {
-    throw new Error(insertedDomainError.message);
-  }
-
-  const res = await fetch(
-    `https://api.vercel.com/v9/projects/${VERCEL_PROJECT_ID}/domains`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${VERCEL_TOKEN}`,
-        "Content-Type": "application/json",
+  if (insertedDomainError)
+    return {
+      error: {
+        status: 500,
+        message: `Error: ${insertedDomainError.message} #5093`,
       },
-      body: JSON.stringify({ name: domain }),
-    }
-  );
+    };
 
-  const vercelResult = await res.json();
+  const { domain: dnsData } = await vercel.domains.getDomain({
+    domain: domain,
+    teamId: VERCEL_TEAM_ID,
+  });
 
-  if (!res.ok) {
+  if (!dnsData) {
     await supabase
       .from("custom_domains")
       .update({
-        status: "error",
-        vercel_error: vercelResult.error?.message || "Unknown error",
+        status: "failed",
       })
       .eq("id", insertedDomain.id);
-
-    throw new Error(
-      `Vercel error: ${vercelResult.error?.message || "Unknown error"}`
-    );
   }
 
-  await supabase
-    .from("custom_domains")
-    .update({
-      status: vercelResult ? "connected" : "vercel_checking",
-      vercel_verification: vercelResult,
-    })
-    .eq("id", insertedDomain.id);
-
-  // check if domain is verified
-
-  const resp = await fetch(
-    `https://api.vercel.com/v9/projects/${VERCEL_PROJECT_ID}/domains`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${VERCEL_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-    }
+  const isUsingVercelNameservers = arraysMatch(
+    dnsData.nameservers,
+    dnsData.intendedNameservers
   );
 
-  const result = await resp.json();
-
-  if (!resp.ok) {
-    console.error("Fehler beim Abrufen:", result);
-    throw new Error(result.error?.message || "Unbekannter Fehler");
+  if (!isUsingVercelNameservers) {
+    await supabase
+      .from("custom_domains")
+      .update({
+        status: "connecting",
+        vercel_verification: addDomainToProject?.verification,
+      })
+      .eq("id", insertedDomain.id);
+  } else if (isUsingVercelNameservers) {
+    await supabase
+      .from("custom_domains")
+      .update({
+        status: "connected",
+      })
+      .eq("id", insertedDomain.id);
   }
-
-  console.log("Aktueller Domain-Status:", result);
 
   return {
     insertedDomain,
-    vercelResult,
-    result,
-    // vercelResult: vercelResult?.verification,
+    addDomainToProject,
+    "using vercel nameservers": isUsingVercelNameservers,
+    dnsData,
   };
 }
 
@@ -112,4 +156,61 @@ function isValidDomain(domain) {
   const tld = parts[parts.length - 1];
 
   return domainRegex.test(domain) && !invalidTLDs.includes(tld);
+}
+
+function arraysMatch(a = [], b = []) {
+  const normA = a.map((ns) => ns.toLowerCase()).sort();
+  const normB = b.map((ns) => ns.toLowerCase()).sort();
+  return (
+    normA.length === normB.length && normA.every((val, i) => val === normB[i])
+  );
+}
+
+export async function verifyDomain() {
+  const supabase = await createClient();
+  const vercel = new Vercel({ bearerToken: VERCEL_TOKEN });
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { data: domainData, error: domainError } = await supabase
+    .from("custom_domains")
+    .select("*")
+    .eq("user_id", user.id)
+    .single();
+
+  if (domainError)
+    return { error: { status: 500, message: domainError.message } };
+
+  const { domain: dnsData } = await vercel.domains.getDomain({
+    domain: domainData.domain,
+    teamId: VERCEL_TEAM_ID,
+  });
+
+  const isUsingVercelNameservers = arraysMatch(
+    dnsData.nameservers,
+    dnsData.intendedNameservers
+  );
+
+  if (!isUsingVercelNameservers) {
+    await supabase
+      .from("custom_domains")
+      .update({
+        status: "connecting",
+      })
+      .eq("id", domainData.id);
+  } else if (isUsingVercelNameservers) {
+    await supabase
+      .from("custom_domains")
+      .update({
+        status: "connected",
+      })
+      .eq("id", domainData.id);
+  }
+
+  return {
+    isUsingVercelNameservers,
+    dnsData,
+  };
 }

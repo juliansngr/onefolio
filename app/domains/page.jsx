@@ -13,7 +13,8 @@ export default async function Page() {
   const { data: domainData } = await supabase
     .from("custom_domains")
     .select("*")
-    .eq("user_id", user.id);
+    .eq("user_id", user.id)
+    .single();
 
   return (
     <Sidebar user={user}>

@@ -39,19 +39,8 @@ import {
   Trash2,
   Plus,
 } from "lucide-react";
-import { addDomain } from "./actions";
-
-// Mock data - only one domain allowed
-// const mockDomain = {
-//   id: "1",
-//   domain: "alexjohnson.dev",
-//   status: "active",
-//   sslStatus: "active",
-//   addedDate: "2024-06-01",
-//   verifiedDate: "2024-06-01",
-// };
-
-const mockDomain = null;
+import { addDomain, verifyDomain } from "./actions";
+import { toast } from "sonner";
 
 const dnsRecords = [
   {
@@ -75,7 +64,7 @@ const dnsRecords = [
 ];
 
 export default function DomainsPage({ domainData }) {
-  const [domain, setDomain] = useState(mockDomain);
+  const [domain, setDomain] = useState(domainData);
   const [newDomain, setNewDomain] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -84,11 +73,15 @@ export default function DomainsPage({ domainData }) {
     if (!newDomain.trim()) return;
 
     setIsLoading(true);
-    const { insertedDomain, vercelResult } = await addDomain(newDomain);
+    const response = await addDomain(newDomain);
 
-    console.log(vercelResult);
+    if (response.error) {
+      toast.error(response.error.message);
+      setIsLoading(false);
+      return;
+    }
 
-    setDomain(insertedDomain[0]);
+    setDomain(response.insertedDomain);
     setNewDomain("");
     setIsLoading(false);
   };
@@ -108,14 +101,20 @@ export default function DomainsPage({ domainData }) {
     if (!domain) return;
 
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const response = await verifyDomain();
 
-    setDomain({
-      ...domain,
-      status: Math.random() > 0.3 ? "active" : "failed",
-      sslStatus: Math.random() > 0.3 ? "active" : "failed",
-      verifiedDate: new Date().toISOString().split("T")[0],
-    });
+    if (response.error) {
+      toast.error(response.error.message);
+      setIsLoading(false);
+      return;
+    }
+
+    // setDomain({
+    //   ...domain,
+    //   status: Math.random() > 0.3 ? "active" : "failed",
+    //   sslStatus: Math.random() > 0.3 ? "active" : "failed",
+    //   verifiedDate: new Date().toISOString().split("T")[0],
+    // });
     setIsLoading(false);
   };
 
@@ -129,11 +128,11 @@ export default function DomainsPage({ domainData }) {
 
   const getStatusBadge = (status) => {
     switch (status) {
-      case "active":
+      case "connected":
         return (
           <Badge className="bg-green-100 text-green-800">
             <CheckCircle className="w-3 h-3 mr-1" />
-            Active
+            Connected
           </Badge>
         );
       case "pending":
@@ -143,11 +142,11 @@ export default function DomainsPage({ domainData }) {
             Pending
           </Badge>
         );
-      case "verifying":
+      case "connecting":
         return (
           <Badge variant="secondary" className="bg-blue-100 text-blue-800">
             <RefreshCw className="w-3 h-3 mr-1" />
-            Verifying
+            Connecting
           </Badge>
         );
       case "failed":
@@ -203,23 +202,15 @@ export default function DomainsPage({ domainData }) {
                         <span className="text-sm text-gray-500">Status:</span>
                         {getStatusBadge(domain.status)}
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Shield className="w-3 h-3 text-gray-400" />
-                        <span className="text-sm text-gray-500">SSL:</span>
-                        {getStatusBadge(domain.sslStatus)}
-                      </div>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
-                      Added {new Date(domain.addedDate).toLocaleDateString()}
-                      {domain.verifiedDate &&
-                        ` • Verified ${new Date(
-                          domain.verifiedDate
-                        ).toLocaleDateString()}`}
+                      Added {new Date(domain.added_at).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  {domain.status === "pending" || domain.status === "failed" ? (
+                  {domain.status === "connecting" ||
+                  domain.status === "failed" ? (
                     <Button
                       size="sm"
                       onClick={handleVerifyDomain}
@@ -252,37 +243,6 @@ export default function DomainsPage({ domainData }) {
                   >
                     <Settings className="w-4 h-4" />
                   </Button>
-                </div>
-              </div>
-
-              {/* Domain Settings */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 border rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label>Force HTTPS</Label>
-                      <p className="text-sm text-gray-500">
-                        Redirect all HTTP traffic to HTTPS
-                      </p>
-                    </div>
-                    <Badge
-                      variant="outline"
-                      className="bg-green-50 text-green-700"
-                    >
-                      Enabled
-                    </Badge>
-                  </div>
-                </div>
-                <div className="p-4 border rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label>WWW Redirect</Label>
-                      <p className="text-sm text-gray-500">
-                        Redirect www to non-www or vice versa
-                      </p>
-                    </div>
-                    <Badge variant="outline">Auto</Badge>
-                  </div>
                 </div>
               </div>
 
@@ -493,46 +453,6 @@ export default function DomainsPage({ domainData }) {
 
             <Separator />
 
-            <div>
-              <h3 className="font-semibold mb-3">Popular DNS Providers</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {[
-                  { name: "Cloudflare", url: "https://dash.cloudflare.com" },
-                  { name: "Namecheap", url: "https://ap.www.namecheap.com" },
-                  { name: "GoDaddy", url: "https://dcc.godaddy.com" },
-                  { name: "Google Domains", url: "https://domains.google.com" },
-                  {
-                    name: "Route 53",
-                    url: "https://console.aws.amazon.com/route53",
-                  },
-                  { name: "Other Provider", url: "#" },
-                ].map((provider) => (
-                  <Button
-                    key={provider.name}
-                    variant="outline"
-                    className="justify-start bg-transparent"
-                    asChild={provider.url !== "#"}
-                  >
-                    {provider.url !== "#" ? (
-                      <a
-                        href={provider.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        {provider.name}
-                      </a>
-                    ) : (
-                      <span>
-                        <Settings className="w-4 h-4 mr-2" />
-                        {provider.name}
-                      </span>
-                    )}
-                  </Button>
-                ))}
-              </div>
-            </div>
-
             <div className="bg-blue-50 p-4 rounded-lg">
               <h4 className="font-semibold text-blue-900 mb-2">Need Help?</h4>
               <p className="text-sm text-blue-800 mb-3">
@@ -553,37 +473,39 @@ export default function DomainsPage({ domainData }) {
       )}
 
       {/* Domain Examples */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Domain Format Examples</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-              <p className="font-medium text-green-800 mb-2">
-                ✓ Correct Format
-              </p>
-              <div className="space-y-1 text-sm text-green-700">
-                <p>example.com</p>
-                <p>www.example.com</p>
-                <p>portfolio.example.com</p>
-                <p>john.dev</p>
+      {!domain && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Domain Format Examples</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                <p className="font-medium text-green-800 mb-2">
+                  ✓ Correct Format
+                </p>
+                <div className="space-y-1 text-sm text-green-700">
+                  <p>example.com</p>
+                  <p>www.example.com</p>
+                  <p>portfolio.example.com</p>
+                  <p>john.dev</p>
+                </div>
+              </div>
+              <div className="p-4 bg-red-50 rounded-lg border border-red-200">
+                <p className="font-medium text-red-800 mb-2">
+                  ✗ Incorrect Format
+                </p>
+                <div className="space-y-1 text-sm text-red-700">
+                  <p>https://example.com</p>
+                  <p>http://www.example.com</p>
+                  <p>example.com/portfolio</p>
+                  <p>example.com:3000</p>
+                </div>
               </div>
             </div>
-            <div className="p-4 bg-red-50 rounded-lg border border-red-200">
-              <p className="font-medium text-red-800 mb-2">
-                ✗ Incorrect Format
-              </p>
-              <div className="space-y-1 text-sm text-red-700">
-                <p>https://example.com</p>
-                <p>http://www.example.com</p>
-                <p>example.com/portfolio</p>
-                <p>example.com:3000</p>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
