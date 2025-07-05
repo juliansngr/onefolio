@@ -109,6 +109,8 @@ export default function DomainsPage({ domainData }) {
       return;
     }
 
+    console.log(response);
+
     // setDomain({
     //   ...domain,
     //   status: Math.random() > 0.3 ? "active" : "failed",
