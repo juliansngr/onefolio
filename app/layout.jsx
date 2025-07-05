@@ -16,13 +16,14 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const isDev = process.env.NODE_ENV === "development";
   return (
     <PlausibleProvider domain="onefol.io">
       <html lang="en" className={plusJakartaSans.className}>
         <ToasterProvider />
         <body>
-          {children}
-          {/* <Waitinglist /> */}
+          {/* {children} */}
+          {isDev ? <Waitinglist /> : children}
         </body>
       </html>
     </PlausibleProvider>
