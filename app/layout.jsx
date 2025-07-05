@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
         <ToasterProvider />
         <body>
           {/* {children} */}
-          {isDev ? <Waitinglist /> : children}
+          {!isDev ? <Waitinglist /> : children}
         </body>
       </html>
     </PlausibleProvider>
