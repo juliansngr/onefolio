@@ -17,14 +17,14 @@ export async function middleware(request) {
   if (!isRootDomain && host.endsWith(`.${rootDomain}`)) {
     subdomain = host.replace(`.${rootDomain}`, "");
   } else if (!isRootDomain) {
-    const { data: domainMatch, error } = await supabaseAdmin
+    const { data: domainMatch } = await supabaseAdmin
       .from("custom_domains_with_profile_slug")
-      .select("profile_slug")
+      .select("profile_username")
       .eq("domain", host)
       .single();
 
-    if (domainMatch?.profile_slug) {
-      customDomainUserSlug = domainMatch.profile_slug;
+    if (domainMatch?.profile_username) {
+      customDomainUserSlug = domainMatch.profile_username;
     }
   }
 
