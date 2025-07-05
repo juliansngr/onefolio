@@ -21,8 +21,8 @@ export default function RootLayout({ children }) {
       <html lang="en" className={plusJakartaSans.className}>
         <ToasterProvider />
         <body>
-          {/* {children} */}
-          <Waitinglist />
+          {children}
+          {/* <Waitinglist /> */}
         </body>
       </html>
     </PlausibleProvider>

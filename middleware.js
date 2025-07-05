@@ -1,58 +1,47 @@
 import { updateSession } from "@/lib/supabase/middleware";
 import { NextResponse } from "next/server";
+import { supabaseAdmin } from "@/lib/supabase/supabaseAdmin";
 
 export async function middleware(request) {
   const pathname = request.nextUrl.pathname;
-
-  // 1. Subdomain extrahieren
   const host = request.headers.get("host") || "";
-  const currentHost = host
-    .replace(".localhost:3000", "") // local dev
-    .replace(".onefol.io", "");
 
-  const isRootDomain =
-    host.startsWith("www.") ||
-    host === "onefol.io" ||
-    host === "localhost:3000";
-  const subdomain = isRootDomain ? null : currentHost;
+  const isDev = process.env.NODE_ENV === "development";
+  const rootDomain = isDev ? "localhost:3000" : "onefol.io";
 
-  // 2. Optional: Redirect auf /u/[subdomain], wenn Subdomain existiert und root angefragt wird
-  if (subdomain && pathname === "/") {
+  const isRootDomain = host === rootDomain || host === `www.${rootDomain}`;
+
+  let subdomain = null;
+  let customDomainUserSlug = null;
+
+  if (!isRootDomain && host.endsWith(`.${rootDomain}`)) {
+    subdomain = host.replace(`.${rootDomain}`, "");
+  } else if (!isRootDomain) {
+    const { data: domainMatch, error } = await supabaseAdmin
+      .from("custom_domains_with_profile_slug")
+      .select("profile_slug")
+      .eq("domain", host)
+      .single();
+
+    if (domainMatch?.profile_slug) {
+      customDomainUserSlug = domainMatch.profile_slug;
+    }
+  }
+
+  if ((subdomain || customDomainUserSlug) && pathname === "/") {
     const url = request.nextUrl.clone();
-    url.pathname = `/u/${subdomain}`;
+    url.pathname = `/u/${subdomain || customDomainUserSlug}`;
     return NextResponse.rewrite(url);
   }
 
-  // 3. Deine bestehende Logik bleibt erhalten
-  if (pathname === "/" || pathname.startsWith("/u")) {
-    const response = NextResponse.next();
+  const response =
+    pathname === "/" || pathname.startsWith("/u")
+      ? NextResponse.next()
+      : await updateSession(request);
 
-    // Subdomain ggf. in Header mitschicken
-    if (subdomain) {
-      response.headers.set("x-subdomain", subdomain);
-    }
-
-    return response;
-  }
-
-  // 4. updateSession ausführen + Subdomain in Response setzen
-  const response = await updateSession(request);
   if (subdomain) {
     response.headers.set("x-subdomain", subdomain);
   }
 
   return response;
 }
-
-export const config = {
-  matcher: [
-    /*
-     * Match all request paths except:
-     * - Stripe Webhook
-     * - Static assets
-     * - Image optimization
-     * - favicon
-     */
-    "/((?!api/webhook/stripe|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
-};
