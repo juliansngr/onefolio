@@ -45,3 +45,14 @@ export async function middleware(request) {
 
   return response;
 }
+
+export const config = {
+  matcher: [
+    // Match all request paths except:
+    // - Stripe Webhook
+    // - Static assets
+    // - Image optimization
+    // - favicon
+    "/((?!api/webhook/stripe|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
+};
