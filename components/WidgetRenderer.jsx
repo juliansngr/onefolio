@@ -4,7 +4,7 @@ import JobExperience from "@/components/templates/DefaultPortfolio/components/Jo
 import Spacer from "@/components/templates/DefaultPortfolio/components/Spacer";
 import ContactForm from "@/components/templates/DefaultPortfolio/components/ContactForm";
 
-export default function WidgetRenderer({ widget, userId, portfolioId }) {
+export default function WidgetRenderer({ widget, userId, portfolioId, theme }) {
   switch (widget.type) {
     case "about-me":
       return <ProfileHeader data={widget.content} />;

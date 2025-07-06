@@ -76,7 +76,7 @@ export default async function PortfolioPage({ params, searchParams }) {
     <DefaultPortfolio
       data={widgets}
       userId={profile.user_id}
-      portfolioId={portfolio.id}
+      portfolio={portfolio}
     />
   );
 }
