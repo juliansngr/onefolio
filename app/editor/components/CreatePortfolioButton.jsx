@@ -13,6 +13,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createPortfolio } from "./actions";
 import { ArrowRight } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export function CreatePortfolioButton() {
   return (
@@ -37,9 +44,18 @@ export function CreatePortfolioButton() {
               <Input
                 id="portfolio-name"
                 name="portfolio-name"
-                placeholder="My Portfolio"
+                placeholder="My Beautiful Portfolio"
                 required
               />
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a theme" />
+                  <SelectContent>
+                    <SelectItem value="light">Light</SelectItem>
+                    <SelectItem value="creative">Creative</SelectItem>
+                  </SelectContent>
+                </SelectTrigger>
+              </Select>
             </div>
           </div>
           <DialogFooter className="sm:justify-start">

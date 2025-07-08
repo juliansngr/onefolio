@@ -17,6 +17,12 @@ export async function createPortfolio(formData) {
     return;
   }
 
+  const theme = formData.get("theme");
+
+  if (!theme) {
+    return;
+  }
+
   // check if user already has a main portfolio
 
   const { data: mainPortfolio } = await supabase
@@ -52,6 +58,7 @@ export async function createPortfolio(formData) {
     id: portfolioId,
     color: randomColor,
     is_main: !hasMain,
+    theme: theme,
   });
 
   if (error) {
