@@ -13,6 +13,7 @@ export const widgets = [
     type: "header",
     content: {
       name: "Julian Dürr",
+      mail: "julian@example.com",
     },
   },
   {

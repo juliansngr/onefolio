@@ -11,16 +11,26 @@ import SaveButton from "./SaveButton";
 import { createClient } from "@/lib/supabase/browserClient";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { getDataScheme, widgetList } from "@/lib/editorFunctions";
+import { getDataScheme, getIcon } from "@/lib/editorFunctions";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Plus } from "lucide-react";
+import { ArrowLeft, Check, Plus, X } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
+import { Switch } from "@/components/ui/switch";
+import { updateMainPortfolio } from "./actions";
 
-export default function EditorForm({ widgets, user, portfolioId }) {
+export default function EditorForm({
+  widgets,
+  user,
+  portfolioId,
+  portfolioTheme,
+  widgetList,
+  isMainPortfolio: isMain,
+}) {
   const [widgetData, setWidgetData] = useState(widgets);
   const [isSaving, setIsSaving] = useState(false);
+  const [isMainPortfolio, setIsMainPortfolio] = useState(isMain);
   const supabase = createClient();
 
   const addWidget = (type) => {
@@ -192,6 +202,16 @@ export default function EditorForm({ widgets, user, portfolioId }) {
     setWidgetData(reOrdered);
   };
 
+  const handleMainPortfolioChange = async () => {
+    const { error } = await updateMainPortfolio(portfolioId);
+    if (error) {
+      toast.error(`Error: ${error}`);
+    } else {
+      toast.success("Main portfolio updated");
+      setIsMainPortfolio(!isMainPortfolio);
+    }
+  };
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="bg-muted min-h-svh p-6 md:p-10">
@@ -206,6 +226,19 @@ export default function EditorForm({ widgets, user, portfolioId }) {
                   Add widgets to build your portfolio
                 </p>
               </div>
+              <div className="px-6 pb-6 border-b border-gray-200">
+                <h1 className="text-xl font-semibold text-gray-900">
+                  Settings
+                </h1>
+                <div className="flex items-center gap-2 mt-1">
+                  <p className="text-sm text-gray-600">Main portfolio</p>
+                  <Switch
+                    className="cursor-pointer relative"
+                    checked={isMainPortfolio}
+                    onCheckedChange={handleMainPortfolioChange}
+                  />
+                </div>
+              </div>
               {widgetList.map((template) => (
                 <Card
                   className="cursor-pointer hover:shadow-md transition-shadow p-0"
@@ -215,7 +248,7 @@ export default function EditorForm({ widgets, user, portfolioId }) {
                   <CardContent className="p-4">
                     <div className="flex items-start gap-3">
                       <div className="p-2 bg-blue-50 rounded-lg">
-                        {template.icon}
+                        {getIcon(template.type)}
                       </div>
                       <div className="flex-1">
                         <h4 className="font-medium text-sm">{template.name}</h4>

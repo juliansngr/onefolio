@@ -47,12 +47,13 @@ export function CreatePortfolioButton() {
                 placeholder="My Beautiful Portfolio"
                 required
               />
-              <Select>
+              <Select name="theme">
                 <SelectTrigger>
                   <SelectValue placeholder="Select a theme" />
                   <SelectContent>
                     <SelectItem value="light">Light</SelectItem>
                     <SelectItem value="creative">Creative</SelectItem>
+                    <SelectItem value="alpha">Alpha</SelectItem>
                   </SelectContent>
                 </SelectTrigger>
               </Select>

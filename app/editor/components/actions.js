@@ -67,3 +67,47 @@ export async function createPortfolio(formData) {
 
   redirect(`/editor/${portfolioId}`);
 }
+
+export async function updateMainPortfolio(portfolioId) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { data: mainPortfolio } = await supabase
+    .from("portfolios")
+    .select("*")
+    .eq("user_id", user.id)
+    .eq("is_main", true)
+    .single();
+
+  if (mainPortfolio.id === portfolioId) {
+    return {
+      error:
+        "You can't deactivate your main portfolio. Please switch to another portfolio and make it your main portfolio.",
+    };
+  }
+
+  const { error: mainPortfolioError } = await supabase
+    .from("portfolios")
+    .update({ is_main: false })
+    .eq("user_id", user.id)
+    .eq("is_main", true);
+
+  if (mainPortfolioError) {
+    return { error: mainPortfolioError };
+  }
+
+  const { error: updateError } = await supabase
+    .from("portfolios")
+    .update({ is_main: true })
+    .eq("id", portfolioId)
+    .eq("user_id", user.id);
+
+  if (updateError) {
+    return { error: updateError };
+  }
+
+  return { error: null };
+}

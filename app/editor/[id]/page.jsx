@@ -33,9 +33,25 @@ export default async function Page({ params }) {
     .eq("portfolio_id", portfolio.id)
     .order("position", { ascending: true });
 
+  const { data: widgetList, error: widgetListError } = await supabase
+    .from("widgets_admin")
+    .select("*")
+    .eq("avaible_for", portfolio.theme);
+
+  if (widgetListError) {
+    console.error(widgetListError);
+  }
+
   return (
     <Sidebar user={user}>
-      <EditorForm widgets={widgets} user={user} portfolioId={id} />
+      <EditorForm
+        widgets={widgets}
+        user={user}
+        portfolioId={id}
+        portfolioTheme={portfolio.theme}
+        widgetList={widgetList}
+        isMainPortfolio={portfolio.is_main}
+      />
     </Sidebar>
   );
 }
