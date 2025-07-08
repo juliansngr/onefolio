@@ -15,7 +15,7 @@ export default function WidgetRenderer({ widget }) {
       return (
         <HeroSection
           data={widget.content}
-          className="max-w-6xl mx-auto px-6 py-12 space-y-20 relative z-10"
+          className="max-w-6xl mx-auto px-6 py-12 space-y-12"
         />
       );
     case "skills":
@@ -23,7 +23,7 @@ export default function WidgetRenderer({ widget }) {
         <Skills
           data={widget.content}
           indexValue={widget.position}
-          className="max-w-6xl mx-auto px-6 py-12 space-y-20 relative z-10"
+          className="max-w-6xl mx-auto px-6 py-12 space-y-12"
         />
       );
     case "projects":
@@ -31,7 +31,7 @@ export default function WidgetRenderer({ widget }) {
         <FeaturedProjects
           data={widget.content}
           indexValue={widget.position}
-          className="max-w-6xl mx-auto px-6 py-12 space-y-20 relative z-10"
+          className="max-w-6xl mx-auto px-6 py-12 space-y-12"
         />
       );
     case "experience":
@@ -39,7 +39,7 @@ export default function WidgetRenderer({ widget }) {
         <Experience
           data={widget.content}
           indexValue={widget.position}
-          className="max-w-6xl mx-auto px-6 py-12 space-y-20 relative z-10"
+          className="max-w-6xl mx-auto px-6 py-12 space-y-12"
         />
       );
     case "education":
@@ -47,7 +47,7 @@ export default function WidgetRenderer({ widget }) {
         <Education
           data={widget.content}
           indexValue={widget.position}
-          className="max-w-6xl mx-auto px-6 py-12 space-y-20 relative z-10"
+          className="max-w-6xl mx-auto px-6 py-12 space-y-12"
         />
       );
     case "testimonials":
@@ -55,7 +55,7 @@ export default function WidgetRenderer({ widget }) {
         <Testimonials
           data={widget.content}
           indexValue={widget.position}
-          className="max-w-6xl mx-auto px-6 py-12 space-y-20 relative z-10"
+          className="max-w-6xl mx-auto px-6 py-12 space-y-12"
         />
       );
     case "contact-form":
@@ -63,7 +63,7 @@ export default function WidgetRenderer({ widget }) {
         <ContactForm
           data={widget.content}
           indexValue={widget.position}
-          className="max-w-6xl mx-auto px-6 py-12 space-y-20 relative z-10"
+          className="max-w-6xl mx-auto px-6 py-12 space-y-12"
         />
       );
   }

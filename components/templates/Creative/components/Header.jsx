@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Zap, Download, Palette } from "lucide-react";
 
-export default function Header({ name }) {
+export default function Header({ data }) {
   return (
     <header className="relative z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0">
       <div className="max-w-6xl mx-auto px-6 py-4">
@@ -11,7 +11,7 @@ export default function Header({ name }) {
               <Palette className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
-              {name}
+              {data.name}
             </span>
           </div>
           <div className="flex items-center gap-4">

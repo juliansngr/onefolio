@@ -1,9 +1,13 @@
 "use client";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import WidgetRenderer from "./components/utils/WidgetRenderer";
-import { widgets } from "../dummyData";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
+  Mail,
+  Phone,
+  MapPin,
   Github,
   Linkedin,
   Twitter,
@@ -11,15 +15,16 @@ import {
   ExternalLink,
   Download,
   Star,
+  Calendar,
+  Briefcase,
+  GraduationCap,
+  Award,
   Heart,
+  MessageCircle,
   Folder,
-  Zap,
-  Palette,
-  Code,
-  Lightbulb,
-  Target,
-  Rocket,
 } from "lucide-react";
+import WidgetRenderer from "./components/utils/WidgetRenderer";
+import { widgets } from "../dummyData";
 
 // Sample portfolio data
 const portfolioData = {
@@ -47,7 +52,6 @@ const portfolioData = {
       image: "/placeholder.svg?height=200&width=300",
       liveUrl: "https://example.com",
       githubUrl: "https://github.com/example",
-      color: "from-cyan-400 to-blue-500",
     },
     {
       title: "Task Management App",
@@ -57,7 +61,6 @@ const portfolioData = {
       image: "/placeholder.svg?height=200&width=300",
       liveUrl: "https://example.com",
       githubUrl: "https://github.com/example",
-      color: "from-pink-400 to-red-500",
     },
     {
       title: "Weather Dashboard",
@@ -67,7 +70,6 @@ const portfolioData = {
       image: "/placeholder.svg?height=200&width=300",
       liveUrl: "https://example.com",
       githubUrl: "https://github.com/example",
-      color: "from-yellow-400 to-orange-500",
     },
   ],
   skills: [
@@ -96,8 +98,6 @@ const portfolioData = {
       description:
         "Lead development of customer-facing web applications serving 100k+ users. Mentored junior developers and implemented CI/CD pipelines.",
       location: "San Francisco, CA",
-      icon: <Rocket className="w-6 h-6" />,
-      color: "bg-gradient-to-br from-cyan-400 to-blue-500",
     },
     {
       position: "Frontend Developer",
@@ -106,8 +106,6 @@ const portfolioData = {
       description:
         "Built responsive web applications using React and Vue.js. Collaborated with design team to implement pixel-perfect UI components.",
       location: "Remote",
-      icon: <Code className="w-6 h-6" />,
-      color: "bg-gradient-to-br from-pink-400 to-red-500",
     },
     {
       position: "Junior Developer",
@@ -116,8 +114,6 @@ const portfolioData = {
       description:
         "Developed and maintained client websites using modern web technologies. Gained experience in full-stack development.",
       location: "New York, NY",
-      icon: <Lightbulb className="w-6 h-6" />,
-      color: "bg-gradient-to-br from-yellow-400 to-orange-500",
     },
   ],
   education: [
@@ -173,18 +169,9 @@ const portfolioData = {
   ],
 };
 
-export default function CreativePortfolioPage({ data, userId, portfolio }) {
+export default function LightPortfolioPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-yellow-50 relative overflow-hidden">
-      {/* Decorative Background Elements */}
-      <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full opacity-10 animate-pulse"></div>
-      <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-br from-pink-400 to-red-500 rounded-full opacity-10 animate-pulse delay-1000"></div>
-      <div className="absolute bottom-40 left-20 w-40 h-40 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full opacity-10 animate-pulse delay-2000"></div>
-      <div className="absolute bottom-20 right-10 w-28 h-28 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full opacity-10 animate-pulse delay-500"></div>
-
-      {/* Header */}
-      {/* <Header name={portfolioData.about.name} /> */}
-
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50">
       {widgets
         .sort((a, b) => a.position - b.position)
         .map((widget) => {
@@ -199,28 +186,21 @@ export default function CreativePortfolioPage({ data, userId, portfolio }) {
           );
         })}
 
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8"></div>
+
       {/* Footer */}
-      <footer className="bg-gray-900 text-white relative z-10">
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+      <footer className="bg-white/80 backdrop-blur-sm border-t border-white/20 mt-20">
+        <div className="max-w-6xl mx-auto px-6 py-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center">
-                <Palette className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold">
+              <Folder className="h-6 w-6 text-purple-600" />
+              <span className="font-bold bg-gradient-to-r from-orange-600 to-purple-600 bg-clip-text text-transparent">
                 {portfolioData.about.name}
               </span>
             </div>
-
             <div className="flex items-center gap-4">
               {portfolioData.social.map((social, index) => (
-                <Button
-                  key={index}
-                  variant="ghost"
-                  size="sm"
-                  className="text-gray-400 hover:text-white hover:bg-gray-800 rounded-xl"
-                  asChild
-                >
+                <Button key={index} variant="ghost" size="sm" asChild>
                   <a
                     href={social.url}
                     target="_blank"
@@ -231,16 +211,15 @@ export default function CreativePortfolioPage({ data, userId, portfolio }) {
                 </Button>
               ))}
             </div>
-
-            <div className="flex items-center gap-2 text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-gray-600">
               <Heart className="w-4 h-4 text-red-500" />
               <span>
-                Made with
+                Made with{" "}
                 <a
                   href="https://onefolio.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white hover:text-gray-300"
+                  className="text-black hover:text-gray-300"
                 >
                   onefolio
                 </a>

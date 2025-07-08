@@ -62,12 +62,6 @@ export default function Home() {
             >
               Pricing
             </Link>
-            <Link
-              href="#blog"
-              className="text-sm font-medium text-slate-600 hover:text-slate-900"
-            >
-              Blog
-            </Link>
           </nav>
           <div className="flex items-center gap-3">
             <Link
@@ -127,20 +121,20 @@ export default function Home() {
 
           <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="text-center space-y-8">
-              <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm text-slate-700 px-4 py-2 rounded-full text-sm font-medium shadow-lg border border-white/20">
-                🏆 #1 Portfolio Builder | 200+ Portfolios Created
-              </div>
+              {/* <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm text-slate-700 px-4 py-2 rounded-full text-sm font-medium shadow-lg border border-white/20">
+                🏆 #1 Portfolio Builder
+              </div> */}
               <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900">
                 Build <span className="text-blue-600">Exceptional</span>
                 <br />
                 Portfolios, <span className="text-blue-600">Faster</span>
               </h1>
               <p className="max-w-[700px] mx-auto text-xl text-slate-600 leading-relaxed">
-                Create stunning portfolios with our{" "}
+                Create a stunning portfolio in no time with our{" "}
                 <strong>modular builder</strong>
                 <br />
-                using themes, widgets and{" "}
-                <strong>intuitive drag & drop.</strong>
+                choosing from <strong>different themes</strong> and our library
+                of <strong>customizable widgets.</strong>
               </p>
               <div className="flex justify-center">
                 <Button
@@ -153,8 +147,8 @@ export default function Home() {
             </div>
 
             {/* Portfolio Showcase Cards */}
-            <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              {/* Sarah Designer Card */}
+            {/* <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          
               <Card className="p-6 bg-white shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
@@ -221,7 +215,7 @@ export default function Home() {
                 </div>
               </Card>
 
-              {/* Chad Developer Card */}
+             
               <Card className="p-6 bg-white shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
@@ -290,7 +284,7 @@ export default function Home() {
                 </div>
               </Card>
 
-              {/* Hannah Developer Card */}
+              
               <Card className="p-6 bg-white shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
@@ -358,170 +352,7 @@ export default function Home() {
                   </Button>
                 </div>
               </Card>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-20 bg-slate-50">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-            <div className="text-center mb-16">
-              <h2 className="text-sm font-semibold text-blue-600 tracking-wide uppercase mb-4">
-                Smart Building
-              </h2>
-              <h3 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-                <em>Modular</em> portfolio building
-              </h3>
-              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                Smart portfolio creation with our{" "}
-                <strong>drag & drop builder</strong> - choose from{" "}
-                <strong>themes, widgets and layouts</strong> to create your
-                perfect professional portfolio.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Shield className="h-6 w-6 text-blue-600" />
-                </div>
-                <h4 className="font-semibold text-slate-900 mb-2">
-                  Precision matching
-                </h4>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <DragDropIcon className="h-6 w-6 text-green-600" />
-                </div>
-                <h4 className="font-semibold text-slate-900 mb-2">
-                  Drag & Drop
-                </h4>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Share2 className="h-6 w-6 text-purple-600" />
-                </div>
-                <h4 className="font-semibold text-slate-900 mb-2">
-                  Easy Sharing
-                </h4>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Folder className="h-6 w-6 text-orange-600" />
-                </div>
-                <h4 className="font-semibold text-slate-900 mb-2">
-                  Theme Collection
-                </h4>
-              </div>
-            </div>
-
-            <div className="text-center">
-              <p className="text-lg font-medium text-slate-900 mb-8">
-                <em>
-                  Build stunning portfolios with themes, widgets &
-                  customization.
-                </em>
-              </p>
-            </div>
-
-            {/* Dashboard Preview */}
-            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden max-w-5xl mx-auto">
-              <div className="bg-slate-900 px-6 py-4 flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <Image
-                    src="/images/onefolio-main-icon-white.webp"
-                    alt="onefolio logo"
-                    width={24}
-                    height={24}
-                  />
-                  <span className="text-white font-semibold">onefolio</span>
-                </div>
-                <div className="flex items-center gap-4 ml-auto">
-                  <span className="text-slate-300 text-sm">📄 Posts</span>
-                  <span className="text-slate-300 text-sm">💬 Messages</span>
-                  <span className="text-slate-300 text-sm">🔧 Tools</span>
-                </div>
-              </div>
-              <div className="p-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {/* Left Side - Profile */}
-                  <div>
-                    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl p-6">
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                          MS
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-slate-900">
-                            Max Schulz
-                          </h4>
-                          <p className="text-slate-600">
-                            Fullstack Developer from Berlin
-                          </p>
-                        </div>
-                      </div>
-                      <div className="space-y-3">
-                        <div>
-                          <p className="text-sm font-medium text-slate-700 mb-2">
-                            Programming Skills
-                          </p>
-                          <div className="flex flex-wrap gap-2">
-                            <Badge className="bg-yellow-100 text-yellow-800">
-                              ⚫ Next.js
-                            </Badge>
-                            <Badge className="bg-blue-100 text-blue-800">
-                              🔷 TypeScript
-                            </Badge>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Right Side - Features */}
-                  <div className="space-y-4">
-                    <div className="bg-green-50 rounded-lg p-4 flex items-center gap-3">
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                        ✓
-                      </div>
-                      <div>
-                        <p className="font-medium text-green-800">
-                          Your profile is hosted
-                        </p>
-                        <p className="text-sm text-green-600">
-                          Available at onefolio.dev/max-schulz
-                        </p>
-                      </div>
-                    </div>
-                    <div className="bg-blue-50 rounded-lg p-4 flex items-center gap-3">
-                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                        📊
-                      </div>
-                      <div>
-                        <p className="font-medium text-blue-800">
-                          Add your latest tech skills
-                        </p>
-                        <p className="text-sm text-blue-600">
-                          Keep your portfolio updated
-                        </p>
-                      </div>
-                    </div>
-                    <div className="bg-purple-50 rounded-lg p-4 flex items-center gap-3">
-                      <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                        🚀
-                      </div>
-                      <div>
-                        <p className="font-medium text-purple-800">
-                          Access to all portfolio jobs and projects
-                        </p>
-                        <p className="text-sm text-purple-600">
-                          Browse thousands of opportunities
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </div>*/}
           </div>
         </section>
 
@@ -536,8 +367,7 @@ export default function Home() {
               </h3>
               <p className="text-xl text-slate-600 max-w-3xl mx-auto">
                 Our intuitive builder lets you create professional portfolios
-                using pre-built themes, customizable widgets, and drag-and-drop
-                functionality.
+                using pre-styled themes and customizable widgets.
               </p>
             </div>
 
@@ -646,70 +476,6 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-20 bg-white">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                What our users say
-              </h2>
-              <p className="mt-4 text-lg text-muted-foreground max-w-[700px] mx-auto">
-                Join thousands of professionals who trust onefolio for their
-                portfolio needs
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <Card>
-                <CardContent className="pt-6">
-                  <p className="text-muted-foreground">
-                    "onefolio has completely transformed how I showcase my work.
-                    The editor is so intuitive and easy to use!"
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <div>
-                    <p className="font-medium">Sarah J.</p>
-                    <p className="text-sm text-muted-foreground">
-                      Graphic Designer
-                    </p>
-                  </div>
-                </CardFooter>
-              </Card>
-              <Card>
-                <CardContent className="pt-6">
-                  <p className="text-muted-foreground">
-                    "I love being able to create different portfolios for
-                    different clients. It's saved me so much time."
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <div>
-                    <p className="font-medium">Michael T.</p>
-                    <p className="text-sm text-muted-foreground">
-                      Photographer
-                    </p>
-                  </div>
-                </CardFooter>
-              </Card>
-              <Card>
-                <CardContent className="pt-6">
-                  <p className="text-muted-foreground">
-                    "The sharing features are fantastic. My clients are always
-                    impressed with how professional my portfolio looks."
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <div>
-                    <p className="font-medium">Alex R.</p>
-                    <p className="text-sm text-muted-foreground">
-                      Web Developer
-                    </p>
-                  </div>
-                </CardFooter>
-              </Card>
-            </div>
-          </div>
-        </section>
-
         <section id="pricing" className="py-20 bg-slate-50">
           <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="text-center mb-16">
@@ -746,21 +512,19 @@ export default function Home() {
                     <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
                       <Check className="w-3 h-3 text-green-600" />
                     </div>
-                    <span className="text-slate-700">
-                      1 professional portfolio
-                    </span>
+                    <span className="text-slate-700">Unlimited portfolios</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
                       <Check className="w-3 h-3 text-green-600" />
                     </div>
-                    <span className="text-slate-700">Basic customization</span>
+                    <span className="text-slate-700">Basic themes</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
                       <Check className="w-3 h-3 text-green-600" />
                     </div>
-                    <span className="text-slate-700">onefolio subdomain</span>
+                    <span className="text-slate-700">onefol.io subdomain</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
@@ -791,7 +555,7 @@ export default function Home() {
                   </CardTitle>
                   <div className="mt-4 flex items-baseline">
                     <span className="text-5xl font-bold text-slate-900">
-                      $9
+                      $4.99
                     </span>
                     <span className="ml-2 text-lg font-medium text-slate-500">
                       /month
@@ -827,7 +591,7 @@ export default function Home() {
                       <Check className="w-3 h-3 text-green-600" />
                     </div>
                     <span className="text-slate-700">
-                      AI-powered optimization
+                      Custom tracking links
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -845,7 +609,7 @@ export default function Home() {
                 </CardContent>
                 <CardFooter className="pt-8">
                   <Button className="w-full bg-slate-900 hover:bg-slate-800 text-white">
-                    Start Free Trial
+                    Start For Free
                   </Button>
                 </CardFooter>
               </Card>
@@ -889,9 +653,9 @@ export default function Home() {
                   How many portfolios can I create?
                 </AccordionTrigger>
                 <AccordionContent>
-                  Free users can create 1 portfolio. Pro users can create
-                  unlimited portfolios, perfect for showcasing different
-                  projects to different clients or companies.
+                  You can have unlimited portfolios no matter whether you're on
+                  the Pro or Free plan. However only one can be active at a
+                  time.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-4">
@@ -928,8 +692,8 @@ export default function Home() {
                 Ready to showcase your work?
               </h2>
               <p className="max-w-[600px] text-lg text-white/90">
-                Join thousands of professionals who trust onefolio to showcase
-                their best work.
+                Start now and create your first portfolio in less than 5
+                minutes.
               </p>
               <Link href="/auth/sign-up">
                 <Button size="lg" className="rounded-full px-8 cursor-pointer">

@@ -1,14 +1,52 @@
+import {
+  Github,
+  Linkedin,
+  Twitter,
+  Globe,
+  Rocket,
+  Code,
+  Lightbulb,
+} from "lucide-react";
+
 export const widgets = [
   {
-    type: "about",
+    type: "header",
     content: {
-      name: "Alex Johnson",
+      name: "Julian Dürr",
+    },
+  },
+  {
+    type: "hero",
+    content: {
+      name: "Julian Dürr",
       title: "Full Stack Developer & UI/UX Designer",
       bio: "Passionate developer with 5+ years of experience creating beautiful, functional web applications. I specialize in React, Node.js, and modern design principles. When I'm not coding, you'll find me exploring new technologies or contributing to open-source projects.",
-      avatar: "/placeholder.svg?height=120&width=120",
+      avatar: "/images/pb.webp",
       location: "San Francisco, CA",
       email: "alex@example.com",
       phone: "+1 (555) 123-4567",
+      social: [
+        {
+          platform: "GitHub",
+          url: "https://github.com/alexjohnson",
+          icon: <Github />,
+        },
+        {
+          platform: "LinkedIn",
+          url: "https://linkedin.com/in/alexjohnson",
+          icon: <Linkedin />,
+        },
+        {
+          platform: "Twitter",
+          url: "https://twitter.com/alexjohnson",
+          icon: <Twitter />,
+        },
+        {
+          platform: "Website",
+          url: "https://alexjohnson.dev",
+          icon: <Globe />,
+        },
+      ],
     },
     position: 1,
   },
@@ -35,7 +73,7 @@ export const widgets = [
     position: 2,
   },
   {
-    type: "experience",
+    type: "projects",
     content: [
       {
         title: "E-commerce Platform",
@@ -77,7 +115,7 @@ export const widgets = [
     position: 3,
   },
   {
-    type: "education",
+    type: "experience",
     content: [
       {
         position: "Senior Full Stack Developer",
@@ -86,7 +124,7 @@ export const widgets = [
         description:
           "Lead development of customer-facing web applications serving 100k+ users. Mentored junior developers and implemented CI/CD pipelines.",
         location: "San Francisco, CA",
-        icon: "rocket",
+        icon: <Rocket />,
         color: "bg-gradient-to-br from-cyan-400 to-blue-500",
       },
       {
@@ -96,7 +134,7 @@ export const widgets = [
         description:
           "Built responsive web applications using React and Vue.js. Collaborated with design team to implement pixel-perfect UI components.",
         location: "Remote",
-        icon: "code",
+        icon: <Code />,
         color: "bg-gradient-to-br from-pink-400 to-red-500",
       },
       {
@@ -106,7 +144,7 @@ export const widgets = [
         description:
           "Developed and maintained client websites using modern web technologies. Gained experience in full-stack development.",
         location: "New York, NY",
-        icon: "lightbulb",
+        icon: <Lightbulb />,
         color: "bg-gradient-to-br from-yellow-400 to-orange-500",
       },
     ],
@@ -115,6 +153,13 @@ export const widgets = [
   {
     type: "education",
     content: [
+      {
+        degree: "Bachelor of Science in Computer Science",
+        school: "University of California, Berkeley",
+        duration: "2015 - 2019",
+        description:
+          "Graduated Magna Cum Laude. Relevant coursework: Data Structures, Algorithms, Web Development, Database Systems.",
+      },
       {
         degree: "Bachelor of Science in Computer Science",
         school: "University of California, Berkeley",
@@ -150,29 +195,7 @@ export const widgets = [
     position: 6,
   },
   {
-    type: "social",
-    content: [
-      {
-        platform: "GitHub",
-        url: "https://github.com/alexjohnson",
-        icon: "github",
-      },
-      {
-        platform: "LinkedIn",
-        url: "https://linkedin.com/in/alexjohnson",
-        icon: "linkedin",
-      },
-      {
-        platform: "Twitter",
-        url: "https://twitter.com/alexjohnson",
-        icon: "twitter",
-      },
-      {
-        platform: "Website",
-        url: "https://alexjohnson.dev",
-        icon: "globe",
-      },
-    ],
+    type: "contact-form",
     position: 7,
   },
 ];

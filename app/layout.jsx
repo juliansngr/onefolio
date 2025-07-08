@@ -3,7 +3,8 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import ToasterProvider from "@/lib/ToasterProvider";
 import PlausibleProvider from "next-plausible";
 import Waitinglist from "@/components/Waitinglist";
-import CreativePortfolioPage from "@/components/templates/Creative/Creative";
+
+import LightPortfolioPage from "@/components/templates/Light/Light";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -23,9 +24,9 @@ export default function RootLayout({ children }) {
       <html lang="en" className={plusJakartaSans.className}>
         <ToasterProvider />
         <body>
-          {/* {children} */}
+          {children}
           {/* {isDev ? <Waitinglist /> : children} */}
-          <CreativePortfolioPage />
+          {/* <LightPortfolioPage /> */}
         </body>
       </html>
     </PlausibleProvider>
