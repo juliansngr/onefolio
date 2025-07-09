@@ -129,8 +129,9 @@ export const columns = [
               <DropdownMenuItem
                 onClick={() =>
                   navigator.clipboard.writeText(
-                    "https://onefol.io/u/" +
+                    "https://" +
                       linkItem.username +
+                      ".onefol.io/" +
                       "?tr=" +
                       linkItem.link_id
                   )

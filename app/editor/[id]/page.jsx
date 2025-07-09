@@ -36,7 +36,7 @@ export default async function Page({ params }) {
   const { data: widgetList, error: widgetListError } = await supabase
     .from("widgets_admin")
     .select("*")
-    .eq("avaible_for", portfolio.theme);
+    .contains("available_for", [portfolio.theme]);
 
   if (widgetListError) {
     console.error(widgetListError);

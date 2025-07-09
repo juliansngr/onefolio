@@ -19,8 +19,7 @@ export default function SetupCard() {
               your portfolio and will be displayed in the URL.
             </p>
             <p className="text-sm text-muted-foreground">
-              e.g. https://onefol.io/u/
-              <span className="font-bold">username</span>
+              e.g. https://<span className="font-bold">username</span>.onefol.io
             </p>
           </div>
           <div className="flex flex-col gap-2">

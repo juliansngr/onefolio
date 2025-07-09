@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { MapPin, Mail, Phone, Star } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getIcon } from "@/lib/editorFunctions";
 
 export default function HeroSection({ data, className }) {
   return (
@@ -10,7 +11,7 @@ export default function HeroSection({ data, className }) {
         <Card className="bg-white/60 backdrop-blur-sm border-white/20 shadow-xl">
           <CardContent className="p-12">
             <Avatar className="w-32 h-32 mx-auto mb-6 ring-4 ring-white/50">
-              <AvatarImage src={data.avatar || "/placeholder.svg"} />
+              <AvatarImage src={data.files[0] || "/placeholder.svg"} />
               <AvatarFallback className="text-2xl bg-gradient-to-br from-orange-400 to-purple-600 text-white">
                 {data.name
                   .split(" ")
@@ -30,42 +31,52 @@ export default function HeroSection({ data, className }) {
 
             {/* Contact Info */}
             <div className="flex flex-wrap items-center justify-center gap-6 text-gray-600">
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4" />
-                <span>{data.location}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4" />
-                <span>{data.email}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4" />
-                <span>{data.phone}</span>
-              </div>
+              {data.location && (
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4" />
+                  <span>{data.location}</span>
+                </div>
+              )}
+              {data.email && (
+                <div className="flex items-center gap-2">
+                  <Mail className="w-4 h-4" />
+                  <span>{data.email}</span>
+                </div>
+              )}
+              {data.phone && (
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4" />
+                  <span>{data.phone}</span>
+                </div>
+              )}
             </div>
 
             {/* Social Links */}
             <div className="flex items-center justify-center gap-4 mt-8">
-              {data.social.map((social, index) => (
-                <Button
-                  key={index}
-                  variant="outline"
-                  size="sm"
-                  className="bg-white/50 hover:bg-white/80"
-                  asChild
-                >
-                  <a
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {social.icon}
-                    <span className="ml-2 hidden sm:inline">
-                      {social.platform}
-                    </span>
-                  </a>
-                </Button>
-              ))}
+              {data.social.map((social, index) => {
+                if (social.url) {
+                  return (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      size="sm"
+                      className="bg-white/50 hover:bg-white/80"
+                      asChild
+                    >
+                      <a
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {getIcon(social.icon)}
+                        <span className="ml-2 hidden sm:inline">
+                          {social.platform}
+                        </span>
+                      </a>
+                    </Button>
+                  );
+                }
+              })}
             </div>
           </CardContent>
         </Card>

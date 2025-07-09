@@ -7,13 +7,16 @@ import TextAndIconsInput from "./widgets/TextAndIconsInput";
 import JobExperienceInput from "./widgets/JobExperienceInput";
 import SpacerInput from "./widgets/SpacerInput";
 import ContactFormInput from "./widgets/ContactFormInput";
+import HeaderInput from "./widgets/HeaderInput";
+import HeroInput from "./widgets/HeroInput";
+
 import SaveButton from "./SaveButton";
 import { createClient } from "@/lib/supabase/browserClient";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { getDataScheme, getIcon } from "@/lib/editorFunctions";
+import { getIcon } from "@/lib/editorFunctions";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Check, Plus, X } from "lucide-react";
+import { ArrowLeft, Plus } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
@@ -33,7 +36,7 @@ export default function EditorForm({
   const [isMainPortfolio, setIsMainPortfolio] = useState(isMain);
   const supabase = createClient();
 
-  const addWidget = (type) => {
+  const addWidget = (type, data_scheme) => {
     setWidgetData((prev) => [
       ...prev,
       {
@@ -41,7 +44,7 @@ export default function EditorForm({
         createdAt: new Date().toISOString(),
         user_id: user.id,
         type,
-        content: getDataScheme(type),
+        content: data_scheme,
         position: prev.length + 1,
         portfolio_id: portfolioId,
       },
@@ -212,6 +215,16 @@ export default function EditorForm({
     }
   };
 
+  const widgetComponentMap = {
+    "about-me": ProfileHeaderInput,
+    "text-and-icons": TextAndIconsInput,
+    "job-experience": JobExperienceInput,
+    spacer: SpacerInput,
+    "contact-form": ContactFormInput,
+    header: HeaderInput,
+    hero: HeroInput,
+  };
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="bg-muted min-h-svh p-6 md:p-10">
@@ -243,7 +256,7 @@ export default function EditorForm({
                 <Card
                   className="cursor-pointer hover:shadow-md transition-shadow p-0"
                   key={template.type}
-                  onClick={() => addWidget(template.type)}
+                  onClick={() => addWidget(template.type, template.data_scheme)}
                 >
                   <CardContent className="p-4">
                     <div className="flex items-start gap-3">
@@ -300,138 +313,34 @@ export default function EditorForm({
                   ) : (
                     <>
                       {widgetData.map((widget, index) => {
-                        switch (widget.type) {
-                          case "about-me":
-                            return (
-                              <Draggable
-                                draggableId={widget.id}
-                                index={index}
-                                key={widget.id}
+                        const Component = widgetComponentMap[widget.type];
+                        if (!Component) return null;
+
+                        return (
+                          <Draggable
+                            draggableId={widget.id}
+                            index={index}
+                            key={widget.id}
+                          >
+                            {(provided, snapshot) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
                               >
-                                {(provided, snapshot) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                  >
-                                    <ProfileHeaderInput
-                                      data={widget.content}
-                                      key={widget.id}
-                                      onChange={(content) =>
-                                        updateWidgetContent(index, content)
-                                      }
-                                      onDelete={() => deleteWidget(widget.id)}
-                                      dragHandle={provided.dragHandleProps}
-                                      isDragging={snapshot.isDragging}
-                                    />
-                                  </div>
-                                )}
-                              </Draggable>
-                            );
-                          case "text-and-icons":
-                            return (
-                              <Draggable
-                                draggableId={widget.id}
-                                index={index}
-                                key={widget.id}
-                              >
-                                {(provided, snapshot) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                  >
-                                    <TextAndIconsInput
-                                      data={widget.content}
-                                      onChange={(content) =>
-                                        updateWidgetContent(index, content)
-                                      }
-                                      onDelete={() => deleteWidget(widget.id)}
-                                      dragHandle={provided.dragHandleProps}
-                                      isDragging={snapshot.isDragging}
-                                    />
-                                  </div>
-                                )}
-                              </Draggable>
-                            );
-                          case "job-experience":
-                            return (
-                              <Draggable
-                                draggableId={widget.id}
-                                index={index}
-                                key={widget.id}
-                              >
-                                {(provided, snapshot) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                  >
-                                    <JobExperienceInput
-                                      data={widget.content}
-                                      onChange={(content) =>
-                                        updateWidgetContent(index, content)
-                                      }
-                                      onDelete={() => deleteWidget(widget.id)}
-                                      dragHandle={provided.dragHandleProps}
-                                      isDragging={snapshot.isDragging}
-                                    />
-                                  </div>
-                                )}
-                              </Draggable>
-                            );
-                          case "spacer":
-                            return (
-                              <Draggable
-                                draggableId={widget.id}
-                                index={index}
-                                key={widget.id}
-                              >
-                                {(provided, snapshot) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                  >
-                                    <SpacerInput
-                                      data={widget.content}
-                                      onChange={(content) =>
-                                        updateWidgetContent(index, content)
-                                      }
-                                      onDelete={() => deleteWidget(widget.id)}
-                                      dragHandle={provided.dragHandleProps}
-                                      isDragging={snapshot.isDragging}
-                                    />
-                                  </div>
-                                )}
-                              </Draggable>
-                            );
-                          case "contact-form":
-                            return (
-                              <Draggable
-                                draggableId={widget.id}
-                                index={index}
-                                key={widget.id}
-                              >
-                                {(provided, snapshot) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                  >
-                                    <ContactFormInput
-                                      data={widget.content}
-                                      onChange={(content) =>
-                                        updateWidgetContent(index, content)
-                                      }
-                                      onDelete={() => deleteWidget(widget.id)}
-                                      dragHandle={provided.dragHandleProps}
-                                      isDragging={snapshot.isDragging}
-                                    />
-                                  </div>
-                                )}
-                              </Draggable>
-                            );
-                        }
+                                <Component
+                                  data={widget.content}
+                                  onChange={(content) =>
+                                    updateWidgetContent(index, content)
+                                  }
+                                  onDelete={() => deleteWidget(widget.id)}
+                                  dragHandle={provided.dragHandleProps}
+                                  isDragging={snapshot.isDragging}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        );
                       })}
                     </>
                   )}
