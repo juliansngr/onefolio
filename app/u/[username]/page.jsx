@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/serverClient";
 import DefaultPortfolio from "@/components/templates/DefaultPortfolio/DefaultPortfolio";
 import LightPortfolioPage from "@/components/templates/Light/Light";
-// import FancyPortfolio from "@/components/templates/FancyPortfolio/FancyPortfolio";
+import CreativePortfolioPage from "@/components/templates/Creative/Creative";
 
 export default async function PortfolioPage({ params, searchParams }) {
   const supabase = await createClient();
@@ -77,7 +77,7 @@ export default async function PortfolioPage({ params, searchParams }) {
   const portfolioTemplates = {
     alpha: DefaultPortfolio,
     light: LightPortfolioPage,
-    // fancy: FancyPortfolio,
+    creative: CreativePortfolioPage,
   };
 
   const Template = portfolioTemplates[portfolio.theme];

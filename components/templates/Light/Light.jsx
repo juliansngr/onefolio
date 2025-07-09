@@ -170,7 +170,6 @@ import WidgetRenderer from "./components/utils/WidgetRenderer";
 // };
 
 export default function LightPortfolioPage({ data }) {
-  console.log(data);
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50">
       {data

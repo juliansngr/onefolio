@@ -1,7 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { Zap, Download, Palette } from "lucide-react";
+import { Zap, Download, Palette, Check } from "lucide-react";
+import { useState } from "react";
 
 export default function Header({ data }) {
+  const [wasClicked, setWasClicked] = useState(false);
+
+  const handleCopyMail = () => {
+    navigator.clipboard.writeText(data.mail);
+
+    setWasClicked(true);
+    setTimeout(() => {
+      setWasClicked(false);
+    }, 2000);
+  };
   return (
     <header className="relative z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0">
       <div className="max-w-6xl mx-auto px-6 py-4">
@@ -15,20 +26,27 @@ export default function Header({ data }) {
             </span>
           </div>
           <div className="flex items-center gap-4">
-            <Button
+            {/* <Button
               variant="outline"
               size="sm"
               className="hidden sm:flex border-cyan-200 text-cyan-700 hover:bg-cyan-50 bg-transparent"
             >
               <Download className="w-4 h-4 mr-2" />
               Resume
-            </Button>
+            </Button> */}
             <Button
               size="sm"
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:shadow-lg transform hover:scale-105 transition-all"
+              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:shadow-lg transform hover:scale-105 transition-all cursor-pointer"
+              onClick={() => {
+                handleCopyMail();
+              }}
             >
-              <Zap className="w-4 h-4 mr-2" />
-              Let's Chat!
+              {wasClicked ? (
+                <Check className="w-4 h-4 mr-2" />
+              ) : (
+                <Zap className="w-4 h-4 mr-2" />
+              )}
+              {wasClicked ? "Copied" : "Let's Chat!"}
             </Button>
           </div>
         </div>

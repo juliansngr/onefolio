@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function Header({ data }) {
   const [wasClicked, setWasClicked] = useState(false);
-  console.log(data);
+
   const handleCopyMail = () => {
     navigator.clipboard.writeText(data.mail);
 
