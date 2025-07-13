@@ -2,7 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Award } from "lucide-react";
 
-export default function Skills({ data, className }) {
+export default function Tags({ data, className }) {
+  const { tags } = data;
   return (
     <div className={className}>
       <section>
@@ -15,7 +16,7 @@ export default function Skills({ data, className }) {
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-3">
-              {data.map((skill, index) => (
+              {tags.map((skill, index) => (
                 <Badge
                   key={index}
                   variant="secondary"

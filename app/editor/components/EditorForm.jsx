@@ -9,12 +9,14 @@ import SpacerInput from "./widgets/SpacerInput";
 import ContactFormInput from "./widgets/ContactFormInput";
 import HeaderInput from "./widgets/HeaderInput";
 import HeroInput from "./widgets/HeroInput";
+import TagsInput from "./widgets/TagsInput";
+import FeaturedProjectsInput from "./widgets/FeaturedProjectsInput";
 
 import SaveButton from "./SaveButton";
 import { createClient } from "@/lib/supabase/browserClient";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { getIcon } from "@/lib/editorFunctions";
+import { getIcon, getImageSettings } from "@/lib/editorFunctions";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Plus } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
@@ -91,24 +93,73 @@ export default function EditorForm({
     );
   };
 
-  const convertImageToWebP = async (file) => {
+  const convertImageToWebP = async (
+    file,
+    aspectW,
+    aspectH,
+    targetW,
+    targetH
+  ) => {
     const img = await createImageBitmap(file);
+    const origW = img.width;
+    const origH = img.height;
+
+    // Berechne Original- und gewünschtes Ratio
+    const origRatio = origW / origH;
+    const desiredRatio = aspectW / aspectH;
+
+    // Crop-Größe bestimmen
+    let cropW, cropH;
+    if (origRatio > desiredRatio) {
+      // Bild ist zu breit → seitlich abschneiden
+      cropH = origH;
+      cropW = Math.round(origH * desiredRatio);
+    } else {
+      // Bild ist zu hoch → oben/unten abschneiden
+      cropW = origW;
+      cropH = Math.round(origW / desiredRatio);
+    }
+    const cropX = Math.round((origW - cropW) / 2);
+    const cropY = Math.round((origH - cropH) / 2);
+
+    // Canvas in Ziel­größe anlegen
     const canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-
+    canvas.width = targetW;
+    canvas.height = targetH;
     const ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
 
+    // drawImage(SourceCrop → Ziel-Skalierung)
+    ctx.drawImage(
+      img,
+      cropX,
+      cropY,
+      cropW,
+      cropH, // Ausschnitt aus Original
+      0,
+      0,
+      targetW,
+      targetH // Ziel-Größe im Canvas
+    );
+
+    console.log("canvas");
+
+    // Gib WebP-Blob zurück
     return new Promise((resolve) => {
-      canvas.toBlob((blob) => {
-        resolve(blob);
-      }, "image/webp");
+      canvas.toBlob((blob) => resolve(blob), "image/webp");
     });
   };
 
-  const uploadFile = async (file) => {
-    const webpFile = await convertImageToWebP(file);
+  const uploadFile = async (file, widgetType) => {
+    const imageSettings = getImageSettings(widgetType);
+    console.log("upload triggered");
+    console.log("imageSettings", imageSettings);
+    const webpFile = await convertImageToWebP(
+      file,
+      imageSettings.aspectW,
+      imageSettings.aspectH,
+      imageSettings.targetW,
+      imageSettings.targetH
+    );
 
     const { data, error } = await supabase.storage
       .from("images")
@@ -120,6 +171,7 @@ export default function EditorForm({
     }
 
     const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/images/${data.path}`;
+    console.log("publicUrl", publicUrl);
 
     return publicUrl ?? null;
   };
@@ -134,12 +186,34 @@ export default function EditorForm({
         for (const file of widget.content.fileData) {
           if (!file) continue;
           const index = file.index;
-          const path = await uploadFile(file.file);
+
+          const oldUrl = paths[index];
+          if (oldUrl) {
+            try {
+              const url = new URL(oldUrl);
+              const parts = url.pathname.split("/images/");
+              const bucketPath = parts[1];
+
+              const { error: deleteError } = await supabase.storage
+                .from("images")
+                .remove([bucketPath]);
+
+              if (deleteError) {
+                console.warn("Could not delete old image:", deleteError);
+              }
+            } catch (e) {
+              console.warn("Error parsing old URL:", oldUrl, e);
+            }
+          }
+
+          const path = await uploadFile(file.file, widget.type);
           if (path) {
             paths[index] = path;
           }
         }
       }
+
+      console.log("paths", paths);
 
       const cleanContent = structuredClone(widget.content);
       delete cleanContent.fileData;
@@ -223,6 +297,8 @@ export default function EditorForm({
     "contact-form": ContactFormInput,
     header: HeaderInput,
     hero: HeroInput,
+    tags: TagsInput,
+    "featured-projects": FeaturedProjectsInput,
   };
 
   return (

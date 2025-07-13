@@ -11,15 +11,15 @@ export default function FeaturedProjects({ data, className }) {
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-gray-900 flex items-center gap-2">
               <Briefcase className="w-6 h-6 text-purple-600" />
-              Featured Projects
+              {data.title}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {data.map((project, index) => (
+              {data.projects.map((project, index) => (
                 <Card
                   key={index}
-                  className="bg-white/80 hover:bg-white/90 transition-colors group"
+                  className="bg-white/80 hover:bg-white/90 transition-colors group py-0 gap-0"
                 >
                   <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-t-lg flex items-center justify-center">
                     <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-purple-600 rounded-lg flex items-center justify-center">

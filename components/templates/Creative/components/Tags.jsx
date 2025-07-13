@@ -1,4 +1,5 @@
-export default function Skills({ data, className }) {
+export default function Tags({ data, className }) {
+  const { tags } = data;
   return (
     <div className={className}>
       <section className="space-y-12">
@@ -12,7 +13,7 @@ export default function Skills({ data, className }) {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {data.map((skill, index) => {
+          {tags.map((skill, index) => {
             const colors = [
               "from-cyan-400 to-blue-500",
               "from-pink-400 to-red-500",

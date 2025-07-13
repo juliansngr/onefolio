@@ -1,6 +1,6 @@
 import ContactForm from "../ContactForm";
 import HeroSection from "../HeroSection";
-import Skills from "../Skills";
+import Tags from "../Trags";
 import FeaturedProjects from "../FeaturedProjects";
 import Experience from "../Experience";
 import Education from "../Education";
@@ -18,15 +18,15 @@ export default function WidgetRenderer({ widget }) {
           className="max-w-6xl mx-auto px-6 py-12 space-y-12"
         />
       );
-    case "skills":
+    case "tags":
       return (
-        <Skills
+        <Tags
           data={widget.content}
           indexValue={widget.position}
           className="max-w-6xl mx-auto px-6 py-12 space-y-12"
         />
       );
-    case "projects":
+    case "featured-projects":
       return (
         <FeaturedProjects
           data={widget.content}
