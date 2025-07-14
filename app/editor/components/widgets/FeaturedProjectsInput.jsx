@@ -3,16 +3,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { Button } from "@/components/ui/button";
-import { Trash2, GripVertical, Plus } from "lucide-react";
+import { Trash2, GripVertical, Plus, Upload } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
+import Image from "next/image";
 
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useState } from "react";
 
 export default function FeaturedProjectsInput({
   data,
@@ -21,7 +23,7 @@ export default function FeaturedProjectsInput({
   dragHandle,
   isDragging,
 }) {
-  console.log(data);
+  const [previewUrls, setPreviewUrls] = useState(data.files);
 
   const addProject = () => {
     onChange({
@@ -32,10 +34,33 @@ export default function FeaturedProjectsInput({
           title: "",
           description: "",
           liveUrl: "",
-          githubUrl: "",
+          additionalUrl: "",
           technologies: [],
         },
       ],
+    });
+  };
+
+  const handleImageChange = (index, e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const newPreviewUrl = URL.createObjectURL(file);
+    setPreviewUrls((prev) => {
+      if (prev[index]) URL.revokeObjectURL(prev[index]);
+      const updatedUrls = [...prev];
+      updatedUrls[index] = newPreviewUrl;
+      return updatedUrls;
+    });
+  };
+
+  const deleteProject = (index) => {
+    const newProjectData = [...(data.projects || [])];
+    newProjectData.splice(index, 1);
+
+    onChange({
+      ...data,
+      projects: newProjectData,
     });
   };
 
@@ -71,23 +96,44 @@ export default function FeaturedProjectsInput({
           </div>
         </div>
         <div className="grid gap-3">
-          <Label htmlFor="sectionTitle">Title</Label>
+          <Label htmlFor="sectionTitle">Section Title</Label>
           <Input
             id="sectionTitle"
             type="text"
             name="sectionTitle"
-            placeholder={"My projects"}
-            defaultValue={data.sectionTitle}
+            placeholder={"Featured Projects 🚀"}
+            defaultValue={data.title}
             required
             onChange={(e) => onChange({ ...data, title: e.target.value })}
           />
         </div>
-
         <div className="grid gap-3">
+          <Label htmlFor="sectionDescription">Section Description</Label>
+          <Input
+            id="sectionDescription"
+            type="text"
+            name="sectionDescription"
+            placeholder={"Some cool stuff I've built"}
+            defaultValue={data.description}
+            required
+            onChange={(e) => onChange({ ...data, description: e.target.value })}
+          />
+        </div>
+        <hr className="my-4" />
+        <div className="grid gap-10">
           {data.projects.map((project, index) => {
             return (
-              <>
-                <p className="text-md font-bold">Entry #{index + 1}</p>
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-row items-center justify-between text-center">
+                  <p className="text-lg font-bold">Project #{index + 1}</p>
+                  <Button
+                    variant="secondary"
+                    className="cursor-pointer hover:bg-red-500 hover:text-white"
+                    onClick={() => deleteProject(index)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
                 <div className="flex flex-row gap-3">
                   <div className="flex flex-col gap-2 w-full">
                     <Label htmlFor="projectTitle">Title</Label>
@@ -135,43 +181,47 @@ export default function FeaturedProjectsInput({
                     />
                   </div>
                   <div className="flex flex-col gap-3">
-                    <div className="flex flex-col gap-2">
-                      <Label htmlFor="projectTechnologies">Technologies</Label>
-                      <Input
-                        type="text"
-                        defaultValue={project.technologies}
-                        onChange={(e) => {
-                          const newProjectData = [...(data.projects || [])];
+                    <Label htmlFor="projectImage">Image</Label>
 
-                          newProjectData[index] = {
-                            ...newProjectData[index],
-                            technologies: e.target.value,
+                    <div className="grid gap-3">
+                      {previewUrls[index] ? (
+                        <Label
+                          htmlFor={`projectImage-${index}`}
+                          className="w-48 h-32 flex items-center justify-center border-1 border-gray-300 hover:border-gray-400 hover:bg-gray-100 text-gray-300 rounded-lg cursor-pointer overflow-hidden"
+                        >
+                          <Image
+                            src={previewUrls[index]}
+                            alt="Preview"
+                            width={100}
+                            height={100}
+                            className="object-cover w-48 h-32 "
+                          />
+                        </Label>
+                      ) : (
+                        <Label
+                          htmlFor={`projectImage-${index}`}
+                          className="w-48 h-32 border-1 border-gray-300 hover:border-gray-400 hover:bg-gray-100 text-gray-300 rounded-lg cursor-pointer flex items-center justify-center"
+                        >
+                          <Upload className="w-8 h-8" />
+                        </Label>
+                      )}
+
+                      <Input
+                        id={`projectImage-${index}`}
+                        type="file"
+                        name={`projectImage-${index}`}
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        required
+                        onChange={(e) => {
+                          handleImageChange(index, e);
+                          const newFileData = [...(data.fileData || [])];
+                          newFileData[index] = {
+                            index: index,
+                            file: e.target.files[0],
                           };
 
-                          onChange({
-                            ...data,
-                            projects: newProjectData,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <Label htmlFor="projectLiveUrl">Live URL</Label>
-                      <Input
-                        type="text"
-                        defaultValue={project.liveUrl}
-                        onChange={(e) => {
-                          const newProjectData = [...(data.projects || [])];
-
-                          newProjectData[index] = {
-                            ...newProjectData[index],
-                            liveUrl: e.target.value,
-                          };
-
-                          onChange({
-                            ...data,
-                            projects: newProjectData,
-                          });
+                          onChange({ ...data, fileData: newFileData });
                         }}
                       />
                     </div>
@@ -179,18 +229,61 @@ export default function FeaturedProjectsInput({
                 </div>
 
                 <div className="flex flex-row gap-3">
-                  <div className="flex flex-col gap-2 w-1/2">
-                    <Label htmlFor="projectGithubUrl">Github URL</Label>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="projectTechnologies">Technologies</Label>
                     <Input
-                      id="projectGithubUrl"
-                      placeholder="https://github.com/example"
-                      defaultValue={project.githubUrl}
+                      type="text"
+                      placeholder="Photoshop, HTML, CSS"
+                      defaultValue={project.technologies}
                       onChange={(e) => {
                         const newProjectData = [...(data.projects || [])];
 
                         newProjectData[index] = {
                           ...newProjectData[index],
-                          githubUrl: e.target.value,
+                          technologies: e.target.value
+                            .split(",")
+                            .map((t) => t.trim()),
+                        };
+
+                        onChange({
+                          ...data,
+                          projects: newProjectData,
+                        });
+                      }}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="projectLiveUrl">Live URL</Label>
+                    <Input
+                      type="text"
+                      defaultValue={project.liveUrl}
+                      onChange={(e) => {
+                        const newProjectData = [...(data.projects || [])];
+
+                        newProjectData[index] = {
+                          ...newProjectData[index],
+                          liveUrl: e.target.value,
+                        };
+
+                        onChange({
+                          ...data,
+                          projects: newProjectData,
+                        });
+                      }}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2 w-1/2">
+                    <Label htmlFor="projectAdditionalUrl">Additional URL</Label>
+                    <Input
+                      id="projectAdditionalUrl"
+                      placeholder="https://example.com"
+                      defaultValue={project.additionalUrl}
+                      onChange={(e) => {
+                        const newProjectData = [...(data.projects || [])];
+
+                        newProjectData[index] = {
+                          ...newProjectData[index],
+                          additionalUrl: e.target.value,
                         };
 
                         onChange({
@@ -201,7 +294,7 @@ export default function FeaturedProjectsInput({
                     />
                   </div>
                 </div>
-              </>
+              </div>
             );
           })}
           <Button variant="outline" onClick={addProject}>

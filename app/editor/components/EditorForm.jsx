@@ -128,6 +128,14 @@ export default function EditorForm({
     canvas.height = targetH;
     const ctx = canvas.getContext("2d");
 
+    console.log("canvas.width", canvas.width, "canvas.height", canvas.height);
+    console.log("targetW", targetW, "targetH", targetH);
+    console.log("origW", origW, "origH", origH);
+    console.log("origRatio", origRatio, "desiredRatio", desiredRatio);
+    console.log("cropX", cropX, "cropY", cropY);
+    console.log("cropW", cropW, "cropH", cropH);
+    console.log("img.width", img.width, "img.height", img.height);
+
     // drawImage(SourceCrop → Ziel-Skalierung)
     ctx.drawImage(
       img,
@@ -141,8 +149,6 @@ export default function EditorForm({
       targetH // Ziel-Größe im Canvas
     );
 
-    console.log("canvas");
-
     // Gib WebP-Blob zurück
     return new Promise((resolve) => {
       canvas.toBlob((blob) => resolve(blob), "image/webp");
@@ -150,15 +156,19 @@ export default function EditorForm({
   };
 
   const uploadFile = async (file, widgetType) => {
-    const imageSettings = getImageSettings(widgetType);
-    console.log("upload triggered");
-    console.log("imageSettings", imageSettings);
+    const {
+      aspectW = 1,
+      aspectH = 1,
+      targetW = null,
+      targetH = null,
+    } = getImageSettings(widgetType) || {};
+
     const webpFile = await convertImageToWebP(
       file,
-      imageSettings.aspectW,
-      imageSettings.aspectH,
-      imageSettings.targetW,
-      imageSettings.targetH
+      aspectW,
+      aspectH,
+      targetW,
+      targetH
     );
 
     const { data, error } = await supabase.storage
@@ -171,7 +181,6 @@ export default function EditorForm({
     }
 
     const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/images/${data.path}`;
-    console.log("publicUrl", publicUrl);
 
     return publicUrl ?? null;
   };
@@ -212,8 +221,6 @@ export default function EditorForm({
           }
         }
       }
-
-      console.log("paths", paths);
 
       const cleanContent = structuredClone(widget.content);
       delete cleanContent.fileData;

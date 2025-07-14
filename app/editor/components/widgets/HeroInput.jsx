@@ -17,6 +17,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useState } from "react";
+import Image from "next/image";
 
 export default function HeroInput({
   data,
@@ -25,6 +27,15 @@ export default function HeroInput({
   dragHandle,
   isDragging,
 }) {
+  const [previewUrl, setPreviewUrl] = useState(data.files[0]);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const newPreviewUrl = URL.createObjectURL(file);
+    setPreviewUrl(newPreviewUrl);
+  };
   return (
     <Card
       className={cn(
@@ -137,13 +148,23 @@ export default function HeroInput({
             name="profilePicture"
             accept="image/*"
             required
-            onChange={(e) =>
+            onChange={(e) => {
+              handleImageChange(e);
               onChange({
                 ...data,
                 fileData: [{ index: 0, file: e.target.files[0] }],
-              })
-            }
+              });
+            }}
           />
+          {previewUrl && (
+            <Image
+              src={previewUrl}
+              alt="Preview"
+              width={60}
+              height={60}
+              className="object-cover rounded-3xl w-25 h-25"
+            />
+          )}
         </div>
         <div className="flex flex-row gap-3 w-full">
           <div className="flex flex-col gap-3 w-1/2">

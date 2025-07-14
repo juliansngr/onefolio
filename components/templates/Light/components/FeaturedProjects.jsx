@@ -1,7 +1,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Briefcase, ExternalLink, Folder, Github } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import Image from "next/image";
 
 export default function FeaturedProjects({ data, className }) {
   return (
@@ -13,6 +20,7 @@ export default function FeaturedProjects({ data, className }) {
               <Briefcase className="w-6 h-6 text-purple-600" />
               {data.title}
             </CardTitle>
+            <CardDescription>{data.description}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -21,10 +29,19 @@ export default function FeaturedProjects({ data, className }) {
                   key={index}
                   className="bg-white/80 hover:bg-white/90 transition-colors group py-0 gap-0"
                 >
-                  <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-t-lg flex items-center justify-center">
-                    <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-purple-600 rounded-lg flex items-center justify-center">
-                      <Folder className="w-8 h-8 text-white" />
-                    </div>
+                  <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-t-lg flex items-center justify-center overflow-hidden">
+                    {data.files[index] ? (
+                      <Image
+                        src={data.files[index]}
+                        alt="Project Image"
+                        width={750}
+                        height={422}
+                      />
+                    ) : (
+                      <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-purple-600 rounded-lg flex items-center justify-center">
+                        <Folder className="w-8 h-8 text-white" />
+                      </div>
+                    )}
                   </div>
                   <CardContent className="p-6">
                     <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
@@ -57,10 +74,10 @@ export default function FeaturedProjects({ data, className }) {
                           rel="noopener noreferrer"
                         >
                           <ExternalLink className="w-3 h-3 mr-1" />
-                          Live Demo
+                          Check it out
                         </a>
                       </Button>
-                      <Button
+                      {/* <Button
                         size="sm"
                         variant="outline"
                         className="flex-1 bg-transparent"
@@ -74,7 +91,7 @@ export default function FeaturedProjects({ data, className }) {
                           <Github className="w-3 h-3 mr-1" />
                           Code
                         </a>
-                      </Button>
+                      </Button> */}
                     </div>
                   </CardContent>
                 </Card>

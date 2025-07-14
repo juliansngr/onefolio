@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Folder, Target, Github } from "lucide-react";
+import Image from "next/image";
 
 export default function FeaturedProjects({ data, className }) {
   return (
@@ -8,27 +9,30 @@ export default function FeaturedProjects({ data, className }) {
       <section className="space-y-12">
         <div className="text-center space-y-4">
           <h2 className="text-4xl font-black bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
-            Featured Projects 🚀
+            {data.title}
           </h2>
-          <p className="text-xl text-gray-600">Some cool stuff I've built</p>
+          <p className="text-xl text-gray-600">{data.description}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-          {data.map((project, index) => {
+          {data.projects.map((project, index) => {
             return (
               <div
                 key={index}
                 className="group bg-white rounded-3xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 hover:shadow-2xl"
               >
-                <div
-                  className={`h-48 bg-gradient-to-br ${project.color} flex items-center justify-center relative overflow-hidden`}
-                >
-                  <div className="absolute inset-0 bg-black/10"></div>
-                  <Folder className="w-16 h-16 text-white/80 relative z-10" />
-                  <div className="absolute top-4 right-4 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                    <Target className="w-4 h-4 text-white" />
+                {data.files[index] ? (
+                  <Image
+                    src={data.files[index]}
+                    alt="Project Image"
+                    width={750}
+                    height={422}
+                  />
+                ) : (
+                  <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-t-lg flex items-center justify-center overflow-hidden">
+                    <Folder className="w-8 h-8 text-white" />
                   </div>
-                </div>
+                )}
 
                 <div className="p-6 space-y-4">
                   <h3 className="text-xl font-bold text-gray-900 group-hover:text-cyan-600 transition-colors">
@@ -66,10 +70,10 @@ export default function FeaturedProjects({ data, className }) {
                         rel="noopener noreferrer"
                       >
                         <ExternalLink className="w-3 h-3 mr-1" />
-                        Live
+                        Check it out
                       </a>
                     </Button>
-                    <Button
+                    {/* <Button
                       size="sm"
                       variant="outline"
                       className="flex-1 border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl bg-transparent"
@@ -83,7 +87,7 @@ export default function FeaturedProjects({ data, className }) {
                         <Github className="w-3 h-3 mr-1" />
                         Code
                       </a>
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
               </div>

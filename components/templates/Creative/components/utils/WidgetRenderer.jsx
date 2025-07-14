@@ -26,7 +26,7 @@ export default function WidgetRenderer({ widget }) {
           className="max-w-6xl mx-auto px-6 py-12 space-y-20 relative z-10"
         />
       );
-    case "projects":
+    case "featured-projects":
       return (
         <FeaturedProjects
           data={widget.content}
