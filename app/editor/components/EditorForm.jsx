@@ -11,6 +11,7 @@ import HeaderInput from "./widgets/HeaderInput";
 import HeroInput from "./widgets/HeroInput";
 import TagsInput from "./widgets/TagsInput";
 import FeaturedProjectsInput from "./widgets/FeaturedProjectsInput";
+import ExperienceInput from "./widgets/ExperienceInput";
 
 import SaveButton from "./SaveButton";
 import { createClient } from "@/lib/supabase/browserClient";
@@ -127,14 +128,6 @@ export default function EditorForm({
     canvas.width = targetW;
     canvas.height = targetH;
     const ctx = canvas.getContext("2d");
-
-    console.log("canvas.width", canvas.width, "canvas.height", canvas.height);
-    console.log("targetW", targetW, "targetH", targetH);
-    console.log("origW", origW, "origH", origH);
-    console.log("origRatio", origRatio, "desiredRatio", desiredRatio);
-    console.log("cropX", cropX, "cropY", cropY);
-    console.log("cropW", cropW, "cropH", cropH);
-    console.log("img.width", img.width, "img.height", img.height);
 
     // drawImage(SourceCrop → Ziel-Skalierung)
     ctx.drawImage(
@@ -306,6 +299,7 @@ export default function EditorForm({
     hero: HeroInput,
     tags: TagsInput,
     "featured-projects": FeaturedProjectsInput,
+    experience: ExperienceInput,
   };
 
   return (

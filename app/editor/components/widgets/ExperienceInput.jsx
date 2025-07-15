@@ -16,26 +16,29 @@ import {
 } from "@/components/ui/tooltip";
 import { useState } from "react";
 
-export default function FeaturedProjectsInput({
+export default function ExperienceInput({
   data,
   onChange,
   onDelete,
   dragHandle,
   isDragging,
 }) {
-  const [previewUrls, setPreviewUrls] = useState(data.files || []);
-  console.log(data);
+  const [previewUrls, setPreviewUrls] = useState(data.files);
+
   const addProject = () => {
     onChange({
       ...data,
       projects: [
         ...data.projects,
         {
-          title: "",
+          icon: "",
+          color: "",
+          company: "",
+          endDate: "",
+          location: "",
+          position: "",
+          startDate: "",
           description: "",
-          liveUrl: "",
-          additionalUrl: "",
-          technologies: [],
         },
       ],
     });
@@ -73,7 +76,7 @@ export default function FeaturedProjectsInput({
     >
       <div className="flex flex-col gap-6 p-6 md:p-8">
         <div className="flex flex-row items-center justify-between text-center">
-          <h1 className="text-2xl font-bold">Featured Projects</h1>
+          <h1 className="text-2xl font-bold">Experience</h1>
           <div className="flex flex-row items-center gap-2">
             <Tooltip>
               <TooltipTrigger>
@@ -101,7 +104,7 @@ export default function FeaturedProjectsInput({
             id="sectionTitle"
             type="text"
             name="sectionTitle"
-            placeholder={"Featured Projects 🚀"}
+            placeholder={"Experience "}
             defaultValue={data.title}
             required
             onChange={(e) => onChange({ ...data, title: e.target.value })}
@@ -121,11 +124,11 @@ export default function FeaturedProjectsInput({
         </div>
         <hr className="my-4" />
         <div className="grid gap-10">
-          {data.projects.map((project, index) => {
+          {data.experience.map((experience, index) => {
             return (
               <div className="flex flex-col gap-3">
                 <div className="flex flex-row items-center justify-between text-center">
-                  <p className="text-lg font-bold">Project #{index + 1}</p>
+                  <p className="text-lg font-bold">Experience #{index + 1}</p>
                   <Button
                     variant="secondary"
                     className="cursor-pointer hover:bg-red-500 hover:text-white"

@@ -21,10 +21,15 @@ export default function RootLayout({ children }) {
   const isDev = process.env.NODE_ENV === "development";
   return (
     <PlausibleProvider domain="onefol.io">
-      <html lang="en" className={plusJakartaSans.className}>
+      <html
+        lang="en"
+        className={plusJakartaSans.className}
+        suppressHydrationWarning
+      >
         <ToasterProvider />
         <body>
           {children}
+
           {/* {isDev ? <Waitinglist /> : children} */}
           {/* <LightPortfolioPage /> */}
         </body>
