@@ -8,11 +8,18 @@ import { createClient } from "@/lib/supabase/serverClient";
 export async function login(formData) {
   const supabase = await createClient();
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
+  const emailRaw = formData.get("email");
+  const passwordRaw = formData.get("password");
+
+  if (typeof emailRaw !== "string" || typeof passwordRaw !== "string") {
+    return {
+      error: "Invalid inputs: Email and password must be strings.",
+    };
+  }
+
   const data = {
-    email: formData.get("email"),
-    password: formData.get("password"),
+    email: emailRaw,
+    password: passwordRaw,
   };
 
   const { error } = await supabase.auth.signInWithPassword(data);
@@ -28,17 +35,23 @@ export async function login(formData) {
 export async function signup(formData) {
   const supabase = await createClient();
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
+  const emailRaw = formData.get("email");
+  const passwordRaw = formData.get("password");
+
+  if (typeof emailRaw !== "string" || typeof passwordRaw !== "string") {
+    return {
+      error: "Invalid inputs: Email and password must be strings.",
+    };
+  }
+
   const data = {
-    email: formData.get("email"),
-    password: formData.get("password"),
+    email: emailRaw,
+    password: passwordRaw,
   };
 
-  const { error } = await supabase.auth.signUp(data);
-
-  if (error) {
-    redirect("/error");
+  const response = await supabase.auth.signUp(data);
+  if (response.error) {
+    return { error: response.error.message };
   }
 
   revalidatePath("/", "layout");
