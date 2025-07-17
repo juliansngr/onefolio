@@ -49,6 +49,16 @@ export async function signup(formData) {
     password: passwordRaw,
   };
 
+  const { data: exists, error: mailExistsError } = await supabase.rpc(
+    "email_exists",
+    { p_email: data.email }
+  );
+  if (mailExistsError) throw mailExistsError;
+
+  if (exists) {
+    return { error: "Email already in use. Please use a different email." };
+  }
+
   const response = await supabase.auth.signUp(data);
   if (response.error) {
     return { error: response.error.message };
