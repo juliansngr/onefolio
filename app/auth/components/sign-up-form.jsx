@@ -58,7 +58,7 @@ export function SignUpForm({ className, ...props }) {
                 </div>
                 <Input id="password" type="password" name="password" required />
               </div>
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full cursor-pointer">
                 {isLoading ? (
                   <LoaderCircle className="animate-spin" />
                 ) : (
