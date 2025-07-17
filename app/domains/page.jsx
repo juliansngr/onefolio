@@ -10,6 +10,12 @@ export default async function Page() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("user_id", user.id)
+    .single();
+
   const { data: domainData } = await supabase
     .from("custom_domains")
     .select("*")
@@ -17,7 +23,7 @@ export default async function Page() {
     .single();
 
   return (
-    <Sidebar user={user}>
+    <Sidebar user={user} isPro={profile.is_pro}>
       <div className="bg-muted min-h-svh p-6 md:p-10">
         <div className="flex flex-col w-full max-w-sm md:max-w-6xl mx-auto gap-4">
           <div className="flex items-center justify-between">

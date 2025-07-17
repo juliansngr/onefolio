@@ -6,6 +6,7 @@ import {
   Link,
   Mail,
   Globe,
+  Crown,
 } from "lucide-react";
 
 import {
@@ -22,6 +23,7 @@ import {
 } from "@/components/ui/sidebar";
 import { NavUser } from "@/components/nav-user";
 import { usePathname } from "next/navigation";
+import { Badge } from "./ui/badge";
 
 const workspaceItems = [
   {
@@ -34,14 +36,14 @@ const workspaceItems = [
     url: "/editor",
     icon: Pencil,
   },
+];
+
+const toolsItems = [
   {
     title: "Analytics",
     url: "/analytics",
     icon: ChartNoAxesColumn,
   },
-];
-
-const toolsItems = [
   {
     title: "Contact Requests",
     url: "/contact-requests",
@@ -62,7 +64,7 @@ const configurationItems = [
   },
 ];
 
-export function AppSidebar({ user }) {
+export function AppSidebar({ user, isPro }) {
   const pathname = usePathname();
   return (
     <Sidebar>
@@ -109,7 +111,18 @@ export function AppSidebar({ user }) {
                   <SidebarMenuButton asChild isActive={item.url === pathname}>
                     <a href={item.url}>
                       <item.icon />
-                      <span>{item.title}</span>
+                      <span className="flex items-center gap-4">
+                        {item.title}{" "}
+                        {!isPro && (
+                          <Badge
+                            variant="secondary"
+                            className="bg-purple-100 text-purple-800"
+                          >
+                            <Crown className="w-3 h-3" />
+                            Pro
+                          </Badge>
+                        )}
+                      </span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -126,7 +139,18 @@ export function AppSidebar({ user }) {
                   <SidebarMenuButton asChild isActive={item.url === pathname}>
                     <a href={item.url}>
                       <item.icon />
-                      <span>{item.title}</span>
+                      <span className="flex items-center gap-4">
+                        {item.title}{" "}
+                        {!isPro && (
+                          <Badge
+                            variant="secondary"
+                            className="bg-purple-100 text-purple-800"
+                          >
+                            <Crown className="w-3 h-3" />
+                            Pro
+                          </Badge>
+                        )}
+                      </span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
