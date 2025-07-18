@@ -14,13 +14,18 @@ import { Label } from "@/components/ui/label";
 import { createTrackingLink } from "./actions";
 import { Plus } from "lucide-react";
 import { useTransition, useState, useRef, useEffect } from "react";
+import { toast } from "sonner";
 
-export function CreateTrackingLink() {
+export function CreateTrackingLink({ isPro }) {
   const [isPending, startTransition] = useTransition();
   const [createdTrackingLink, setCreatedTrackingLink] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = (formData) => {
+    if (!isPro) {
+      toast.error("Upgrade to Pro to create a tracking link.");
+      return;
+    }
     startTransition(async () => {
       const trackingLink = await createTrackingLink(formData);
       setCreatedTrackingLink(trackingLink);
@@ -45,7 +50,10 @@ export function CreateTrackingLink() {
       }}
     >
       <DialogTrigger asChild>
-        <Button className="cursor-pointer bg-slate-900 hover:bg-slate-800 text-white px-6">
+        <Button
+          className="cursor-pointer bg-slate-900 hover:bg-slate-800 text-white px-6"
+          disabled={!isPro}
+        >
           Create New Tracking Link
           <Plus className="w-4 h-4" />
         </Button>

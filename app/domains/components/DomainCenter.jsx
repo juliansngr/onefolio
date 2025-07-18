@@ -41,6 +41,7 @@ import {
 } from "lucide-react";
 import { addDomain, verifyDomain, deleteDomain } from "./actions";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 const dnsRecords = [
   {
@@ -63,13 +64,18 @@ const dnsRecords = [
   },
 ];
 
-export default function DomainsPage({ domainData }) {
+export default function DomainsPage({ domainData, className, isPro }) {
   const [domain, setDomain] = useState(domainData);
   const [newDomain, setNewDomain] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
   const handleAddDomain = async () => {
+    if (!isPro) {
+      toast.error("Upgrade to Pro to add a custom domain");
+      return;
+    }
+
     if (!newDomain.trim()) return;
 
     setIsLoading(true);
@@ -87,6 +93,10 @@ export default function DomainsPage({ domainData }) {
   };
 
   const handleReplaceDomain = async () => {
+    if (!isPro) {
+      toast.error("Upgrade to Pro to replace a custom domain");
+      return;
+    }
     if (!newDomain.trim()) return;
 
     setIsLoading(true);
@@ -98,6 +108,10 @@ export default function DomainsPage({ domainData }) {
   };
 
   const handleVerifyDomain = async () => {
+    if (!isPro) {
+      toast.error("Upgrade to Pro to verify a custom domain");
+      return;
+    }
     if (!domain) return;
 
     setIsLoading(true);
@@ -121,6 +135,10 @@ export default function DomainsPage({ domainData }) {
   };
 
   const handleDeleteDomain = async () => {
+    if (!isPro) {
+      toast.error("Upgrade to Pro to delete a custom domain");
+      return;
+    }
     if (!domain) return;
 
     setIsLoading(true);
@@ -176,21 +194,23 @@ export default function DomainsPage({ domainData }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className={cn("space-y-6", className)}>
       {/* Pro Upgrade Alert */}
-      <Alert className="border-purple-200 bg-purple-50">
-        <Star className="h-4 w-4 text-purple-600" />
-        <AlertDescription className="text-purple-800">
-          <strong>Upgrade to Pro</strong> to connect your custom domain and
-          remove onefol.io branding.{" "}
-          <Button
-            variant="link"
-            className="p-0 h-auto text-purple-600 underline"
-          >
-            Upgrade now
-          </Button>
-        </AlertDescription>
-      </Alert>
+      {!isPro && (
+        <Alert className="border-purple-200 bg-purple-50">
+          <Star className="h-4 w-4 text-purple-600" />
+          <AlertDescription className="text-purple-800">
+            <strong>Upgrade to Pro</strong> to connect your custom domain and
+            remove onefol.io branding.{" "}
+            <Button
+              variant="link"
+              className="p-0 h-auto text-purple-600 underline"
+            >
+              Upgrade now
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
 
       {/* Current Domain Status */}
       <Card>

@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/browserClient";
 import { DataTable } from "./DataTable";
 import { columns } from "./Columns";
 
-export default function TrackingLinksClientTable({ userId }) {
+export default function TrackingLinksClientTable({ userId, isPro }) {
   const [links, setLinks] = useState([]);
 
   const supabase = createClient();
@@ -43,5 +43,5 @@ export default function TrackingLinksClientTable({ userId }) {
     };
   }, [userId]);
 
-  return <DataTable columns={columns} data={links} />;
+  return <DataTable columns={columns} data={links} isPro={isPro} />;
 }

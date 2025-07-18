@@ -113,7 +113,7 @@ export function AppSidebar({ user, isPro }) {
                       <item.icon />
                       <span className="flex items-center gap-4">
                         {item.title}{" "}
-                        {!isPro && (
+                        {!isPro && item.title !== "Contact Requests" && (
                           <Badge
                             variant="secondary"
                             className="bg-purple-100 text-purple-800"

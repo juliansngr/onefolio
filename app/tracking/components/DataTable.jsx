@@ -35,7 +35,7 @@ import {
 import { DropdownMenuCheckboxItem } from "@radix-ui/react-dropdown-menu";
 import { CreateTrackingLink } from "./CreateTrackingLink";
 
-export function DataTable({ columns, data }) {
+export function DataTable({ columns, data, isPro }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -71,7 +71,7 @@ export function DataTable({ columns, data }) {
           }
           className="max-w-sm"
         />
-        <CreateTrackingLink />
+        <CreateTrackingLink isPro={isPro} />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">Columns</Button>
