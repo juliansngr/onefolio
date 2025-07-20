@@ -608,8 +608,11 @@ export default function Home() {
                   </div>
                 </CardContent>
                 <CardFooter className="pt-8">
-                  <Button className="w-full bg-slate-900 hover:bg-slate-800 text-white">
-                    Start For Free
+                  <Button
+                    asChild
+                    className="w-full bg-slate-900 hover:bg-slate-800 text-white"
+                  >
+                    <Link href="/auth/sign-up">Start For Free</Link>
                   </Button>
                 </CardFooter>
               </Card>
