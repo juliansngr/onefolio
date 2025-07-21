@@ -14,7 +14,14 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata = {
   title: "onefol.io | Create beautiful portfolios in minutes",
-  description: "Your portfolios. One place.",
+  description: "Create beautiful portfolios in minutes.",
+  template: {
+    title: "%s | onefol.io",
+    description: "Create beautiful portfolios in minutes.",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({ children }) {
