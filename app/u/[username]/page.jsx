@@ -3,6 +3,25 @@ import DefaultPortfolio from "@/components/templates/DefaultPortfolio/DefaultPor
 import LightPortfolioPage from "@/components/templates/Light/Light";
 import CreativePortfolioPage from "@/components/templates/Creative/Creative";
 
+export async function generateMetadata({ params }) {
+  const supabase = await createClient();
+
+  const { username } = await params;
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("username")
+    .eq("username", username)
+    .single();
+
+  return {
+    title: profile
+      ? `${profile.username} | Portfolio`
+      : "Profil nicht gefunden",
+    description: "View my portfolio and get in touch with me",
+  };
+}
+
 export default async function PortfolioPage({ params, searchParams }) {
   const supabase = await createClient();
 
@@ -82,6 +101,15 @@ export default async function PortfolioPage({ params, searchParams }) {
 
   const Template = portfolioTemplates[portfolio.theme];
   return (
-    <Template data={widgets} userId={profile.user_id} portfolio={portfolio} />
+    <>
+      <head>
+        <title>{`${profile.username} | Portfolio`}</title>
+        <meta
+          name="description"
+          content="View my portfolio and get in touch with me"
+        />
+      </head>
+      <Template data={widgets} userId={profile.user_id} portfolio={portfolio} />
+    </>
   );
 }
