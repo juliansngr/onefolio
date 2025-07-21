@@ -62,6 +62,12 @@ export default function Home() {
             >
               Pricing
             </Link>
+            <Link
+              href="/blog"
+              className="text-sm font-medium text-slate-600 hover:text-slate-900"
+            >
+              Blog
+            </Link>
           </nav>
           <div className="flex items-center gap-3">
             <Link
@@ -744,6 +750,12 @@ export default function Home() {
                 className="text-sm text-muted-foreground hover:text-rose-400"
               >
                 FAQ
+              </Link>
+              <Link
+                href="/blog"
+                className="text-sm text-muted-foreground hover:text-rose-400"
+              >
+                Blog
               </Link>
             </nav>
             <div className="text-sm text-muted-foreground">
