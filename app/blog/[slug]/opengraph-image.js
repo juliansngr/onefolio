@@ -26,26 +26,22 @@ export default async function Image({ params }) {
   }
   const [post] = await resp.json();
 
-  const fontData = await fetch(
-    new URL(`../../../assets/PlusJakartaSans.ttf`, import.meta.url)
-  ).then((res) => res.arrayBuffer());
-
-  const fontBold = await fetch(
-    new URL(`../../../assets/PlusJakartaSansBold.ttf`, import.meta.url)
-  ).then((res) => res.arrayBuffer());
-
-  const backgroundData = await fetch(
-    new URL(`../../../assets/opengraph_empty.jpg`, import.meta.url)
-  ).then((res) => res.arrayBuffer());
-
-  const logoData = await fetch(
-    new URL(`../../../assets/onefolio_icon.png`, import.meta.url)
-  ).then((res) => res.arrayBuffer());
+  const BASE = "https://onefol.io";
+  const [fontData, fontBold, bgData, logoData] = await Promise.all([
+    fetch(`${BASE}/fonts/PlusJakartaSans-Medium.ttf`).then((r) =>
+      r.arrayBuffer()
+    ),
+    fetch(`${BASE}/fonts/PlusJakartaSans-Bold.ttf`).then((r) =>
+      r.arrayBuffer()
+    ),
+    fetch(`${BASE}/images/opengraph_empty.jpg`).then((r) => r.arrayBuffer()),
+    fetch(`${BASE}/images/onefolio_icon.png`).then((r) => r.arrayBuffer()),
+  ]);
 
   return new ImageResponse(
     (
       <div tw="flex w-full h-full items-center justify-center bg-white relative">
-        <img src={backgroundData} alt="Empty" width={1200} height={630} />
+        <img src={bgData} alt="Empty" width={1200} height={630} />
         <div tw="flex flex-col absolute max-w-4xl">
           <div tw="flex items-center">
             <img src={logoData} alt="Logo" width={80} height={80} />
