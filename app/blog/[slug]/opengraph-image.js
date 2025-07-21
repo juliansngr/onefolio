@@ -8,17 +8,24 @@ export const contentType = "image/png";
 export default async function Image({ params }) {
   const { slug } = await params;
 
-  const supabase = await createClient();
-  const { data: post, error } = await supabase
-    .from("blog")
-    .select("*")
-    .eq("slug", slug)
-    .single();
+  const resp = await fetch(
+    `${process.env.SUPABASE_URL}/rest/v1/blog?slug=eq.${encodeURIComponent(
+      slug
+    )}`,
+    {
+      headers: {
+        apiKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+        Accept: "application/json",
+      },
+    }
+  );
 
-  if (error) {
-    console.error("Error fetching blog post:", error);
-    return new Response("Error fetching blog post", { status: 500 });
+  if (!resp.ok) {
+    console.error("Supabase fetch failed:", resp.statusText);
+    return new Response("Error fetching post", { status: 500 });
   }
+  const [post] = await resp.json();
 
   const fontData = await fetch(
     new URL(`../../../assets/PlusJakartaSans.ttf`, import.meta.url)
