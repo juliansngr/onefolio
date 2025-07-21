@@ -8,9 +8,9 @@ export default async function Image({ params }) {
   const { slug } = await params;
 
   const resp = await fetch(
-    `${process.env.SUPABASE_URL}/rest/v1/blog?slug=eq.${encodeURIComponent(
-      slug
-    )}`,
+    `${
+      process.env.NEXT_PUBLIC_SUPABASE_URL
+    }/rest/v1/blog?slug=eq.${encodeURIComponent(slug)}`,
     {
       headers: {
         apiKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
