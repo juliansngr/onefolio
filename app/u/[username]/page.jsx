@@ -2,36 +2,43 @@ import { createClient } from "@/lib/supabase/serverClient";
 import DefaultPortfolio from "@/components/templates/DefaultPortfolio/DefaultPortfolio";
 import LightPortfolioPage from "@/components/templates/Light/Light";
 import CreativePortfolioPage from "@/components/templates/Creative/Creative";
+import { cache } from "react";
 
-export async function generateMetadata({ params }) {
+const getProfile = cache(async (username) => {
   const supabase = await createClient();
-
-  const { username } = await params;
-
   const { data: profile } = await supabase
     .from("profiles")
     .select("username")
     .eq("username", username)
     .single();
 
+  return profile;
+});
+
+export async function generateMetadata({ params }) {
+  const { username } = await params;
+  const profile = await getProfile(username);
+
+  if (!profile) {
+    return {
+      title: `${username} is still available`,
+      description: "This username is still available",
+    };
+  }
+
   return {
-    title: profile
-      ? `${profile.username} | Portfolio`
-      : "Profil nicht gefunden",
+    title: {
+      absolute: `${profile.username} | Portfolio`,
+    },
     description: "View my portfolio and get in touch with me",
   };
 }
 
 export default async function PortfolioPage({ params, searchParams }) {
+  const { username } = await params;
   const supabase = await createClient();
 
-  const { username } = await params;
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("username", username)
-    .single();
+  const profile = await getProfile(username);
 
   if (!profile) {
     return <div>Profile not found</div>;
