@@ -1,5 +1,4 @@
 import { ImageResponse } from "next/og";
-import { createClient } from "@/lib/supabase/serverClient";
 
 export const runtime = "edge";
 export const alt = "About Acme";
