@@ -66,6 +66,7 @@ const configurationItems = [
 
 export function AppSidebar({ user, isPro }) {
   const pathname = usePathname();
+
   return (
     <Sidebar>
       <SidebarHeader>

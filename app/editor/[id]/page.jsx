@@ -13,6 +13,12 @@ export default async function Page({ params }) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("user_id", user.id)
+    .single();
+
   const { data: portfolio } = await supabase
     .from("portfolios")
     .select("*")
@@ -43,7 +49,7 @@ export default async function Page({ params }) {
   }
 
   return (
-    <Sidebar user={user}>
+    <Sidebar user={user} isPro={profile.is_pro}>
       <EditorForm
         widgets={widgets}
         user={user}

@@ -10,8 +10,14 @@ export default async function Page() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("user_id", user.id)
+    .single();
+
   return (
-    <Sidebar user={user}>
+    <Sidebar user={user} isPro={profile.is_pro}>
       <PortfolioSelector />
     </Sidebar>
   );

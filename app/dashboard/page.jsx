@@ -66,7 +66,7 @@ export default async function Page() {
   }
 
   return (
-    <Sidebar user={user}>
+    <Sidebar user={user} isPro={profile.is_pro}>
       <div className="bg-muted min-h-svh p-6 md:p-10">
         <div className="flex flex-col w-full max-w-sm md:max-w-6xl mx-auto gap-8">
           <div className="flex flex-col gap-2 mb-6">
