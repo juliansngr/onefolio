@@ -1,23 +1,20 @@
 import { ImageResponse } from "next/og";
 
-// Image metadata
+export const runtime = "edge";
 export const alt = "About Acme";
-
 export const contentType = "image/png";
 
-// Image generation
 export default async function Image() {
   const fontData = await fetch(
-    new URL("../../../assets/PlusJakartaSans.ttf", import.meta.url)
+    new URL(`../../../assets/PlusJakartaSans.ttf`, import.meta.url)
   ).then((res) => res.arrayBuffer());
 
   const imageData = await fetch(
-    new URL("../../../assets/opengraph_empty.jpg", import.meta.url)
+    new URL(`../../../assets/opengraph_empty.jpg`, import.meta.url)
   ).then((res) => res.arrayBuffer());
 
   return new ImageResponse(
     (
-      // ImageResponse JSX element
       <div tw="flex flex-col w-full h-full items-center justify-center bg-white">
         <div tw="bg-gray-50 flex w-full">
           <div tw="flex flex-col md:flex-row w-full py-12 px-4 md:items-center justify-between p-8">
