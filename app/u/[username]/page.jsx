@@ -8,7 +8,7 @@ const getProfile = cache(async (username) => {
   const supabase = await createClient();
   const { data: profile } = await supabase
     .from("profiles")
-    .select("username")
+    .select("*")
     .eq("username", username)
     .single();
 
@@ -39,6 +39,8 @@ export default async function PortfolioPage({ params, searchParams }) {
   const supabase = await createClient();
 
   const profile = await getProfile(username);
+
+  console.log(profile);
 
   if (!profile) {
     return <div>Profile not found</div>;
