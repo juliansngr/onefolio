@@ -28,10 +28,8 @@ export default async function Image({ params }) {
 
   const BASE = "https://onefol.io";
   const [fontData, fontBold, bgData, logoData] = await Promise.all([
-    fetch(`${BASE}/assets/PlusJakartaSans-Medium.ttf`).then((r) =>
-      r.arrayBuffer()
-    ),
-    fetch(`${BASE}/assets/PlusJakartaSans-Bold.ttf`).then((r) =>
+    fetch(`${BASE}/assets/PlusJakartaSans.ttf`).then((r) => r.arrayBuffer()),
+    fetch(`${BASE}/assets/PlusJakartaSansBold.ttf`).then((r) =>
       r.arrayBuffer()
     ),
     fetch(`${BASE}/assets/opengraph_empty.jpg`).then((r) => r.arrayBuffer()),
