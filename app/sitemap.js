@@ -5,7 +5,7 @@ export default async function sitemap() {
 
   const { data: userNames } = await supabase.from("profiles").select("*");
 
-  //   const { data: blogPosts } = await supabase.from("blogs").select("*");
+  const { data: blogPosts } = await supabase.from("blog").select("slug");
 
   return [
     {
@@ -14,6 +14,10 @@ export default async function sitemap() {
     },
     ...userNames.map((user) => ({
       url: `${process.env.NEXT_PUBLIC_BASE_URL}/u/${user.username}`,
+      lastModified: new Date(),
+    })),
+    ...blogPosts.map((blog) => ({
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${blog.slug}`,
       lastModified: new Date(),
     })),
   ];
