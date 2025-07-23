@@ -40,7 +40,8 @@ export default async function Page() {
   const pageviews = stats[0]?.metrics[0] || 0;
   const count = stats[0]?.metrics[1] || 0;
   const visitDurationSeconds = stats[0]?.metrics[2] || 0;
-  const visitDuration = formatTime(visitDurationSeconds);
+  const averageVisitDuration = visitDurationSeconds / pageviews;
+  const visitDuration = formatTime(averageVisitDuration);
 
   // get the number of widgets in the portfolio
   const { data: portfolio } = await supabase
