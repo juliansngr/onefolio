@@ -18,8 +18,8 @@ import { createClient } from "@/lib/supabase/browserClient";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { getIcon, getImageSettings } from "@/lib/editorFunctions";
-import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Plus } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowLeft, Plus, Settings, Layout, Save, Grip } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
@@ -37,6 +37,7 @@ export default function EditorForm({
   const [widgetData, setWidgetData] = useState(widgets);
   const [isSaving, setIsSaving] = useState(false);
   const [isMainPortfolio, setIsMainPortfolio] = useState(isMain);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const supabase = createClient();
 
   const addWidget = (type, data_scheme) => {
@@ -304,130 +305,188 @@ export default function EditorForm({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <div className="bg-muted min-h-svh p-6 md:p-10">
-        <div className="w-full max-w-sm md:max-w-6xl mx-auto">
-          <div className="grid grid-cols-[30%_70%] gap-4 items-start">
-            <div className="flex flex-col gap-4 sticky top-6">
-              <div className="p-6 border-b border-gray-200">
-                <h1 className="text-xl font-semibold text-gray-900">
-                  Portfolio Editor
-                </h1>
-                <p className="text-sm text-gray-600 mt-1">
-                  Add widgets to build your portfolio
-                </p>
-              </div>
-              <div className="px-6 pb-6 border-b border-gray-200">
-                <h1 className="text-xl font-semibold text-gray-900">
-                  Settings
-                </h1>
-                <div className="flex items-center gap-2 mt-1">
-                  <p className="text-sm text-gray-600">Main portfolio</p>
-                  <Switch
-                    className="cursor-pointer relative"
-                    checked={isMainPortfolio}
-                    onCheckedChange={handleMainPortfolioChange}
-                  />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+        {/* Header */}
+        <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/60">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => redirect("/editor")}
+                  className="text-slate-600 hover:text-slate-900"
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back to Overview
+                </Button>
+                <div className="h-6 w-px bg-slate-300" />
+                <div>
+                  <h1 className="text-lg font-semibold text-slate-900">
+                    Portfolio Editor
+                  </h1>
+                  <p className="text-sm text-slate-500">
+                    Create your professional portfolio
+                  </p>
                 </div>
               </div>
-              {widgetList.map((template) => (
-                <Card
-                  className="cursor-pointer hover:shadow-md transition-shadow p-0"
-                  key={template.type}
-                  onClick={() => addWidget(template.type, template.data_scheme)}
-                >
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 bg-blue-50 rounded-lg">
-                        {getIcon(template.type)}
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-medium text-sm">{template.name}</h4>
-                        <p className="text-xs text-gray-600 mt-1">
-                          {template.description}
-                        </p>
-                      </div>
-                      <Plus className="w-4 h-4 text-gray-400" />
-                    </div>
+
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 text-sm text-slate-600">
+                  <Settings className="w-4 h-4" />
+                  <span>Main Portfolio</span>
+                  <Switch
+                    checked={isMainPortfolio}
+                    onCheckedChange={handleMainPortfolioChange}
+                    className="data-[state=checked]:bg-emerald-600"
+                  />
+                </div>
+                <div className="h-6 w-px bg-slate-300" />
+                <SaveButton onClick={saveWidgets} isSaving={isSaving} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="lg:grid lg:grid-cols-12 lg:gap-8">
+            {/* Sidebar */}
+            <div className="lg:col-span-3 mb-8 lg:mb-0">
+              <div className="sticky top-24 space-y-6">
+                {/* Widget Library */}
+                <Card className="bg-white/70 backdrop-blur-sm border-slate-200/60 shadow-lg shadow-slate-200/20">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-slate-900">
+                      <Layout className="w-5 h-5 text-indigo-600" />
+                      Widget Library
+                    </CardTitle>
+                    <p className="text-sm text-slate-600">
+                      Drag & drop widgets into your editor
+                    </p>
+                  </CardHeader>
+                  <CardContent className="space-y-3 px-4">
+                    {widgetList.map((template) => (
+                      <Card
+                        key={template.type}
+                        className="group cursor-pointer hover:shadow-md hover:shadow-indigo-200/30 transition-all duration-200 hover:scale-[1.02] border-slate-200/60 bg-white/80 py-0"
+                        onClick={() =>
+                          addWidget(template.type, template.data_scheme)
+                        }
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2.5 bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl group-hover:from-indigo-100 group-hover:to-indigo-200 transition-colors">
+                              {getIcon(template.type)}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-medium text-sm text-slate-900 truncate">
+                                {template.name}
+                              </h4>
+                              <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">
+                                {template.description}
+                              </p>
+                            </div>
+                            <div className="flex-shrink-0">
+                              <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
+                                <Plus className="w-4 h-4 text-indigo-600" />
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
                   </CardContent>
                 </Card>
-              ))}
-              <div className="flex flex-col gap-2">
-                <SaveButton onClick={saveWidgets} isSaving={isSaving} />
-                <Button
-                  variant="outline"
-                  className="w-full py-6 cursor-pointer"
-                  onClick={() => redirect("/editor")}
-                >
-                  <ArrowLeft className="w-4 h-4" /> Back to Overview
-                </Button>
               </div>
             </div>
 
             {/* Editor Area */}
-
-            <Droppable droppableId="widget-drop-area">
-              {(provided) => (
-                <div
-                  className="flex flex-col gap-4"
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  {widgetData.length === 0 ? (
-                    <div className="flex items-center justify-center h-full">
-                      <div className="text-center">
-                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                          <Plus className="w-8 h-8 text-gray-400" />
+            <div className="lg:col-span-9">
+              <Droppable droppableId="widget-drop-area">
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className={`min-h-[600px] rounded-2xl border-2 border-dashed transition-all duration-200 ${
+                      snapshot.isDraggingOver
+                        ? "border-indigo-400 bg-indigo-50/50"
+                        : "border-slate-300/60 bg-white/40"
+                    }`}
+                  >
+                    {widgetData.length === 0 ? (
+                      <div className="flex items-center justify-center h-96">
+                        <div className="text-center max-w-md mx-auto px-4">
+                          <div className="w-20 h-20 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <Layout className="w-10 h-10 text-indigo-600" />
+                          </div>
+                          <h3 className="text-xl font-semibold text-slate-900 mb-3">
+                            Start building your portfolio
+                          </h3>
+                          <p className="text-slate-600 mb-6 leading-relaxed">
+                            Add widgets from the sidebar to create your
+                            professional portfolio. You can arrange them with
+                            drag & drop.
+                          </p>
+                          <div className="flex items-center justify-center gap-2 text-sm text-slate-500">
+                            <Grip className="w-4 h-4" />
+                            <span>Drag & Drop enabled</span>
+                          </div>
                         </div>
-                        <h3 className="text-lg font-medium text-gray-900 mb-2">
-                          Start building your portfolio
-                        </h3>
-                        <p className="text-gray-600 mb-4">
-                          Add widgets from the sidebar to create your
-                          professional portfolio
-                        </p>
                       </div>
-                    </div>
-                  ) : (
-                    <>
-                      {widgetData.map((widget, index) => {
-                        const Component = widgetComponentMap[widget.type];
-                        if (!Component) return null;
+                    ) : (
+                      <div className="p-6 space-y-4">
+                        {widgetData.map((widget, index) => {
+                          const Component = widgetComponentMap[widget.type];
+                          if (!Component) return null;
 
-                        return (
-                          <Draggable
-                            draggableId={widget.id}
-                            index={index}
-                            key={widget.id}
-                          >
-                            {(provided, snapshot) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <Component
-                                  data={widget.content}
-                                  onChange={(content) =>
-                                    updateWidgetContent(index, content)
-                                  }
-                                  onDelete={() => deleteWidget(widget.id)}
-                                  dragHandle={provided.dragHandleProps}
-                                  isDragging={snapshot.isDragging}
-                                />
-                              </div>
-                            )}
-                          </Draggable>
-                        );
-                      })}
-                    </>
-                  )}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
+                          return (
+                            <Draggable
+                              draggableId={widget.id}
+                              index={index}
+                              key={widget.id}
+                            >
+                              {(provided, snapshot) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  className={`transform transition-all duration-200 ${
+                                    snapshot.isDragging
+                                      ? "rotate-3 scale-105 shadow-2xl shadow-indigo-200/40"
+                                      : "hover:shadow-lg hover:shadow-slate-200/60"
+                                  }`}
+                                >
+                                  <div className="bg-white/90 backdrop-blur-sm rounded-xl border border-slate-200/60 overflow-hidden">
+                                    <Component
+                                      data={widget.content}
+                                      onChange={(content) =>
+                                        updateWidgetContent(index, content)
+                                      }
+                                      onDelete={() => deleteWidget(widget.id)}
+                                      dragHandle={provided.dragHandleProps}
+                                      isDragging={snapshot.isDragging}
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                            </Draggable>
+                          );
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </Droppable>
+            </div>
           </div>
         </div>
-        <Toaster position="top-center" richColors />
+
+        <Toaster
+          position="top-center"
+          richColors
+          expand={true}
+          closeButton={true}
+        />
       </div>
     </DragDropContext>
   );
