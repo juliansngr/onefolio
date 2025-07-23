@@ -36,7 +36,7 @@ export default function SaveButton({ onClick, isSaving }) {
       type="submit"
       disabled={isSaving}
       onClick={handleClick}
-      className={`bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white shadow-lg shadow-indigo-200/50 transition-all duration-200 ${
+      className={`bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white shadow-lg shadow-indigo-200/50 transition-all duration-200 cursor-pointer ${
         isSaving
           ? "opacity-80 cursor-not-allowed"
           : "hover:scale-[1.02] active:scale-[0.98]"
