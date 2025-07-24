@@ -54,34 +54,46 @@ export default function MessageDisplay({ selectedMessage }) {
   return (
     <div className="lg:col-span-2">
       {selectedMessage ? (
-        <Card>
-          <CardHeader>
+        <Card className="bg-white/70 backdrop-blur-sm border-slate-200/60 shadow-lg shadow-slate-200/20">
+          <CardHeader className="border-b border-slate-200/60 bg-gradient-to-r from-slate-50/50 to-white/50">
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-4">
-                <div>
-                  <CardTitle className="text-xl">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <Mail className="w-6 h-6 text-emerald-600" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <CardTitle className="text-xl text-slate-900 mb-1">
                     {selectedMessage.sender}
                   </CardTitle>
-                  <p className="text-gray-600 mt-1">
+                  <p className="text-slate-600 mb-3 break-all">
                     {selectedMessage.sender_email}
                   </p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <Calendar className="w-4 h-4 text-gray-400" />
-                    <p className="text-sm text-gray-500">
-                      {new Date(selectedMessage.created_at).toLocaleString()}
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-slate-400" />
+                    <p className="text-sm text-slate-500">
+                      {new Date(selectedMessage.created_at).toLocaleString(
+                        "de-DE"
+                      )}
                     </p>
                   </div>
                 </div>
               </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="cursor-pointer">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="hover:bg-slate-100/60 text-slate-600"
+                  >
                     <MoreVertical className="w-4 h-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent
+                  align="end"
+                  className="bg-white/95 backdrop-blur-sm border-slate-200/60 shadow-xl"
+                >
                   <DropdownMenuItem
-                    className="cursor-pointer hover:bg-gray-50"
+                    className="hover:bg-emerald-50 focus:bg-emerald-50 text-emerald-700"
                     onClick={() =>
                       updateReplyStatus(selectedMessage.id, "replied")
                     }
@@ -90,7 +102,7 @@ export default function MessageDisplay({ selectedMessage }) {
                     Mark as Replied
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    className="cursor-pointer hover:bg-gray-50"
+                    className="hover:bg-orange-50 focus:bg-orange-50 text-orange-700"
                     onClick={() =>
                       updateReplyStatus(selectedMessage.id, "pending")
                     }
@@ -99,7 +111,7 @@ export default function MessageDisplay({ selectedMessage }) {
                     Mark as Needs Reply
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    className="cursor-pointer hover:bg-gray-50"
+                    className="hover:bg-slate-50 focus:bg-slate-50 text-slate-700"
                     onClick={() =>
                       updateReplyStatus(selectedMessage.id, "no-reply-needed")
                     }
@@ -107,10 +119,10 @@ export default function MessageDisplay({ selectedMessage }) {
                     <X className="w-4 h-4 mr-2" />
                     No Reply Needed
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
+                  <DropdownMenuSeparator className="bg-slate-200/60" />
                   {selectedMessage.is_archived ? (
                     <DropdownMenuItem
-                      className="cursor-pointer hover:bg-gray-50"
+                      className="hover:bg-slate-50 focus:bg-slate-50 text-slate-700"
                       onClick={() => unarchiveMessage(selectedMessage.id)}
                     >
                       <Archive className="w-4 h-4 mr-2" />
@@ -118,7 +130,7 @@ export default function MessageDisplay({ selectedMessage }) {
                     </DropdownMenuItem>
                   ) : (
                     <DropdownMenuItem
-                      className="cursor-pointer hover:bg-gray-50"
+                      className="hover:bg-slate-50 focus:bg-slate-50 text-slate-700"
                       onClick={() => archiveMessage(selectedMessage.id)}
                     >
                       <Archive className="w-4 h-4 mr-2" />
@@ -126,39 +138,49 @@ export default function MessageDisplay({ selectedMessage }) {
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuItem
-                    className="cursor-pointer hover:bg-gray-50 text-red-600"
+                    className="hover:bg-red-50 focus:bg-red-50 text-red-600"
                     onClick={() => deleteMessage(selectedMessage.id)}
                   >
-                    <Trash2 className="w-4 h-4 mr-2 text-red-600" />
+                    <Trash2 className="w-4 h-4 mr-2" />
                     Delete
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-sm font-medium">Status:</span>
+          <CardContent className="p-6 space-y-6">
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-medium text-slate-700">
+                Status:
+              </span>
               {getReplyStatusBadge(selectedMessage.status)}
             </div>
 
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h4 className="font-medium mb-2">Message:</h4>
-              <p className="whitespace-pre-wrap">{selectedMessage.message}</p>
+            <div className="bg-gradient-to-br from-slate-50/80 to-white/80 p-6 rounded-xl border border-slate-200/60">
+              <h4 className="font-semibold mb-3 text-slate-900 flex items-center gap-2">
+                <Mail className="w-4 h-4 text-slate-500" />
+                Message:
+              </h4>
+              <p className="whitespace-pre-wrap text-slate-700 leading-relaxed">
+                {selectedMessage.message}
+              </p>
             </div>
 
             <CopyEmailButton email={selectedMessage.sender_email} />
           </CardContent>
         </Card>
       ) : (
-        <Card>
+        <Card className="bg-white/70 backdrop-blur-sm border-slate-200/60 shadow-lg shadow-slate-200/20">
           <CardContent className="p-12 text-center">
-            <Mail className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <div className="w-20 h-20 bg-gradient-to-br from-slate-100 to-slate-200 rounded-3xl flex items-center justify-center mx-auto mb-6">
+              <Mail className="w-10 h-10 text-slate-400" />
+            </div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
               Select a message
             </h3>
-            <p className="text-gray-600">
-              Choose a message from the list to view its contents
+            <p className="text-slate-600 max-w-md mx-auto">
+              Choose a message from the list to view its contents and manage
+              your responses
             </p>
           </CardContent>
         </Card>

@@ -5,7 +5,6 @@ import ContactsSearch from "./ContactsSearch";
 import ContactsFilter from "./ContactsFilter";
 import ContactsList from "./ContactsList";
 import MessageDisplay from "./MessageDisplay";
-import { LoaderCircle } from "lucide-react";
 
 export default function ContactsSection({ messages, isLoading }) {
   const [selectedMessage, setSelectedMessage] = useState(null);
@@ -22,7 +21,7 @@ export default function ContactsSection({ messages, isLoading }) {
         message.message.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesFilter =
-        filterStatus === "all" ||
+        (filterStatus === "all" && !message.is_archived) ||
         (filterStatus === "unread" &&
           !message.is_read &&
           !message.is_archived) ||
@@ -72,18 +71,29 @@ export default function ContactsSection({ messages, isLoading }) {
   };
 
   return (
-    <>
-      <div className="flex flex-row gap-4">
-        <ContactsSearch
-          setSearchQuery={setSearchQuery}
-          searchQuery={searchQuery}
-        />
-        <ContactsFilter
-          setFilterStatus={setFilterStatus}
-          filterStatus={filterStatus}
-        />
+    <div className="space-y-6">
+      {/* Search and Filter Controls */}
+      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+          <ContactsSearch
+            setSearchQuery={setSearchQuery}
+            searchQuery={searchQuery}
+          />
+          <ContactsFilter
+            setFilterStatus={setFilterStatus}
+            filterStatus={filterStatus}
+          />
+        </div>
       </div>
-      <h3 className="font-semibold text-gray-900">{getFilterStatusText()}</h3>
+
+      {/* Results Header */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-semibold text-slate-900">
+          {getFilterStatusText()}
+        </h2>
+      </div>
+
+      {/* Messages Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <ContactsList
           displayedMessages={filteredMessages}
@@ -93,6 +103,6 @@ export default function ContactsSection({ messages, isLoading }) {
         />
         <MessageDisplay selectedMessage={selectedMessage} />
       </div>
-    </>
+    </div>
   );
 }
