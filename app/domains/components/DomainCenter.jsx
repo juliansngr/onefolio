@@ -35,32 +35,20 @@ import {
   Shield,
   Star,
   RefreshCw,
-  Settings,
   Trash2,
-  Plus,
 } from "lucide-react";
 import { addDomain, verifyDomain, deleteDomain } from "./actions";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
-const dnsRecords = [
+const vercelNameservers = [
   {
-    type: "A",
-    name: "@",
-    value: "216.198.79.1",
-    ttl: "3600",
+    nameserver: "ns1.vercel-dns.com",
+    description: "Primary nameserver",
   },
   {
-    type: "A",
-    name: "@",
-    value: "76.76.19.123",
-    ttl: "3600",
-  },
-  {
-    type: "TXT",
-    name: "_onefol-verification",
-    value: "onefol-verification=abc123def456ghi789",
-    ttl: "3600",
+    nameserver: "ns2.vercel-dns.com",
+    description: "Secondary nameserver",
   },
 ];
 
@@ -68,7 +56,6 @@ export default function DomainsPage({ domainData, className, isPro }) {
   const [domain, setDomain] = useState(domainData);
   const [newDomain, setNewDomain] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
 
   const handleAddDomain = async () => {
     if (!isPro) {
@@ -88,21 +75,6 @@ export default function DomainsPage({ domainData, className, isPro }) {
     }
 
     setDomain(response.insertedDomain);
-    setNewDomain("");
-    setIsLoading(false);
-  };
-
-  const handleReplaceDomain = async () => {
-    if (!isPro) {
-      toast.error("Upgrade to Pro to replace a custom domain");
-      return;
-    }
-    if (!newDomain.trim()) return;
-
-    setIsLoading(true);
-    await addDomain(newDomain);
-
-    setDomain(domainData[0]);
     setNewDomain("");
     setIsLoading(false);
   };
@@ -156,34 +128,35 @@ export default function DomainsPage({ domainData, className, isPro }) {
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
+    toast.success("Copied to clipboard!");
   };
 
   const getStatusBadge = (status) => {
     switch (status) {
       case "connected":
         return (
-          <Badge className="bg-green-100 text-green-800">
+          <Badge className="bg-emerald-100 text-emerald-800 border border-emerald-200">
             <CheckCircle className="w-3 h-3 mr-1" />
             Connected
           </Badge>
         );
       case "pending":
         return (
-          <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+          <Badge className="bg-amber-100 text-amber-800 border border-amber-200">
             <Clock className="w-3 h-3 mr-1" />
             Pending
           </Badge>
         );
       case "connecting":
         return (
-          <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+          <Badge className="bg-blue-100 text-blue-800 border border-blue-200">
             <RefreshCw className="w-3 h-3 mr-1" />
             Connecting
           </Badge>
         );
       case "failed":
         return (
-          <Badge variant="destructive">
+          <Badge className="bg-red-100 text-red-800 border border-red-200">
             <AlertCircle className="w-3 h-3 mr-1" />
             Failed
           </Badge>
@@ -194,17 +167,17 @@ export default function DomainsPage({ domainData, className, isPro }) {
   };
 
   return (
-    <div className={cn("space-y-6", className)}>
+    <div className={cn("space-y-8", className)}>
       {/* Pro Upgrade Alert */}
       {!isPro && (
-        <Alert className="border-purple-200 bg-purple-50">
+        <Alert className="border-purple-200/60 bg-purple-50/80 backdrop-blur-sm">
           <Star className="h-4 w-4 text-purple-600" />
           <AlertDescription className="text-purple-800">
             <strong>Upgrade to Pro</strong> to connect your custom domain and
             remove onefol.io branding.{" "}
             <Button
               variant="link"
-              className="p-0 h-auto text-purple-600 underline"
+              className="p-0 h-auto text-purple-600 underline hover:text-purple-700"
             >
               Upgrade now
             </Button>
@@ -213,138 +186,115 @@ export default function DomainsPage({ domainData, className, isPro }) {
       )}
 
       {/* Current Domain Status */}
-      <Card>
+      <Card className="bg-white/80 backdrop-blur-sm border-slate-200/60 shadow-lg shadow-slate-200/20 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/30">
         <CardHeader>
-          <CardTitle>Your Custom Domain</CardTitle>
-          <CardDescription>
+          <CardTitle className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center">
+              <Globe className="w-5 h-5 text-purple-600" />
+            </div>
+            <span className="text-slate-900">Your Custom Domain</span>
+          </CardTitle>
+          <CardDescription className="text-slate-600">
             {domain
-              ? "Manage your connected domain"
+              ? "Manage your connected domain and DNS configuration"
               : "Connect a custom domain to your portfolio"}
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6">
           {domain ? (
             <div className="space-y-6">
               {/* Domain Info */}
-              <div className="flex items-center justify-between p-4 border rounded-lg bg-gray-50">
-                <div className="flex items-center gap-4">
-                  <Globe className="w-10 h-10 text-gray-500" />
-                  <div>
-                    <h3 className="text-lg font-semibold">{domain.domain}</h3>
-                    <div className="flex items-center gap-4 mt-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-500">Status:</span>
-                        {getStatusBadge(domain.status)}
-                      </div>
+              <div className="p-6 border border-slate-200/60 rounded-xl bg-slate-50/80 backdrop-blur-sm">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-xl flex items-center justify-center">
+                      <Globe className="w-6 h-6 text-emerald-600" />
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Added {new Date(domain.added_at).toLocaleDateString()}
-                    </p>
+                    <div>
+                      <h3 className="text-lg font-semibold text-slate-900">
+                        {domain.domain}
+                      </h3>
+                      <div className="flex items-center gap-4 mt-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-slate-600">
+                            Status:
+                          </span>
+                          {getStatusBadge(domain.status)}
+                        </div>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Added{" "}
+                        {new Date(domain.added_at).toLocaleDateString("de-DE")}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  {domain.status === "connecting" ||
-                  domain.status === "failed" ? (
-                    <Button
-                      size="sm"
-                      onClick={handleVerifyDomain}
-                      disabled={isLoading}
-                      className="bg-blue-600 hover:bg-blue-700"
-                    >
-                      <RefreshCw
-                        className={`w-4 h-4 mr-2 ${
-                          isLoading ? "animate-spin" : ""
-                        }`}
-                      />
-                      {isLoading ? "Verifying..." : "Verify"}
-                    </Button>
-                  ) : (
-                    <Button size="sm" variant="outline" asChild>
-                      <a
-                        href={`https://${domain.domain}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                  <div className="flex items-center gap-2">
+                    {domain.status === "connecting" ||
+                    domain.status === "failed" ? (
+                      <Button
+                        size="sm"
+                        onClick={handleVerifyDomain}
+                        disabled={isLoading}
+                        className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg shadow-blue-200/50 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                       >
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        Visit
-                      </a>
-                    </Button>
-                  )}
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setShowSettings(true)}
-                  >
-                    <Settings className="w-4 h-4" />
-                  </Button>
+                        <RefreshCw
+                          className={`w-4 h-4 mr-2 ${
+                            isLoading ? "animate-spin" : ""
+                          }`}
+                        />
+                        {isLoading ? "Verifying..." : "Verify"}
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="bg-white/80 border-slate-300 hover:bg-slate-50 text-slate-700 hover:text-slate-900 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                        asChild
+                      >
+                        <a
+                          href={`https://${domain.domain}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          Visit
+                        </a>
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
 
               {/* Actions */}
-              <div className="flex items-center gap-3 pt-4 border-t">
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="outline">
-                      <Plus className="w-4 h-4 mr-2" />
-                      Replace Domain
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Replace Domain</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Enter a new domain to replace your current one. Your
-                        current domain ({domain.domain}) will be disconnected.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <div className="py-4">
-                      <Label htmlFor="replaceDomain">New Domain</Label>
-                      <Input
-                        id="replaceDomain"
-                        placeholder="newdomain.com"
-                        value={newDomain}
-                        onChange={(e) => setNewDomain(e.target.value)}
-                        className="mt-1"
-                      />
-                    </div>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel onClick={() => setNewDomain("")}>
-                        Cancel
-                      </AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={handleReplaceDomain}
-                        disabled={!newDomain.trim()}
-                      >
-                        Replace Domain
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-
+              <div className="flex items-center gap-3 pt-4 border-t border-slate-200/60">
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button
                       variant="outline"
-                      className="text-red-600 border-red-200 hover:bg-red-50 bg-transparent"
+                      className="bg-white/80 border-red-200 hover:bg-red-50 text-red-600 hover:text-red-700 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
                       Remove Domain
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent>
+                  <AlertDialogContent className="bg-white/95 backdrop-blur-md border-slate-200/60">
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Remove Domain</AlertDialogTitle>
-                      <AlertDialogDescription>
+                      <AlertDialogTitle className="text-slate-900">
+                        Remove Domain
+                      </AlertDialogTitle>
+                      <AlertDialogDescription className="text-slate-600">
                         Are you sure you want to remove {domain.domain}? Your
                         portfolio will go back to using the default onefol.io
                         subdomain. This action cannot be undone.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogCancel className="bg-white/80 border-slate-300 hover:bg-slate-50 text-slate-700 hover:text-slate-900">
+                        Cancel
+                      </AlertDialogCancel>
                       <AlertDialogAction
                         onClick={handleDeleteDomain}
-                        className="bg-red-600 hover:bg-red-700"
+                        className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white"
                       >
                         Remove Domain
                       </AlertDialogAction>
@@ -356,26 +306,33 @@ export default function DomainsPage({ domainData, className, isPro }) {
           ) : (
             /* No Domain Connected */
             <div className="text-center py-12">
-              <Globe className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
+              <div className="w-20 h-20 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Globe className="w-10 h-10 text-slate-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">
                 No custom domain connected
               </h3>
-              <p className="text-gray-600 mb-6">
+              <p className="text-slate-600 mb-8 max-w-md mx-auto">
                 Connect your own domain to make your portfolio accessible at
-                your custom URL
+                your custom URL and enhance your professional presence
               </p>
 
               <div className="max-w-md mx-auto space-y-4">
                 <div>
-                  <Label htmlFor="domain">Domain Name</Label>
+                  <Label
+                    htmlFor="domain"
+                    className="text-slate-700 font-medium"
+                  >
+                    Domain Name
+                  </Label>
                   <Input
                     id="domain"
                     placeholder="example.com or www.example.com"
                     value={newDomain}
                     onChange={(e) => setNewDomain(e.target.value)}
-                    className="mt-1"
+                    className="mt-2 bg-white/80 border-slate-200 focus:border-slate-400 focus:ring-slate-400"
                   />
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-slate-500 mt-2">
                     Enter your domain without http:// or https://
                   </p>
                 </div>
@@ -383,7 +340,7 @@ export default function DomainsPage({ domainData, className, isPro }) {
                 <Button
                   onClick={handleAddDomain}
                   disabled={isLoading || !newDomain.trim()}
-                  className="w-full"
+                  className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg shadow-purple-200/50 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                 >
                   {isLoading ? (
                     <>
@@ -400,17 +357,18 @@ export default function DomainsPage({ domainData, className, isPro }) {
               </div>
 
               <div className="mt-8">
-                <Alert>
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>
+                <Alert className="border-blue-200/60 bg-blue-50/80 backdrop-blur-sm">
+                  <AlertCircle className="h-4 w-4 text-blue-600" />
+                  <AlertDescription className="text-blue-800">
                     <strong>Before connecting your domain:</strong>
-                    <ul className="list-disc list-inside mt-2 space-y-1 text-left">
+                    <ul className="list-disc list-inside mt-3 space-y-1 text-left">
                       <li>
-                        Make sure you own the domain and have access to DNS
-                        settings
+                        Make sure you own the domain and have access to your
+                        registrar
                       </li>
                       <li>
-                        You'll need to add DNS records to verify ownership
+                        You'll need to change your domain's nameservers to
+                        Vercel
                       </li>
                       <li>
                         SSL certificate will be automatically generated after
@@ -427,80 +385,113 @@ export default function DomainsPage({ domainData, className, isPro }) {
 
       {/* DNS Setup Instructions */}
       {domain && (
-        <Card>
+        <Card className="bg-white/80 backdrop-blur-sm border-slate-200/60 shadow-lg shadow-slate-200/20 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/30">
           <CardHeader>
-            <CardTitle>DNS Configuration</CardTitle>
-            <CardDescription>
+            <CardTitle className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center">
+                <Shield className="w-5 h-5 text-blue-600" />
+              </div>
+              <span className="text-slate-900">DNS Configuration</span>
+            </CardTitle>
+            <CardDescription className="text-slate-600">
               {domain
-                ? `Add these DNS records to verify ownership of ${domain.domain}`
-                : "DNS records you'll need to add after connecting your domain"}
+                ? `Point ${domain.domain} to Vercel's nameservers to complete the setup`
+                : "Configure your domain's nameservers to point to Vercel"}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <Alert>
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>
-                <strong>Important:</strong> DNS changes can take up to 48 hours
-                to propagate worldwide. Most changes are visible within 1-2
-                hours.
+            <Alert className="border-amber-200/60 bg-amber-50/80 backdrop-blur-sm">
+              <AlertCircle className="h-4 w-4 text-amber-600" />
+              <AlertDescription className="text-amber-800">
+                <strong>Important:</strong> Nameserver changes can take up to 48
+                hours to propagate worldwide. Most changes are visible within
+                2-6 hours.
               </AlertDescription>
             </Alert>
 
             <div>
-              <h3 className="font-semibold mb-4">Required DNS Records</h3>
+              <h3 className="font-semibold mb-4 text-slate-900">
+                Vercel Nameservers
+              </h3>
               <div className="space-y-4">
-                {dnsRecords.map((record, index) => (
-                  <div key={index} className="p-4 border rounded-lg">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                      <div>
-                        <Label className="text-xs text-gray-500">TYPE</Label>
-                        <p className="font-mono text-sm">{record.type}</p>
-                      </div>
-                      <div>
-                        <Label className="text-xs text-gray-500">NAME</Label>
-                        <p className="font-mono text-sm">{record.name}</p>
-                      </div>
-                      <div className="flex-1">
-                        <Label className="text-xs text-gray-500">VALUE</Label>
-                        <div className="flex items-center gap-2">
-                          <p className="font-mono text-sm truncate">
-                            {record.value}
+                <div className="p-6 border border-slate-200/60 rounded-xl bg-slate-50/80 backdrop-blur-sm">
+                  <p className="text-sm text-slate-600 mb-4">
+                    Change your domain's nameservers at your domain registrar to
+                    the following Vercel nameservers:
+                  </p>
+                  <div className="space-y-3">
+                    {vercelNameservers.map((ns, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 border border-slate-200/40 rounded-lg bg-white/60"
+                      >
+                        <div className="flex-1">
+                          <p className="font-mono text-sm font-semibold text-slate-900">
+                            {ns.nameserver}
                           </p>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => copyToClipboard(record.value)}
-                          >
-                            <Copy className="w-3 h-3" />
-                          </Button>
+                          <p className="text-xs text-slate-500 mt-1">
+                            {ns.description}
+                          </p>
                         </div>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="hover:bg-slate-100 text-slate-600 hover:text-slate-800 transition-all duration-200"
+                          onClick={() => copyToClipboard(ns.nameserver)}
+                        >
+                          <Copy className="w-3 h-3" />
+                        </Button>
                       </div>
-                      <div>
-                        <Label className="text-xs text-gray-500">TTL</Label>
-                        <p className="font-mono text-sm">{record.ttl}</p>
-                      </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                <div className="p-4 bg-gradient-to-br from-blue-50/80 to-blue-100/50 rounded-xl border border-blue-200/60 backdrop-blur-sm">
+                  <h4 className="font-medium text-blue-900 mb-2">
+                    Steps to update nameservers:
+                  </h4>
+                  <ol className="text-sm text-blue-800 space-y-1 list-decimal list-inside">
+                    <li>
+                      Log in to your domain registrar (GoDaddy, Namecheap, etc.)
+                    </li>
+                    <li>Find the "Nameservers" or "DNS Management" section</li>
+                    <li>
+                      Replace the existing nameservers with the Vercel
+                      nameservers above
+                    </li>
+                    <li>
+                      Save the changes and wait for propagation (2-48 hours)
+                    </li>
+                  </ol>
+                </div>
               </div>
             </div>
 
-            <Separator />
+            <Separator className="bg-slate-200/60" />
 
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-blue-900 mb-2">Need Help?</h4>
-              <p className="text-sm text-blue-800 mb-3">
-                Setting up DNS records can be tricky. We've created step-by-step
-                guides for popular providers.
+            <div className="p-6 bg-gradient-to-br from-blue-50/80 to-blue-100/50 rounded-xl border border-blue-200/60 backdrop-blur-sm">
+              <h4 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
+                <Shield className="w-4 h-4" />
+                Need Help?
+              </h4>
+              <p className="text-sm text-blue-800 mb-4">
+                Changing nameservers varies by registrar. We've created
+                step-by-step guides for popular domain providers.
               </p>
-              <Button
-                size="sm"
-                variant="outline"
-                className="border-blue-200 text-blue-700 bg-transparent"
-              >
-                <ExternalLink className="w-4 h-4 mr-2" />
-                View DNS Setup Guides
-              </Button>
+              <div className="flex items-center gap-3">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled
+                  className="bg-white/60 border-blue-200/60 text-blue-600/60 cursor-not-allowed"
+                >
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  View Nameserver Guides
+                </Button>
+                <Badge className="bg-amber-100 text-amber-800 border border-amber-200 px-2 py-1">
+                  Coming Soon
+                </Badge>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -508,32 +499,39 @@ export default function DomainsPage({ domainData, className, isPro }) {
 
       {/* Domain Examples */}
       {!domain && (
-        <Card>
+        <Card className="bg-white/80 backdrop-blur-sm border-slate-200/60 shadow-lg shadow-slate-200/20 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/30 py-0">
           <CardHeader>
-            <CardTitle>Domain Format Examples</CardTitle>
+            <CardTitle className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-xl flex items-center justify-center">
+                <CheckCircle className="w-5 h-5 text-emerald-600" />
+              </div>
+              <span className="text-slate-900">Domain Format Examples</span>
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                <p className="font-medium text-green-800 mb-2">
-                  ✓ Correct Format
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-6 bg-gradient-to-br from-emerald-50/80 to-emerald-100/50 rounded-xl border border-emerald-200/60 backdrop-blur-sm">
+                <p className="font-semibold text-emerald-800 mb-4 flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4" />
+                  Correct Format
                 </p>
-                <div className="space-y-1 text-sm text-green-700">
-                  <p>example.com</p>
-                  <p>www.example.com</p>
-                  <p>portfolio.example.com</p>
-                  <p>john.dev</p>
+                <div className="space-y-2 text-sm text-emerald-700">
+                  <p className="font-mono">example.com</p>
+                  <p className="font-mono">www.example.com</p>
+                  <p className="font-mono">portfolio.example.com</p>
+                  <p className="font-mono">john.dev</p>
                 </div>
               </div>
-              <div className="p-4 bg-red-50 rounded-lg border border-red-200">
-                <p className="font-medium text-red-800 mb-2">
-                  ✗ Incorrect Format
+              <div className="p-6 bg-gradient-to-br from-red-50/80 to-red-100/50 rounded-xl border border-red-200/60 backdrop-blur-sm">
+                <p className="font-semibold text-red-800 mb-4 flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4" />
+                  Incorrect Format
                 </p>
-                <div className="space-y-1 text-sm text-red-700">
-                  <p>https://example.com</p>
-                  <p>http://www.example.com</p>
-                  <p>example.com/portfolio</p>
-                  <p>example.com:3000</p>
+                <div className="space-y-2 text-sm text-red-700">
+                  <p className="font-mono">https://example.com</p>
+                  <p className="font-mono">http://www.example.com</p>
+                  <p className="font-mono">example.com/portfolio</p>
+                  <p className="font-mono">example.com:3000</p>
                 </div>
               </div>
             </div>
