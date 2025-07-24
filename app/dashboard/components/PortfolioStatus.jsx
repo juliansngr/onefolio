@@ -39,9 +39,9 @@ export default function PortfolioStatus({
   const statusColor = getStatusColor(progress);
 
   return (
-    <Card className="bg-white/80 backdrop-blur-sm border-slate-200/60 shadow-lg shadow-slate-200/20 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/30">
+    <Card className="bg-white/80 backdrop-blur-sm border-slate-200/60 shadow-lg shadow-slate-200/20 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/30 py-0">
       {/* Header with gradient background */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden py-6">
         <div
           className={`absolute inset-0 bg-gradient-to-r ${
             statusColor === "emerald"
@@ -95,7 +95,7 @@ export default function PortfolioStatus({
         </CardHeader>
       </div>
 
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 pb-6">
         {/* Progress Section */}
         <div className="space-y-3">
           <div className="flex justify-between items-center text-sm">
@@ -126,7 +126,11 @@ export default function PortfolioStatus({
               }`}
             />
             {progress >= 100 && (
-              <CheckCircle className="absolute -right-1 -top-0.5 w-4 h-4 text-emerald-600" />
+              <div className="absolute -right-2 top-1/2 -translate-y-1/2 z-10">
+                <div className="w-6 h-6 bg-white rounded-full shadow-lg shadow-emerald-200/50 flex items-center justify-center border-2 border-emerald-200">
+                  <CheckCircle className="w-4 h-4 text-emerald-600 fill-emerald-100" />
+                </div>
+              </div>
             )}
           </div>
           <div className="flex items-center justify-center gap-2 text-xs text-slate-500">
