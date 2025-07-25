@@ -28,8 +28,18 @@ export function CreateTrackingLink({ isPro }) {
       return;
     }
     startTransition(async () => {
-      const trackingLink = await createTrackingLink(formData);
-      setCreatedTrackingLink(trackingLink);
+      const result = await createTrackingLink(formData);
+
+      // Handle error response from server action
+      if (result && result.error) {
+        toast.error(result.error);
+        return;
+      }
+
+      // Handle successful response
+      if (result && typeof result === "string") {
+        setCreatedTrackingLink(result);
+      }
     });
   };
 

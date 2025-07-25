@@ -1,24 +1,22 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/serverClient";
+import { checkProStatus } from "@/lib/proCheck";
 
 export async function createTrackingLink(formData) {
-  const supabase = await createClient();
+  // Pro-Status-Überprüfung
+  const { user, profile, isPro, error: proError } = await checkProStatus();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const { data: profile, error: profileError } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("user_id", user.id)
-    .single();
-
-  if (profileError) {
-    console.error(profileError);
-    return;
+  if (proError) {
+    console.error("Pro status error:", proError);
+    return { error: proError };
   }
+
+  if (!isPro) {
+    return { error: "Pro subscription required." };
+  }
+
+  const supabase = await createClient();
 
   const recipient = formData.get("tracking-link-recipient");
 

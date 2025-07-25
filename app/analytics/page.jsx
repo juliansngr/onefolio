@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/serverClient";
 import StatisticsPage from "./components/StatisticsPage";
 import GetPremium from "../dashboard/components/GetPremium";
 import { BarChart3 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default async function Page() {
   const supabase = await createClient();
@@ -43,7 +44,14 @@ export default async function Page() {
 
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="relative">
+          <div
+            className={cn(
+              "relative",
+              !profile.is_pro
+                ? "h-[calc(100vh-200px)] overflow-hidden"
+                : "min-h-[calc(100vh-200px)]"
+            )}
+          >
             {!profile.is_pro && (
               <div className="absolute inset-0 z-10 flex flex-col justify-center items-center bg-white/60 backdrop-blur-sm rounded-2xl border border-slate-200/60">
                 <GetPremium />

@@ -1,30 +1,18 @@
-import { createClient } from "@/lib/supabase/serverClient";
 import { getPlausibleStats } from "@/lib/getPlausibleStats";
 import { NextResponse } from "next/server";
+import { requireProAccess } from "@/lib/proCheck";
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const range = searchParams.get("range") ?? "7d";
 
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return new Response("Unauthorized", { status: 401 });
+  // Pro-Status-Überprüfung
+  const authResult = await requireProAccess();
+  if (authResult instanceof Response) {
+    return authResult;
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("user_id", user.id)
-    .single();
-
-  if (!profile) {
-    return new Response("Profile not found", { status: 404 });
-  }
+  const { profile } = authResult;
 
   try {
     // Get comprehensive stats including time-series and breakdown data

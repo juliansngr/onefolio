@@ -3,20 +3,26 @@
 import { createClient } from "@/lib/supabase/serverClient";
 import { Vercel } from "@vercel/sdk";
 import { supabaseAdmin } from "@/lib/supabase/supabaseAdmin";
+import { checkProStatus } from "@/lib/proCheck";
 
 const VERCEL_TOKEN = process.env.VERCEL_TOKEN;
 const VERCEL_PROJECT_ID = process.env.VERCEL_PROJECT_ID;
 const VERCEL_TEAM_ID = process.env.VERCEL_TEAM_ID;
 
 export async function addDomain(domain) {
+  // Pro-Status-Überprüfung
+  const { user, profile, isPro, error: proError } = await checkProStatus();
+
+  if (proError) {
+    return { error: { status: 401, message: proError } };
+  }
+
+  if (!isPro) {
+    return { error: { status: 403, message: "Pro subscription required." } };
+  }
+
   const supabase = await createClient();
   const vercel = new Vercel({ bearerToken: VERCEL_TOKEN });
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return { error: { status: 401, message: "Not logged in." } };
 
   if (!isValidDomain(domain))
     return { error: { status: 400, message: "Invalid domain format." } };
@@ -167,12 +173,19 @@ function arraysMatch(a = [], b = []) {
 }
 
 export async function verifyDomain() {
+  // Pro-Status-Überprüfung
+  const { user, profile, isPro, error: proError } = await checkProStatus();
+
+  if (proError) {
+    return { error: { status: 401, message: proError } };
+  }
+
+  if (!isPro) {
+    return { error: { status: 403, message: "Pro subscription required." } };
+  }
+
   const supabase = await createClient();
   const vercel = new Vercel({ bearerToken: VERCEL_TOKEN });
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
   const { data: domainData, error: domainError } = await supabase
     .from("custom_domains")
@@ -216,12 +229,19 @@ export async function verifyDomain() {
 }
 
 export async function deleteDomain() {
+  // Pro-Status-Überprüfung
+  const { user, profile, isPro, error: proError } = await checkProStatus();
+
+  if (proError) {
+    return { error: { status: 401, message: proError } };
+  }
+
+  if (!isPro) {
+    return { error: { status: 403, message: "Pro subscription required." } };
+  }
+
   const supabase = await createClient();
   const vercel = new Vercel({ bearerToken: VERCEL_TOKEN });
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
   const { data: domainData, error: domainError } = await supabase
     .from("custom_domains")

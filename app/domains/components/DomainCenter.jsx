@@ -59,7 +59,7 @@ export default function DomainsPage({ domainData, className, isPro }) {
 
   const handleAddDomain = async () => {
     if (!isPro) {
-      toast.error("Upgrade to Pro to add a custom domain");
+      toast.error("Upgrade to Pro required for Custom Domain");
       return;
     }
 
@@ -69,7 +69,12 @@ export default function DomainsPage({ domainData, className, isPro }) {
     const response = await addDomain(newDomain);
 
     if (response.error) {
-      toast.error(response.error.message);
+      // Check if it's a Pro-required error
+      if (response.error.status === 403) {
+        toast.error("Pro subscription required for Custom Domains");
+      } else {
+        toast.error(response.error.message);
+      }
       setIsLoading(false);
       return;
     }
@@ -81,7 +86,7 @@ export default function DomainsPage({ domainData, className, isPro }) {
 
   const handleVerifyDomain = async () => {
     if (!isPro) {
-      toast.error("Upgrade to Pro to verify a custom domain");
+      toast.error("Upgrade to Pro required for Domain verification");
       return;
     }
     if (!domain) return;
@@ -90,7 +95,12 @@ export default function DomainsPage({ domainData, className, isPro }) {
     const response = await verifyDomain();
 
     if (response.error) {
-      toast.error(response.error.message);
+      // Check if it's a Pro-required error
+      if (response.error.status === 403) {
+        toast.error("Pro subscription required for Domain verification");
+      } else {
+        toast.error(response.error.message);
+      }
       setIsLoading(false);
       return;
     }
@@ -108,7 +118,7 @@ export default function DomainsPage({ domainData, className, isPro }) {
 
   const handleDeleteDomain = async () => {
     if (!isPro) {
-      toast.error("Upgrade to Pro to delete a custom domain");
+      toast.error("Upgrade to Pro required to delete Domain");
       return;
     }
     if (!domain) return;
@@ -117,7 +127,12 @@ export default function DomainsPage({ domainData, className, isPro }) {
     const response = await deleteDomain();
 
     if (response.error) {
-      toast.error(response.error.message);
+      // Check if it's a Pro-required error
+      if (response.error.status === 403) {
+        toast.error("Pro subscription required to delete Domain");
+      } else {
+        toast.error(response.error.message);
+      }
       setIsLoading(false);
       return;
     }

@@ -60,7 +60,36 @@ export default function StatisticsPage({ className }) {
       setIsLoading(true);
       try {
         const response = await fetch(`/api/plausible?range=${timeRange}`);
+
+        // Check for Pro-required error
+        if (response.status === 403) {
+          console.error("Pro subscription required for analytics");
+          setData({
+            pageViews: 0,
+            visitors: 0,
+            avgVisitDuration: 0,
+            chartData: [],
+            deviceData: [],
+            browserData: [],
+            countryData: [],
+            sourceData: [],
+            pageData: [],
+          });
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const json = await response.json();
+
+        // Check if the response contains an error
+        if (json.error) {
+          console.error("API returned error:", json.error);
+          throw new Error(json.error);
+        }
+
         setData(json);
       } catch (error) {
         console.error("Failed to fetch analytics data:", error);
