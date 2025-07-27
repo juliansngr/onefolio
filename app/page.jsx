@@ -324,12 +324,13 @@ export default function Home() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Step 1 */}
-              <Card className="bg-white/70 backdrop-blur-sm border-slate-200/60 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 relative group">
-                <div className="absolute -top-4 left-6 transition-transform duration-300 group-hover:scale-110">
+              <Card className="bg-white/70 backdrop-blur-sm border-slate-200/60 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 relative group p-0">
+                <div className="absolute -top-4 left-6 transition-transform duration-300 group-hover:scale-110 z-10">
                   <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
                     1
                   </div>
                 </div>
+
                 <CardContent className="p-8 pt-10">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
                     <Layout className="w-6 h-6 text-blue-600" />
