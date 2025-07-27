@@ -11,7 +11,7 @@ const VERCEL_TEAM_ID = process.env.VERCEL_TEAM_ID;
 
 export async function addDomain(domain) {
   // Pro-Status-Überprüfung
-  const { user, profile, isPro, error: proError } = await checkProStatus();
+  const { user, isPro, error: proError } = await checkProStatus();
 
   if (proError) {
     return { error: { status: 401, message: proError } };
@@ -174,7 +174,7 @@ function arraysMatch(a = [], b = []) {
 
 export async function verifyDomain() {
   // Pro-Status-Überprüfung
-  const { user, profile, isPro, error: proError } = await checkProStatus();
+  const { user, isPro, error: proError } = await checkProStatus();
 
   if (proError) {
     return { error: { status: 401, message: proError } };
@@ -230,7 +230,7 @@ export async function verifyDomain() {
 
 export async function deleteDomain() {
   // Pro-Status-Überprüfung
-  const { user, profile, isPro, error: proError } = await checkProStatus();
+  const { user, isPro, error: proError } = await checkProStatus();
 
   if (proError) {
     return { error: { status: 401, message: proError } };
