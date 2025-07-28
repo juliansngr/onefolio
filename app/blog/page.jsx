@@ -302,7 +302,7 @@ export default function BlogPage() {
                       href={`/blog/${post.slug}`}
                       className="group block"
                     >
-                      <Card className="h-full bg-white/70 backdrop-blur-sm border-slate-200/60 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 group">
+                      <Card className="h-full bg-white/70 backdrop-blur-sm border-slate-200/60 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 group pt-0">
                         {post.cover_image && (
                           <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
                             <Image

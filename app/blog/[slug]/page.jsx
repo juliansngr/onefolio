@@ -53,8 +53,6 @@ export default async function BlogPost({ params }) {
   const { slug } = await params;
   const post = await getBlogPost(slug);
 
-  console.log("post", post);
-
   if (!post) {
     notFound();
   }
