@@ -38,7 +38,9 @@ export async function loginWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: "https://onefol.io/auth/callback",
+      redirectTo: `https://onefol.io/auth/callback?next=${encodeURIComponent(
+        "/setup"
+      )}`,
     },
   });
 
