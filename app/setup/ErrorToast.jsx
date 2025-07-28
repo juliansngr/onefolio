@@ -2,6 +2,7 @@
 
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function ErrorToast({ error }) {
   useEffect(() => {
@@ -25,5 +26,5 @@ export default function ErrorToast({ error }) {
     }
   }, [error]);
 
-  return null;
+  return <Toaster />;
 }

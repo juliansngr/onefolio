@@ -1,6 +1,5 @@
 import SetupCard from "@/components/setup-card";
 import ErrorToast from "./ErrorToast";
-import { Toaster } from "@/components/ui/sonner";
 import { Settings } from "lucide-react";
 
 export default async function SetupPage({ searchParams }) {
@@ -36,11 +35,10 @@ export default async function SetupPage({ searchParams }) {
         <div className="flex justify-center">
           <div className="w-full max-w-md">
             <SetupCard />
-            {error && <ErrorToast error={error} />}
+            <ErrorToast error={error} />
           </div>
         </div>
       </div>
-      <Toaster />
     </div>
   );
 }
