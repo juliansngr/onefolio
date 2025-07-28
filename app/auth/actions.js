@@ -32,6 +32,23 @@ export async function login(formData) {
   redirect("/dashboard");
 }
 
+export async function loginWithGoogle() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: "https://onefol.io/auth/callback",
+    },
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  redirect(data.url);
+}
+
 export async function signup(formData) {
   const supabase = await createClient();
 
@@ -78,5 +95,5 @@ export async function logout() {
   }
 
   revalidatePath("/", "layout");
-  redirect("/login");
+  redirect("/auth/login");
 }
