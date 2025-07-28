@@ -323,24 +323,28 @@ export default async function BlogPost({ params }) {
               </span>
             </div>
             <nav className="flex flex-wrap justify-center gap-x-8 gap-y-2 mb-6 md:mb-0">
-              {["Features", "Pricing", "Blog", "Sign In"].map((item, index) => (
-                <Link
-                  key={index}
-                  href={
-                    item === "Sign In"
-                      ? "/auth/login"
-                      : item === "Features"
-                      ? "/#features"
-                      : item === "Pricing"
-                      ? "/#pricing"
-                      : "/blog"
-                  }
-                  className="text-sm text-slate-600 hover:text-slate-900 transition-all duration-300 hover:scale-105 relative group"
-                >
-                  {item}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              ))}
+              {["Features", "Pricing", "Blog", "Imprint", "Sign In"].map(
+                (item, index) => (
+                  <Link
+                    key={index}
+                    href={
+                      item === "Sign In"
+                        ? "/auth/login"
+                        : item === "Features"
+                        ? "/#features"
+                        : item === "Pricing"
+                        ? "/#pricing"
+                        : item === "Imprint"
+                        ? "/imprint"
+                        : "/blog"
+                    }
+                    className="text-sm text-slate-600 hover:text-slate-900 transition-all duration-300 hover:scale-105 relative group"
+                  >
+                    {item}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                  </Link>
+                )
+              )}
             </nav>
             <div className="text-sm text-slate-500">
               © {new Date().getFullYear()} onefolio. All rights reserved.

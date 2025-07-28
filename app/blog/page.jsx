@@ -388,22 +388,26 @@ export default function BlogPage() {
               </span>
             </div>
             <nav className="flex flex-wrap justify-center gap-x-8 gap-y-2 mb-6 md:mb-0">
-              {["Home", "Blog", "Features", "Pricing"].map((item, index) => (
-                <Link
-                  key={index}
-                  href={
-                    item === "Home"
-                      ? "/"
-                      : item === "Blog"
-                      ? "/blog"
-                      : `/#${item.toLowerCase()}`
-                  }
-                  className="text-sm text-slate-600 hover:text-slate-900 transition-all duration-300 hover:scale-105 relative group"
-                >
-                  {item}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-600 transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              ))}
+              {["Home", "Blog", "Features", "Pricing", "Imprint"].map(
+                (item, index) => (
+                  <Link
+                    key={index}
+                    href={
+                      item === "Home"
+                        ? "/"
+                        : item === "Blog"
+                        ? "/blog"
+                        : item === "Imprint"
+                        ? "/imprint"
+                        : `/#${item.toLowerCase()}`
+                    }
+                    className="text-sm text-slate-600 hover:text-slate-900 transition-all duration-300 hover:scale-105 relative group"
+                  >
+                    {item}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-600 transition-all duration-300 group-hover:w-full"></span>
+                  </Link>
+                )
+              )}
             </nav>
             <div className="text-sm text-slate-500">
               © {new Date().getFullYear()} onefolio. All rights reserved.
