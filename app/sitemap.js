@@ -1,5 +1,7 @@
 import { createClient } from "@/lib/supabase/serverClient";
 
+export const revalidate = 86400; // 24 hours
+
 export default async function sitemap() {
   const supabase = await createClient();
 
