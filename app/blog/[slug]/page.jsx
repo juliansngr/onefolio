@@ -143,7 +143,7 @@ export default async function BlogPost({ params }) {
       </header>
 
       <main className="flex-1 relative z-10">
-        <article className="mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl py-8">
+        <article className="mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl py-8">
           {/* Back Button */}
           <div className="mb-8">
             <Link
@@ -273,7 +273,7 @@ export default async function BlogPost({ params }) {
 
         {/* Call to Action */}
         <section className="bg-white/50 backdrop-blur-sm py-16 mt-16 border-t border-slate-200/60">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl text-center">
             <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-12 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all duration-500">
               <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
                 Ready for Your Own Portfolio?
