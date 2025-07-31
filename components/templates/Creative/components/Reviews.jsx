@@ -1,5 +1,33 @@
 import { Star } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useState } from "react";
+
+// Review Text Component with truncation and expand functionality
+const ReviewText = ({ text, maxLength = 100 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  if (!text) return null;
+
+  const shouldTruncate = text.length > maxLength;
+  const displayText = isExpanded ? text : text.slice(0, maxLength);
+
+  return (
+    <div className="text-gray-700 leading-relaxed italic text-lg mb-6">
+      <p className="whitespace-pre-line">
+        "{displayText}
+        {!isExpanded && shouldTruncate && "..."}"{" "}
+        {shouldTruncate && (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-blue-600 hover:text-blue-800 font-medium text-sm ml-1"
+          >
+            {isExpanded ? "Show less" : "Show more"}
+          </button>
+        )}
+      </p>
+    </div>
+  );
+};
 
 const StarDisplay = ({ rating, maxStars = 5 }) => {
   const getStarFill = (starIndex, currentRating) => {
@@ -75,9 +103,7 @@ export default function Reviews({ data, className }) {
                 <div className="space-y-6 pt-4">
                   <StarDisplay rating={review.rating} />
 
-                  <p className="text-gray-700 leading-relaxed italic text-lg">
-                    "{review.review}"
-                  </p>
+                  <ReviewText text={review.review} />
 
                   <div className="flex items-center gap-4">
                     <Avatar className="w-14 h-14 ring-4 ring-gray-100">
