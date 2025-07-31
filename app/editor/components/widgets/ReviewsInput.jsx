@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/tooltip";
 import { useState } from "react";
 
-// Star Rating Component with Half-Star Support
 const StarRating = ({ rating, onRatingChange, maxStars = 5 }) => {
   const [hoverRating, setHoverRating] = useState(0);
 
@@ -54,7 +53,6 @@ const StarRating = ({ rating, onRatingChange, maxStars = 5 }) => {
         const isHovering = hoverRating > 0;
         const starValue = index + 1;
 
-        // Determine colors based on state
         let starColors;
         if (fillType === "full") {
           starColors = "fill-yellow-400 text-yellow-400";
@@ -101,6 +99,7 @@ export default function ReviewsInput({
   isDragging,
 }) {
   const [previewUrls, setPreviewUrls] = useState(data.files || []);
+  console.log("previewUrls", previewUrls);
   const addReview = () => {
     onChange({
       ...data,
@@ -280,12 +279,12 @@ export default function ReviewsInput({
                     />
                   </div>
                   <div className="flex flex-col gap-3">
-                    <Label htmlFor="projectImage">Image</Label>
+                    <Label htmlFor="reviewImage">Image</Label>
 
                     <div className="grid gap-3">
                       {previewUrls[index] ? (
                         <Label
-                          htmlFor={`projectImage-${index}`}
+                          htmlFor={`reviewImage-${index}`}
                           className="w-32 h-32 flex items-center justify-center border-1 border-gray-300 hover:border-gray-400 hover:bg-gray-100 text-gray-300 rounded-lg cursor-pointer overflow-hidden"
                         >
                           <Image
@@ -298,7 +297,7 @@ export default function ReviewsInput({
                         </Label>
                       ) : (
                         <Label
-                          htmlFor={`projectImage-${index}`}
+                          htmlFor={`reviewImage-${index}`}
                           className="w-32 h-32 border-1 border-gray-300 hover:border-gray-400 hover:bg-gray-100 text-gray-300 rounded-lg cursor-pointer flex items-center justify-center"
                         >
                           <Upload className="w-8 h-8" />
@@ -306,9 +305,9 @@ export default function ReviewsInput({
                       )}
 
                       <Input
-                        id={`projectImage-${index}`}
+                        id={`reviewImage-${index}`}
                         type="file"
-                        name={`projectImage-${index}`}
+                        name={`reviewImage-${index}`}
                         accept="image/*"
                         style={{ display: "none" }}
                         required
