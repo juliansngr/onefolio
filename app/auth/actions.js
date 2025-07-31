@@ -70,6 +70,25 @@ export async function loginWithFacebook() {
   redirect(data.url);
 }
 
+export async function loginWithTwitter() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "twitter",
+    options: {
+      redirectTo: `https://onefol.io/auth/callback?next=${encodeURIComponent(
+        "/setup"
+      )}`,
+    },
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  redirect(data.url);
+}
+
 export async function signup(formData) {
   const supabase = await createClient();
 
