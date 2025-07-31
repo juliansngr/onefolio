@@ -12,6 +12,7 @@ import HeroInput from "./widgets/HeroInput";
 import TagsInput from "./widgets/TagsInput";
 import FeaturedProjectsInput from "./widgets/FeaturedProjectsInput";
 import ExperienceInput from "./widgets/ExperienceInput";
+import ReviewsInput from "./widgets/ReviewsInput";
 
 import SaveButton from "./SaveButton";
 import { createClient } from "@/lib/supabase/browserClient";
@@ -19,7 +20,7 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { getIcon, getImageSettings } from "@/lib/editorFunctions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Plus, Settings, Layout, Save, Grip } from "lucide-react";
+import { ArrowLeft, Plus, Settings, Layout, Grip } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
@@ -301,6 +302,7 @@ export default function EditorForm({
     tags: TagsInput,
     "featured-projects": FeaturedProjectsInput,
     experience: ExperienceInput,
+    reviews: ReviewsInput,
   };
 
   return (
