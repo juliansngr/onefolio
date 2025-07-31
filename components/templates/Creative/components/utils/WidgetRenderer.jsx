@@ -4,7 +4,7 @@ import Tags from "../Tags";
 import FeaturedProjects from "../FeaturedProjects";
 import Experience from "../Experience";
 import Education from "../Education";
-import Testimonials from "../Testimonials";
+import Reviews from "../Reviews";
 import Header from "../Header";
 
 export default function WidgetRenderer({ widget }) {
@@ -50,9 +50,9 @@ export default function WidgetRenderer({ widget }) {
           className="max-w-6xl mx-auto px-6 py-12 space-y-20 relative z-10"
         />
       );
-    case "testimonials":
+    case "reviews":
       return (
-        <Testimonials
+        <Reviews
           data={widget.content}
           indexValue={widget.position}
           className="max-w-6xl mx-auto px-6 py-12 space-y-20 relative z-10"

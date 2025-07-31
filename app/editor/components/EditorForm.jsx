@@ -317,7 +317,7 @@ export default function EditorForm({
                   variant="ghost"
                   size="sm"
                   onClick={() => redirect("/editor")}
-                  className="text-slate-600 hover:text-slate-900"
+                  className="text-slate-600 hover:text-slate-900 hover:bg-slate-50 cursor-pointer"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Overview
