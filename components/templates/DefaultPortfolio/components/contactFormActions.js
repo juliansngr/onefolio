@@ -5,6 +5,8 @@ import { createClient } from "@/lib/supabase/serverClient";
 export async function sendContactRequest(formData) {
   const supabase = await createClient();
 
+  console.log(formData);
+
   const sender = formData.get("name");
   const sender_email = formData.get("email");
   const message = formData.get("message");

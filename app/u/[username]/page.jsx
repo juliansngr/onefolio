@@ -118,7 +118,12 @@ export default async function PortfolioPage({ params, searchParams }) {
           content="View my portfolio and get in touch with me"
         />
       </head>
-      <Template data={widgets} userId={profile.user_id} portfolio={portfolio} />
+      <Template
+        data={widgets}
+        userId={profile.user_id}
+        portfolio={portfolio}
+        portfolioId={portfolio.id}
+      />
     </>
   );
 }
