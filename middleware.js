@@ -86,6 +86,6 @@ export const config = {
     // - Image optimization
     // - favicon
     // - Legal pages
-    "/((?!api/webhook/stripe|_next/static|_next/image|favicon.ico|imprint|terms-of-service|privacy-policy|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!api/webhook/stripe|_next/static|_next/image|favicon.ico|imprint|terms-of-service|privacy-policy|blog|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
