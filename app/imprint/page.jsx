@@ -149,11 +149,9 @@ export default function ImprintPage() {
           </div>
         </section>
 
-        {/* Main Content */}
         <section className="pb-20">
           <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
             <div className="grid gap-8">
-              {/* Diensteanbieter */}
               <Card className="bg-white/70 backdrop-blur-sm border-slate-200/60 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-[1.02] group">
                 <CardHeader className="pb-4">
                   <div className="flex items-center gap-3">
@@ -168,16 +166,16 @@ export default function ImprintPage() {
                 <CardContent className="space-y-3">
                   <div>
                     <h3 className="font-semibold text-slate-800 mb-1">
-                      John Doe
+                      Julian Dürr c/o Block Services
                     </h3>
-                    <p className="text-slate-600">Chief Executive Officer</p>
+                    <p className="text-slate-600">onefol.io</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <Building2 className="w-4 h-4 text-slate-500 mt-1 flex-shrink-0" />
                     <div>
-                      <p className="text-slate-700">123 Main Street</p>
-                      <p className="text-slate-700">12345 Sample City</p>
-                      <p className="text-slate-700">United States</p>
+                      <p className="text-slate-700">Stuttgarter Str. 106</p>
+                      <p className="text-slate-700">70736 Fellbach</p>
+                      <p className="text-slate-700">Germany</p>
                     </div>
                   </div>
                 </CardContent>
@@ -202,10 +200,10 @@ export default function ImprintPage() {
                       href="mailto:contact@onefolio.demo"
                       className="text-blue-600 hover:text-blue-800 transition-colors duration-300 hover:underline"
                     >
-                      contact@onefolio.demo
+                      contact@onefol.io
                     </a>
                   </div>
-                  <div className="flex items-center gap-3">
+                  {/* <div className="flex items-center gap-3">
                     <Phone className="w-4 h-4 text-slate-500 flex-shrink-0" />
                     <a
                       href="tel:+1234567890"
@@ -213,31 +211,7 @@ export default function ImprintPage() {
                     >
                       +1 (234) 567-890
                     </a>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Umsatzsteuer-ID */}
-              <Card className="bg-white/70 backdrop-blur-sm border-slate-200/60 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-[1.02] group">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
-                      <FileText className="w-5 h-5 text-purple-600" />
-                    </div>
-                    <CardTitle className="text-xl font-bold text-slate-900 group-hover:text-purple-600 transition-colors duration-300">
-                      Tax Information
-                    </CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center gap-3">
-                    <span className="text-slate-600">
-                      Tax Identification Number:
-                    </span>
-                    <span className="font-mono text-slate-800 bg-slate-100 px-2 py-1 rounded">
-                      US123456789
-                    </span>
-                  </div>
+                  </div> */}
                 </CardContent>
               </Card>
 
