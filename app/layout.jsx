@@ -25,7 +25,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const isDev = process.env.NODE_ENV === "development";
+  const isDev = process.env.WAITLIST === "true";
   return (
     <PlausibleProvider domain="onefol.io">
       <html
@@ -35,10 +35,9 @@ export default function RootLayout({ children }) {
       >
         <ToasterProvider />
         <body>
-          {children}
+          {/* {children} */}
 
-          {/* {isDev ? <Waitinglist /> : children} */}
-          {/* <LightPortfolioPage /> */}
+          {isDev ? <Waitinglist /> : children}
         </body>
       </html>
     </PlausibleProvider>
