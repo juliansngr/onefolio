@@ -372,7 +372,7 @@ export default function WaitlistPage() {
                         <Button
                           type="submit"
                           disabled={isLoading}
-                          className="w-full min-w-fit bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-white font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl group/btn relative overflow-hidden"
+                          className="w-full min-w-fit bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-white font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl group/btn relative overflow-hidden cursor-pointer"
                         >
                           <span className="relative z-10 flex items-center justify-center whitespace-nowrap">
                             {isLoading ? (
@@ -402,7 +402,6 @@ export default function WaitlistPage() {
           </div>
         </section>
 
-        {/* How It Works - 3 Steps */}
         <section className="py-20">
           <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="text-center mb-16">
@@ -422,9 +421,7 @@ export default function WaitlistPage() {
               </p>
             </div>
 
-            {/* Desktop: Flex Layout with Cards and Arrows */}
             <div className="hidden md:flex md:items-center md:justify-center md:space-x-4">
-              {/* Step 1 */}
               <div className="flex-1 max-w-sm animate-fade-in-up animation-delay-200">
                 <Card className="bg-white/80 backdrop-blur-lg border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-3 group relative overflow-hidden text-center">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -447,7 +444,6 @@ export default function WaitlistPage() {
                 </Card>
               </div>
 
-              {/* Arrow 1 */}
               <div className="flex-shrink-0 animate-fade-in-up animation-delay-300">
                 <svg
                   className="w-8 h-8 text-blue-400 transition-all duration-300 hover:text-blue-600 hover:scale-110"
@@ -464,7 +460,6 @@ export default function WaitlistPage() {
                 </svg>
               </div>
 
-              {/* Step 2 */}
               <div className="flex-1 max-w-sm animate-fade-in-up animation-delay-400">
                 <Card className="bg-white/80 backdrop-blur-lg border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-3 group relative overflow-hidden text-center">
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -487,7 +482,6 @@ export default function WaitlistPage() {
                 </Card>
               </div>
 
-              {/* Arrow 2 */}
               <div className="flex-shrink-0 animate-fade-in-up animation-delay-500">
                 <svg
                   className="w-8 h-8 text-purple-400 transition-all duration-300 hover:text-purple-600 hover:scale-110"
@@ -504,7 +498,6 @@ export default function WaitlistPage() {
                 </svg>
               </div>
 
-              {/* Step 3 */}
               <div className="flex-1 max-w-sm animate-fade-in-up animation-delay-600">
                 <Card className="bg-white/80 backdrop-blur-lg border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-3 group relative overflow-hidden text-center">
                   <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -528,9 +521,7 @@ export default function WaitlistPage() {
               </div>
             </div>
 
-            {/* Mobile: Simple Grid Layout with Arrows */}
             <div className="grid grid-cols-1 gap-6 md:hidden">
-              {/* Step 1 */}
               <div className="animate-fade-in-up animation-delay-200">
                 <Card className="bg-white/80 backdrop-blur-lg border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-3 group relative overflow-hidden text-center">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -553,7 +544,6 @@ export default function WaitlistPage() {
                 </Card>
               </div>
 
-              {/* Mobile Arrow 1 */}
               <div className="flex items-center justify-center animate-fade-in-up animation-delay-300">
                 <svg
                   className="w-8 h-8 text-blue-400 transition-all duration-300 hover:text-blue-600 hover:scale-110"
@@ -570,7 +560,6 @@ export default function WaitlistPage() {
                 </svg>
               </div>
 
-              {/* Step 2 */}
               <div className="animate-fade-in-up animation-delay-400">
                 <Card className="bg-white/80 backdrop-blur-lg border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-3 group relative overflow-hidden text-center">
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -593,7 +582,6 @@ export default function WaitlistPage() {
                 </Card>
               </div>
 
-              {/* Mobile Arrow 2 */}
               <div className="flex items-center justify-center animate-fade-in-up animation-delay-500">
                 <svg
                   className="w-8 h-8 text-purple-400 transition-all duration-300 hover:text-purple-600 hover:scale-110"
@@ -610,7 +598,6 @@ export default function WaitlistPage() {
                 </svg>
               </div>
 
-              {/* Step 3 */}
               <div className="animate-fade-in-up animation-delay-600">
                 <Card className="bg-white/80 backdrop-blur-lg border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-3 group relative overflow-hidden text-center">
                   <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -634,7 +621,6 @@ export default function WaitlistPage() {
               </div>
             </div>
 
-            {/* Call to Action within section */}
             <div className="text-center mt-12 animate-fade-in-up animation-delay-800">
               <p className="text-lg text-slate-600 mb-4">
                 Ready to build your professional portfolio?
@@ -841,7 +827,7 @@ export default function WaitlistPage() {
                         <Button
                           type="submit"
                           disabled={isLoading}
-                          className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-none whitespace-nowrap font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl group/btn"
+                          className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-none whitespace-nowrap font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl group/btn cursor-pointer"
                         >
                           {isLoading ? (
                             <span className="flex items-center">
